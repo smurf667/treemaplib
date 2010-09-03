@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Tree Map for Eclipse" url="http://www.engehausen.de/treemap">
+   <description name="Tree Map for Eclipse" url="http://treemaplib.googlecode.com/svn/trunk/update">
       Update Site for &quot;Tree Map for Eclipse&quot;
    </description>
    <feature url="features/de.engehausen.treemap_0.0.0.jar" id="de.engehausen.treemap" version="0.0.0" />
