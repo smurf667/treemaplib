@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>TreeMap JS Sample</title>
+<script src="src/treemap.js"></script>  
+</head>
+<body>
+This is a sample for the Tree Map JS code - only tested with Firefox:
+<p>
+<canvas id="samplecanvas" width="600" height="400" oncontextmenu="return false;">
+Your browser does not support the &lt;canvas &gt; element. Sorry.
+</canvas>
+<table>
+<tr><td>Selection:</td><td><div id="samplecanvas.info"></div></td></tr>
+<tr><td>Size:</td><td><div id="samplecanvas.size"></div></td></tr>
+</table>
+</p>
+<!-- sample stuff -->
+<script type="text/javascript">
+var treeMap = new TreeMap();
+treeMap.setRenderer(new CushionRectangleRenderer()); // optional (default plain)
+treeMap.setLayout(new SquarifiedLayout(10)); // optional (default depth 2)
+// optional; register a change listener to show node selection below canvas
+treeMap.addSelectionChangeListener({  
+  selectionChanged: function(aTreeMap, node) {
+    var tm = aTreeMap.getTreeModel();
+    if (tm) {
+      var info = document.getElementById("samplecanvas.info");
+      if (info) {
+        info.innerHTML = tm.getLabel(node);
+      }
+      info = document.getElementById("samplecanvas.size");
+      if (info) {
+        info.innerHTML = tm.getWeight(node);
+      }
+    }
+  }
+});
+// optional; use a fancy color provider (default mono color)
+treeMap.setColorProvider({
+  getColor: function(node) {
+    var result = "#204040";
+    if (node.label) {
+      if (/\.js$/.test(node.label)) {
+        result = "#a00000";
+      } else if (/\.jar/.test(node.label)) {
+        result = "#009000";
+      } else if (/\.dll/.test(node.label)) {
+        result = "#000080";
+      } else if (/\.ini/.test(node.label)) {
+        result = "#bca500";
+      } else if (/\.css/.test(node.label)) {
+        result = "#005090";
+      } else if (/\.xml/.test(node.label)) {
+        result = "#407080";
+      }
+    }
+    return result;
+  }
+});
+// hook up the treemap with the canvas HTML element
+treeMap.hook(document.getElementById("samplecanvas"));
+// paint it (initially it has no data...)
+treeMap.paint();
+
+function handleSelectionChange(event) {
+  if (event.target.value != "-") {
+    var resource = event.target.value;
+    if (resource.match("xml$") == "xml") {
+      // XML
+      var request = new XMLHttpRequest();
+      request.open("GET", resource, true);
+      request.onreadystatechange = function() {
+        if (request.readyState == 4 && (request.status == 200 || request.status ==0) ) {
+		  var treeModel = new XMLTreeModel(request.responseXML);
+		  treeMap.setTreeModel(treeModel);
+		  treeMap.compute();
+		  treeMap.paint();
+        }
+      };
+      request.send(null);
+    } else {
+      // JSON
+      var request = new XMLHttpRequest();
+      request.open("GET", resource, true);
+      if (request.overrideMimeType) {
+        request.overrideMimeType('text/plain');      
+      }
+      request.onreadystatechange = function() {
+        if (request.readyState == 4 && (request.status == 200 || request.status ==0) ) {
+		  var treeModel = new JSONTreeModel(new Function("return "+request.responseText)());
+		  treeMap.setTreeModel(treeModel);
+		  treeMap.compute();
+		  treeMap.paint();
+        }
+      };
+      request.send(null);
+    }
+  } else {
+    treeMap.setTreeModel(undefined);
+	treeMap.paint();
+  }
+  return false;
+}
+</script>
+<div>
+<form onsubmit="return false;">
+Tree Model:
+<select onchange="handleSelectionChange(event);">
+<option>-</option>
+<option value="data/wijk.txt">Wijk example</option>
+<option value="data/firefox.txt">Firefox file sizes</option>
+<option value="data/demo.txt">Demo - JSON style</option>
+<option value="data/demo.xml">Demo - XML style</option>
+</select>
+</form>
+</div>
+</body>
+</html>
