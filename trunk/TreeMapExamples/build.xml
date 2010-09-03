@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="TreeMap Common Examples Build" default="build" basedir=".">
+	
+	<property file="../TreeMapBuild/config.properties"/>
+	
+	<property name="jar" value="${build.dir}/tm_core_examples_${tm.version}.jar"/>
+		
+	<target name="build" description="Builds the core example class files" depends="clean,build-src">
+		<zip destfile="${jar}" basedir="${build.dir.clz}"/>
+	</target>
+
+	<target name="build-src">
+		<mkdir dir="${build.dir.clz}"/>
+		<javac srcdir="src" destdir="${build.dir.clz}" source="1.6" classpath="../TreeMapCore/build/tm_core_${tm.version}.jar"/>
+		<copy todir="${build.dir.clz}">
+			<fileset dir="src" includes="**/*.properties"/>
+		</copy>
+	</target>
+
+	<target name="clean" description="Cleans up the working directories">
+		<delete dir="${build.dir}" quiet="true"/>
+	</target>
+
+</project>

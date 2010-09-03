@@ -1,0 +1,1 @@
+{ "label": "root node", "weight": 14, "children": [{ "label": "nodeA", "weight": 7, "children": [] }, { "label": "nodeB", "weight": 7, "children": [{ "label": "nodeC", "weight": 3, "children": [] }, { "label": "nodeD", "weight": 4, "children": [] }] }] }
