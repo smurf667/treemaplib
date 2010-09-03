@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project name="TreeMap Global Build" default="build" basedir=".">
+	
+	<property file="config.properties"/>
+	
+	<target name="javadoc" description="Builds the complete javadoc">
+		<delete dir="${build.dir}/javadoc" quiet="yes"/>
+	    <javadoc access="public" packagenames="de.engehausen.treemap.*" destdir="${build.dir}/javadoc">
+	    	<fileset dir="../TreeMapCore/" includes="src/**/*.java"/>
+	    	<fileset dir="../TreeMapExamples/" includes="src/**/*.java"/>
+	    	<fileset dir="../TreeMapSwing/" includes="src/**/*.java"/>
+	    	<fileset dir="../TreeMapSwingExamples/" includes="src/**/*.java"/>
+	    	<fileset dir="../TreeMapSWT/" includes="src/**/*.java"/>
+	    	<fileset dir="../TreeMapSWTExamples/" includes="src/**/*.java"/>
+		</javadoc>
+	</target>
+	
+	<target name="build" description="Builds all tree map code artifacts" depends="clean">
+		<ant target="build" dir="../TreeMapCore"/>
+		<ant target="build" dir="../TreeMapExamples"/>
+		<ant target="build" dir="../TreeMapSwing"/>
+		<ant target="build" dir="../TreeMapSwingExamples"/>
+		<ant target="build" dir="../TreeMapSWT"/>
+		<ant target="build" dir="../TreeMapSWTExamples"/>
+		<ant target="build" dir="../TreeMapEclipse"/>
+		<copy todir="${build.dir}">
+			<fileset dir="../TreeMapCore/build" includes="**/*.jar"/>			
+			<fileset dir="../TreeMapExamples/build" includes="**/*.jar"/>			
+			<fileset dir="../TreeMapSwing/build" includes="**/*.jar"/>			
+			<fileset dir="../TreeMapSwingExamples/build" includes="**/*.jar"/>			
+			<fileset dir="../TreeMapSWT/build" includes="**/*.jar"/>			
+			<fileset dir="../TreeMapSWTExamples/build" includes="**/*.jar"/>			
+			<fileset dir="../TreeMapEclipse/build" includes="**/*.zip"/>
+		</copy>
+	</target>
+	
+	<target name="clean" description="Cleans up the working directories">
+		<delete dir="${build.dir}" />
+		<ant target="clean" dir="../TreeMapCore"/>
+		<ant target="clean" dir="../TreeMapExamples"/>
+		<ant target="clean" dir="../TreeMapSwing"/>
+		<ant target="clean" dir="../TreeMapSwingExamples"/>
+		<ant target="clean" dir="../TreeMapSWT"/>
+		<ant target="clean" dir="../TreeMapSWTExamples"/>
+		<ant target="clean" dir="../TreeMapEclipse"/>
+	</target>
+
+</project>

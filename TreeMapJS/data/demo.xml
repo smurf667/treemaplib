@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.engehausen.de/ns/tm" xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+      label="root node" weight="14">
+  <node label="nodeA" weight="7" />
+  <node label="nodeB" weight="7">
+    <node label="nodeC" weight="3" />
+    <node label="nodeD" weight="4" />
+  </node>
+</node>
