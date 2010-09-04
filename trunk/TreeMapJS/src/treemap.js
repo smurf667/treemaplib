@@ -1,7 +1,10 @@
 /*
  * Tree Map JS
  *
- * (c) Jan Engehausen, 2010-08-07
+ * Jan Engehausen, 2010-08-07
+ *
+ * Published under "Eclipse Public License - v 1.0"
+ * http://www.eclipse.org/legal/epl-v10.html
  */
 
 /*
@@ -34,6 +37,7 @@ function TreeMap() {
 
   /** private members **/
   var layout = new SquarifiedLayout(2);
+
   var colorProvider = new ColorProvider('#000080');
   var renderer = new RectangleRenderer();
   var listeners = [];
