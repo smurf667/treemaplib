@@ -5,7 +5,7 @@
 	
 	<target name="javadoc" description="Builds the complete javadoc">
 		<delete dir="${build.dir}/javadoc" quiet="yes"/>
-	    <javadoc access="public" packagenames="de.engehausen.treemap.*" destdir="${build.dir}/javadoc">
+	    <javadoc access="public" packagenames="de.engehausen.treemap.*" destdir="${build.dir}/javadoc" header="v${tm.version}">
 	    	<fileset dir="../TreeMapCore/" includes="src/**/*.java"/>
 	    	<fileset dir="../TreeMapExamples/" includes="src/**/*.java"/>
 	    	<fileset dir="../TreeMapSwing/" includes="src/**/*.java"/>
