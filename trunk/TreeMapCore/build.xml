@@ -7,7 +7,14 @@
 	<property name="jar" value="${build.dir}/tm_core_${tm.version}.jar"/>
 		
 	<target name="build" description="Builds the core class files" depends="clean,build-src">
-		<zip destfile="${jar}" basedir="${build.dir.clz}"/>
+		<zip destfile="${jar}">
+			<fileset dir="${build.dir.clz}">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="../TreeMapBuild">
+				<include name="**/*.html"/>
+			</fileset>
+		</zip>
 	</target>
 
 	<target name="test" description="Builds and runs the core tests" depends="build,build-test">
