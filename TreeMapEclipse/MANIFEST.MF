@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: TreeMap for Eclipse Plugin
+Bundle-Name: TreeMap for Eclipse
 Bundle-SymbolicName: de.engehausen.treemap
 Bundle-Version: 0.0.0
+Bundle-Vendor: Jan Engehausen
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.ui;bundle-version="3.5.2",
+Require-Bundle: org.eclipse.ui;bundle-version="3.5.0",
  org.eclipse.core.runtime;bundle-version="3.5.0"
 Export-Package: de.engehausen.treemap,
  de.engehausen.treemap.impl,
