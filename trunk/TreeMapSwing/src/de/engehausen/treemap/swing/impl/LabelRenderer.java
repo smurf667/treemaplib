@@ -45,7 +45,7 @@ public class LabelRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color
 	public void render(final Graphics2D graphics, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		if (labelProvider != null) {
 			if (showRoot || !rectangle.equals(model.getRoot()) || !model.hasChildren(rectangle)) {
-				render(graphics, labelProvider.getLabel(model, rectangle), Color.WHITE, rectangle);				
+				render(graphics, labelProvider.getLabel(model, rectangle), Color.WHITE, rectangle);
 			}
 		}
 	}
