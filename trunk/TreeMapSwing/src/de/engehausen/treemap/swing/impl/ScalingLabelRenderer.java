@@ -2,11 +2,11 @@ package de.engehausen.treemap.swing.impl;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.font.LineMetrics;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import de.engehausen.treemap.IColorProvider;
 import de.engehausen.treemap.ILabelProvider;
@@ -89,16 +89,17 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, Graphics2D
 			graphics.setColor(color);
 			graphics.setFont(font);
 			setupGraphics(graphics);
-			final FontRenderContext frc = graphics.getFontRenderContext();
-			final float sw = (float) font.getStringBounds(text, frc).getWidth();
-			final LineMetrics lm = font.getLineMetrics(text, frc);
-			final float sh = lm.getAscent() + lm.getDescent();
-            final double scale = Math.min(bounds.getWidth()/sw, bounds.getHeight()/sh);
-            final AffineTransform at = AffineTransform.getTranslateInstance(bounds.getX() + scale*(bounds.getWidth() - scale*sw)/2,
-            														  		bounds.getY() + bounds.getHeight() - sh);
-            at.scale(scale, scale);
-            graphics.setFont(font.deriveFont(at));
-            graphics.drawString(text, 0, 0);
+			final FontMetrics fontMetrics = graphics.getFontMetrics();
+			final Rectangle2D textRect = fontMetrics.getStringBounds(text, graphics);
+			final double w = textRect.getWidth()*1.2d; // make some room left and right
+			final double h = (double) textRect.getHeight();
+            final double scale = Math.min(bounds.getWidth()/w, bounds.getHeight()/h);
+            if (scale > 0.4d) {
+                final AffineTransform at = AffineTransform.getTranslateInstance(bounds.getX()+(bounds.getWidth()-w/1.2f*scale)/2, bounds.getY()+(h+(bounds.getHeight()-h)/2));
+                at.scale(scale, scale);
+                graphics.setFont(font.deriveFont(at));
+    			graphics.drawString(text, 0, 0);
+            }
 		}
 	}
 
