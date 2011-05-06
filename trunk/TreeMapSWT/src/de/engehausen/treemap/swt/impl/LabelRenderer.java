@@ -78,8 +78,8 @@ public class LabelRenderer<N> implements IRectangleRenderer<N, PaintEvent, Color
 			event.gc.setForeground(color);
 			try {
 				final Point p = event.gc.textExtent(text);
-				final int textw = (int) p.x;
-				final int texth = (int) p.y;
+				final int textw = p.x;
+				final int texth = p.y;
 				final double rectAR = aspectRatio(bounds.getWidth(), bounds.getHeight());
 				final double textAR = aspectRatio(textw, texth);
 				final boolean norotate = Math.abs(1d/textAR - rectAR) >= Math.abs(textAR - rectAR);
@@ -106,11 +106,6 @@ public class LabelRenderer<N> implements IRectangleRenderer<N, PaintEvent, Color
 						} finally {
 							transform.dispose();
 						}
-						// it appears to me a bit gruesome to create a new
-						// identity object just to get rid of the previous transform?!
-						final Transform ident = new Transform(event.display);
-						event.gc.setTransform(ident);
-						ident.dispose();
 					}
 				}				
 			} finally {
