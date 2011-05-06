@@ -338,16 +338,24 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			if (colorProvider == null) {
 				colorProvider = new DefaultColorProvider<N>(Display.getCurrent());
 			}
+			// it appears to me a bit gruesome to create a new
+			// identity object just to get rid of the previous transform?!
 			final FIFO<IRectangle<N>> queue = new FIFO<IRectangle<N>>();
 			queue.push(rects.getRoot());
-			while (queue.notEmpty()) {
-				final IRectangle<N> node = queue.pull();
-				render(event, rects, node);
-				if (rects.hasChildren(node)) {
-					for (Iterator<IRectangle<N>> i = rects.getChildren(node); i.hasNext(); ) {
-						queue.push(i.next());
+			final Transform ident = new Transform(event.display);
+			try {
+				while (queue.notEmpty()) {
+					final IRectangle<N> node = queue.pull();
+					event.gc.setTransform(ident); // reset transform before rendering
+					render(event, rects, node);
+					if (rects.hasChildren(node)) {
+						for (Iterator<IRectangle<N>> i = rects.getChildren(node); i.hasNext(); ) {
+							queue.push(i.next());
+						}
 					}
-				}
+				}				
+			} finally {
+				ident.dispose();
 			}
 		}
 	}
