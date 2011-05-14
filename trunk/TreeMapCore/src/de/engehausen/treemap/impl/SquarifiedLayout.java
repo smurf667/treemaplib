@@ -15,6 +15,7 @@ import de.engehausen.treemap.IWeightedTreeModel;
 
 /**
  * Squarified tree map layout, used by various implementations such as the SWT and the Swing versions.
+ * @param N the type of node the layout operates on.
  */
 public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Serializable {
 	
@@ -65,7 +66,7 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 				long total = 0;
 				// get children and sort by weight
 				final List<N> nodes = new ArrayList<N>(16);
-				for (Iterator<N> i = model.getChildren(n); i.hasNext(); ) {
+				for (final Iterator<N> i = model.getChildren(n); i.hasNext(); ) {
 					final N c = i.next();
 					nodes.add(c);
 					total += model.getWeight(c);
@@ -245,7 +246,7 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 		}
 	}
 	
-	private float aspectRatio(int a, int b) {
+	private float aspectRatio(final int a, final int b) {
 		if (a > b) {
 			return a/(float) b;
 		} else {

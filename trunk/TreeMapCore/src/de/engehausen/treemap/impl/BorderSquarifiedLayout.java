@@ -25,7 +25,7 @@ public class BorderSquarifiedLayout<N> extends SquarifiedLayout<N> {
 	}
 
 	@Override
-	protected RectangleImpl<N> createRectangle(N n, int x, int y, int w, int h) {
+	protected RectangleImpl<N> createRectangle(final N n, final int x, final int y, final int w, final int h) {
 		final int nw = w-2*shrink;
 		final int nh = h-2*shrink;
 		if (nw > 0 && nh > 0) {

@@ -87,9 +87,8 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 	}
 
 	@Override
-	public boolean hasChildren(IRectangle<N> node) {
-		return children.containsKey(
-				node.getNode());
+	public boolean hasChildren(final IRectangle<N> node) {
+		return children.containsKey(node.getNode());
 	}
 	
 	/**
@@ -104,7 +103,7 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 			final IRectangle<N> node = stack.remove(0);
 			list.add(node);
 			if (hasChildren(node)) {
-				for (Iterator<IRectangle<N>> i = getChildren(node); i.hasNext(); ) {
+				for (final Iterator<IRectangle<N>> i = getChildren(node); i.hasNext(); ) {
 					stack.add(i.next());
 				}
 			}
