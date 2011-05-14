@@ -277,26 +277,5 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 	public final boolean isCanceled() {
 		return false;
 	}
-	
-//	public static void main(String[] args) {
-//		final SquarifiedLayout2<Node> layout = new SquarifiedLayout2<Node>(2);
-////		ITreeModel m = layout.layout(TreeModel.WIJK, TreeModel.WIJK.getRoot(), 600, 400);
-//		ITreeModel m = layout.layout(TreeModel.DEEP_BINARY, TreeModel.DEEP_BINARY.getRoot(), 600, 400);
-//		dump(m, System.err);
-//	}
-
-//	private static void dump(final ITreeModel model, final PrintStream ps) {
-//		dump(model, model.getRoot(), 0, ps);
-//	}
-//	
-//	protected static void dump(final ITreeModel model, final Object n, final int depth, final PrintStream ps) {
-//		for (int i = 0; i < depth; i++) {
-//			ps.print(" ");
-//		}
-//		ps.println(n.toString());
-//		for (Iterator<Node> i = model.getChildren(n); i.hasNext(); ) {
-//			dump(model, i.next(), depth+1, ps);
-//		}
-//	}
 
 }
