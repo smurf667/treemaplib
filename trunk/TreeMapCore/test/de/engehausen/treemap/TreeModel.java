@@ -44,13 +44,13 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 		s1.add(new Node("small2", 5000));
 		final Node w1 = new Node("root", 0);
 		WIJK = new TreeModel(w1);
+		w1.add(new Node("e2", 2));
+		w1.add(new Node("g1", 1));
 		w1.add(new Node("a6", 6));
-		w1.add(new Node("b6", 6));
 		w1.add(new Node("c4", 4));
 		w1.add(new Node("d3", 3));
-		w1.add(new Node("e2", 2));
+		w1.add(new Node("b6", 6));
 		w1.add(new Node("f2", 2));
-		w1.add(new Node("g1", 1));
 		ROOT = new TreeModel(new Node("root", 1));
 		final Node x = new Node("root", 2);
 		TWOLEVEL = new TreeModel(x);
