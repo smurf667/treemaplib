@@ -48,9 +48,9 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 		w1.add(new Node("b6", 6));
 		w1.add(new Node("c4", 4));
 		w1.add(new Node("d3", 3));
-		w1.add(new Node("d2", 2));
 		w1.add(new Node("e2", 2));
-		w1.add(new Node("f1", 1));
+		w1.add(new Node("f2", 2));
+		w1.add(new Node("g1", 1));
 		ROOT = new TreeModel(new Node("root", 1));
 		final Node x = new Node("root", 2);
 		TWOLEVEL = new TreeModel(x);
@@ -64,7 +64,7 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 		final Node manyRoot = new Node("root", 0);
 		MANY = new TreeModel(manyRoot);
 		for (int j = 0; j < 300; j++) {
-			manyRoot.add(new Node("node"+j, 100+2*j));
+			manyRoot.add(new Node("node"+j, 300-j));
 		}		
 	}
 	
