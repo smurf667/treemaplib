@@ -68,9 +68,19 @@ public class SquarifiedLayoutTest extends TestCase {
 		assertEquals(8, list.size());
 		int last = Integer.MAX_VALUE;
 		final Map<String, String> positions = new HashMap<String, String>();
+		final List<String> expectedNames = new ArrayList<String>(8);
+		expectedNames.add("root");
+		expectedNames.add("a6");
+		expectedNames.add("b6");
+		expectedNames.add("c4");
+		expectedNames.add("d3");
+		expectedNames.add("e2");
+		expectedNames.add("f2");
+		expectedNames.add("g1");
 		// verify that areas are not getting bigger with each entry
 		for (int i = 0; i < 8; i++) {
 			final IRectangle<Node> node = list.get(i);
+			assertEquals(expectedNames.get(i), node.getNode().getName());
 			// record mapping node name to node position
 			positions.put(node.getNode().getName(), node.getX()+","+node.getY());
 			final int next = node.getWidth()*node.getHeight();
