@@ -36,7 +36,15 @@ public class Node {
 	public boolean hasChildren() {
 		return children!=null?children.size()>0:false;
 	}
+
+	public String toString() {
+		return name;
+	}
 	
+	public String getName() {
+		return name;
+	}
+
 	protected void setParent(final Node p) {
 		parent = p;
 		Node runner = p;
@@ -52,10 +60,6 @@ public class Node {
 	
 	protected void addWeight(final long w) {
 		weight += w;
-	}
-	
-	public String toString() {
-		return name;
 	}
 
 }

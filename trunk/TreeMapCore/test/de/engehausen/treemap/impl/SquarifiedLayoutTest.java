@@ -1,9 +1,11 @@
 package de.engehausen.treemap.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 import de.engehausen.treemap.ICancelable;
@@ -61,17 +63,30 @@ public class SquarifiedLayoutTest extends TestCase {
 	public void testWijkLayout() throws Exception {
 		final IWeightedTreeModel<Node> model = TreeModel.WIJK;
 		final SquarifiedLayout<Node> engine = new SquarifiedLayout<Node>(Integer.MAX_VALUE);
-		// TODO check wijk-likeness
 		final ITreeModel<IRectangle<Node>> rmodel = engine.layout(model, model.getRoot(), 600, 400);
 		final List<IRectangle<Node>> list = toList(rmodel);
 		assertEquals(8, list.size());
 		int last = Integer.MAX_VALUE;
+		final Map<String, String> positions = new HashMap<String, String>();
 		// verify that areas are not getting bigger with each entry
 		for (int i = 0; i < 8; i++) {
 			final IRectangle<Node> node = list.get(i);
+			// record mapping node name to node position
+			positions.put(node.getNode().getName(), node.getX()+","+node.getY());
 			final int next = node.getWidth()*node.getHeight();
 			assertTrue(last >= next);
 			last = next;
+		}
+		final Map<String, String> expected = new HashMap<String, String>();
+		expected.put("a6", "0,0");
+		expected.put("b6", "0,200");
+		expected.put("c4", "300,0");
+		expected.put("d3", "471,0");
+		expected.put("e2", "300,233");
+		expected.put("f2", "420,233");
+		expected.put("g1", "540,233");
+		for (Map.Entry<String, String> entry : expected.entrySet()) {
+			assertEquals(entry.getValue(), positions.get(entry.getKey()));
 		}
 	}
 
@@ -86,6 +101,21 @@ public class SquarifiedLayoutTest extends TestCase {
 		assertDepth(new SquarifiedLayout<Node>(1).layout(model, model.getRoot(), 1024, 768), 1);
 		assertDepth(new SquarifiedLayout<Node>(2).layout(model, model.getRoot(), 1024, 768), 2);
 		assertDepth(new SquarifiedLayout<Node>(6).layout(model, model.getRoot(), 1024, 768), 6);		
+	}
+
+	/**
+	 * Tests layout of a "flat" hierarchy.
+	 * @throws Exception in case of error.
+	 */
+	public void testFlatLayout() throws Exception {
+		final IWeightedTreeModel<Node> model = TreeModel.MANY;
+		final SquarifiedLayout<Node> layout = new SquarifiedLayout<Node>(Integer.MAX_VALUE);
+		final ITreeModel<IRectangle<Node>> result = layout.layout(model, model.getRoot(), 1920, 1080);
+		assertDepth(result, 1);
+		final Iterator<IRectangle<Node>> i = result.getChildren(result.getRoot());
+		assertTrue(i.hasNext());
+		// node with highest weight must come first
+		assertEquals("node0", i.next().getNode().getName());
 	}
 	
 	/**
