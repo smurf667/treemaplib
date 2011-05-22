@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.engehausen.treemap.ICancelable;
+import de.engehausen.treemap.IIteratorSize;
 import de.engehausen.treemap.IRectangle;
 import de.engehausen.treemap.ITreeMapLayout;
 import de.engehausen.treemap.ITreeModel;
@@ -65,17 +66,26 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 			if (model.hasChildren(n)) {
 				long total = 0;
 				// get children and sort by weight
-				final List<N> nodes = new ArrayList<N>(16);
-				for (final Iterator<N> i = model.getChildren(n); i.hasNext(); ) {
+				final Iterator<N> i = model.getChildren(n);
+				final List<N> nodes = new ArrayList<N>(i instanceof IIteratorSize<?>?((IIteratorSize<?>) i).size():16);
+				while (i.hasNext()) {
 					final N c = i.next();
 					nodes.add(c);
 					total += model.getWeight(c);
 				}
-				Collections.sort(nodes, comparator);
 				final int max = nodes.size();
 				if (max > 2) {
+					Collections.sort(nodes, comparator);
 					squarify(result, rectangle, rectangle, comparator, nodes, 0, max, total, depth, cancelable);
 				} else {
+					if (max == 2) {
+						final N one = nodes.get(0);
+						final N two = nodes.get(1);
+						if (comparator.compare(one, two) > 0) {
+							nodes.set(0, two);
+							nodes.set(1, one);
+						}
+					}
 					slice(result, rectangle, rectangle, comparator, nodes, 0, max, total, depth, cancelable);
 				}
 			}			
