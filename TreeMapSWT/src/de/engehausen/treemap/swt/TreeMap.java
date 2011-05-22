@@ -266,11 +266,11 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 					transform.scale(bounds.width/(float) imgBounds.width, bounds.height/(float) imgBounds.height);
 					event.gc.setTransform(transform);
 					try {
-						renderer.highlight(event, rectangles, selected, colorProvider, labelProvider);						
+						renderer.highlight(event, rectangles, selected, colorProvider, labelProvider);
 					} finally {
 						transform.dispose();
 					}
-				} else {					
+				} else {
 					renderer.highlight(event, rectangles, selected, colorProvider, labelProvider);
 				}
 			}
