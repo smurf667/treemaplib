@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import de.engehausen.treemap.IIteratorSize;
 import de.engehausen.treemap.IWeightedTreeModel;
 
 /**
@@ -97,8 +98,8 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 	@Override
 	public Iterator<N> getChildren(final N node) {
 		final List<N> result = children.get(node);
-		if (result != null) {
-			return result.iterator();
+		if (result != null && !result.isEmpty()) {
+			return new NodeIterator<N>(result);
 		} else {
 			return Collections.<N>emptyList().iterator();			
 		}
@@ -160,6 +161,37 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 		 */
 		public long get() {
 			return weight;
+		}
+		
+	}
+	
+	private static class NodeIterator<N> implements IIteratorSize<N> {
+		
+		protected final List<N> nodes;
+		protected int pos;
+		
+		protected NodeIterator(final List<N> nodeList) {
+			nodes = nodeList;
+		}
+
+		@Override
+		public int size() {
+			return nodes.size();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return pos < nodes.size();
+		}
+
+		@Override
+		public N next() {
+			return nodes.get(pos++);
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
 		}
 		
 	}
