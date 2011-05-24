@@ -7,6 +7,18 @@
 <body>
 <p>This is a sample for the Tree Map JavaScript code. The browser needs to support
 HTML5, and the code is currently only working properly in Firefox and Chrome. Left mouse click zooms in, right mouse click zooms out.</p>
+<div>
+<form onsubmit="return false;">
+Tree Model:
+<select onchange="handleSelectionChange(event);">
+<option>-</option>
+<option value="data/wijk.txt">Wijk example</option>
+<option value="data/firefox.txt">Firefox file sizes</option>
+<option value="data/demo.txt">Demo - JSON style</option>
+<option value="data/demo.xml">Demo - XML style</option>
+</select>
+</form>
+</div>
 <p>
 <canvas id="samplecanvas" width="600" height="400" oncontextmenu="return false;">
 Your browser does not support the &lt;canvas &gt; element. Sorry.
@@ -104,17 +116,5 @@ function handleSelectionChange(event) {
   return false;
 }
 </script>
-<div>
-<form onsubmit="return false;">
-Tree Model:
-<select onchange="handleSelectionChange(event);">
-<option>-</option>
-<option value="data/wijk.txt">Wijk example</option>
-<option value="data/firefox.txt">Firefox file sizes</option>
-<option value="data/demo.txt">Demo - JSON style</option>
-<option value="data/demo.xml">Demo - XML style</option>
-</select>
-</form>
-</div>
 </body>
 </html>
