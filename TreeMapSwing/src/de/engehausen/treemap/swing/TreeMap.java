@@ -276,14 +276,17 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			switch (mouseevent.getButton()) {
 				case MouseEvent.BUTTON1:
 					if (selected != null) {
-						N runner = selected.getNode(), last;
-						do {
-							last = runner;
-							runner = model.getParent(runner);
-						} while (!currentRoot.equals(runner));
-						if (!currentRoot.equals(last)) {
-							currentRoot = last;
-							recalculate();
+						N runner = selected.getNode();
+						if (!runner.equals(currentRoot)) {
+							N last;
+							do {
+								last = runner;
+								runner = model.getParent(runner);
+							} while (!currentRoot.equals(runner));
+							if (!currentRoot.equals(last)) {
+								currentRoot = last;
+								recalculate();
+							}
 						}
 					}
 					break;
