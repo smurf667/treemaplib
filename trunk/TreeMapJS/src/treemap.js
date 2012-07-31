@@ -55,7 +55,7 @@ function TreeMap() {
    */
   this.setLayout = function(aLayout) {
     layout = aLayout;
-  }
+  };
 
   /*
    * sets the rectangle renderer used by the treemap.
@@ -63,7 +63,7 @@ function TreeMap() {
    */  
   this.setRenderer = function(aRenderer) {
     renderer = aRenderer;
-  }
+  };
 
   /*
    * sets the color provider used by the treemap for rendering
@@ -72,7 +72,7 @@ function TreeMap() {
    */  
   this.setColorProvider = function(aColorProvider) {
     colorProvider = aColorProvider;
-  }
+  };
 
   /*
    * sets the tree model
@@ -93,7 +93,7 @@ function TreeMap() {
    */
   this.getTreeModel = function() {
     return treeModel;
-  }
+  };
   
   /*
    * hooks up the canvas with this tree map
@@ -179,7 +179,7 @@ function TreeMap() {
     var metrics = context.measureText(text);
     context.fillText(text, (canvas.width-metrics.width)/2, canvas.height/2);
     context.strokeRect(0, 0, canvas.width, canvas.height);
-  }
+  };
 
   /*
    * highlight; called when mouse moved over canvas
@@ -275,7 +275,7 @@ function TreeMap() {
     if (canvas && canvas.getContext) {
         return canvas.getContext('2d');
     }
-  }
+  };
   
   // returns the best matching rectangle for the given coordinates, if any
   function _findRectangle(x, y) {
@@ -300,7 +300,7 @@ function TreeMap() {
       return result;
     }
     return undefined;
-  }
+  };
   
 }
 
