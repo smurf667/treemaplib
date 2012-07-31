@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TreeMap JS Sample II</title>
+<style>body { font-family: sans-serif; }</style>
+<script src="src/treemap.js"></script>
+</head>
+<body>
+<p>In this example the output of the Unix <a href="http://en.wikipedia.org/wiki/Du_%28Unix%29">du</a> command is parsed into tree map ready format
+and presented graphically. Everything is done client-side, no data is transported to a server.</p>
+<p>
+<table>
+<tr>
+<td>
+<input type="file" id="du_file" />
+</td>
+</tr>
+<tr>
+<td>
+<textarea id="du_text" rows="4" cols="100">
+37	Notepad++/localization
+961	Notepad++/plugins/APIs
+1	Notepad++/plugins/Config/NppFTP
+159	Notepad++/plugins/Config
+0	Notepad++/plugins/disabled
+68	Notepad++/plugins/doc/NppFTP
+68	Notepad++/plugins/doc
+3553	Notepad++/plugins
+1394	Notepad++/themes
+847	Notepad++/updater
+10	Notepad++/user.manual/documentation/document-properties
+180	Notepad++/user.manual/documentation/notepad-user-manual/display
+34	Notepad++/user.manual/documentation/notepad-user-manual/document-properties
+219	Notepad++/user.manual/documentation/notepad-user-manual/editing
+123	Notepad++/user.manual/documentation/notepad-user-manual/file-management
+66	Notepad++/user.manual/documentation/notepad-user-manual/further-help
+103	Notepad++/user.manual/documentation/notepad-user-manual/gui-elements
+55	Notepad++/user.manual/documentation/notepad-user-manual/languages
+218	Notepad++/user.manual/documentation/notepad-user-manual/searching
+33	Notepad++/user.manual/documentation/notepad-user-manual/session-management
+81	Notepad++/user.manual/documentation/notepad-user-manual/settings
+33	Notepad++/user.manual/documentation/notepad-user-manual/switching-between-documents
+1503	Notepad++/user.manual/documentation/notepad-user-manual
+1534	Notepad++/user.manual/documentation
+642	Notepad++/user.manual/Images/Screenshots
+26	Notepad++/user.manual/Images/Toolbar
+674	Notepad++/user.manual/Images
+49	Notepad++/user.manual/misc
+1	Notepad++/user.manual/modules/book
+1	Notepad++/user.manual/modules/node
+12	Notepad++/user.manual/modules/system
+9	Notepad++/user.manual/modules/user
+23	Notepad++/user.manual/modules
+1	Notepad++/user.manual/sites/all/css
+311	Notepad++/user.manual/sites/all/images
+2	Notepad++/user.manual/sites/all/modules/captcha
+1	Notepad++/user.manual/sites/all/modules/cck/modules/fieldgroup
+1	Notepad++/user.manual/sites/all/modules/cck/modules
+3	Notepad++/user.manual/sites/all/modules/cck/theme
+3	Notepad++/user.manual/sites/all/modules/cck
+1	Notepad++/user.manual/sites/all/modules/ckeditor
+6	Notepad++/user.manual/sites/all/modules/dhtml_menu
+2	Notepad++/user.manual/sites/all/modules/fancy_login/css
+13	Notepad++/user.manual/sites/all/modules/fancy_login/images
+6	Notepad++/user.manual/sites/all/modules/fancy_login/scripts
+20	Notepad++/user.manual/sites/all/modules/fancy_login
+2	Notepad++/user.manual/sites/all/modules/feedback/images
+7	Notepad++/user.manual/sites/all/modules/feedback
+2	Notepad++/user.manual/sites/all/modules/views/css
+3	Notepad++/user.manual/sites/all/modules/views/images
+5	Notepad++/user.manual/sites/all/modules/views
+42	Notepad++/user.manual/sites/all/modules
+33	Notepad++/user.manual/sites/all/themes/acquia_marina/icons
+27	Notepad++/user.manual/sites/all/themes/acquia_marina/images
+1	Notepad++/user.manual/sites/all/themes/acquia_marina/theme_settings
+110	Notepad++/user.manual/sites/all/themes/acquia_marina
+110	Notepad++/user.manual/sites/all/themes
+463	Notepad++/user.manual/sites/all
+2	Notepad++/user.manual/sites/default/files
+2	Notepad++/user.manual/sites/default
+465	Notepad++/user.manual/sites
+40	Notepad++/user.manual/user
+2820	Notepad++/user.manual
+12082	Notepad++
+</textarea>
+</td>
+<td valign="top">
+<input type="submit" id="du_text_submit" value="Build">
+</td>
+</tr>
+</table>
+</p>
+<canvas id="samplecanvas" width="600" height="400" oncontextmenu="return false;">
+Your browser does not support the &lt;canvas &gt; element. Sorry.
+</canvas>
+<table>
+<tr><td>Selection:</td><td><div id="samplecanvas.info"></div></td></tr>
+<tr><td>Size:</td><td><div id="samplecanvas.size"></div></td></tr>
+</table>
+<script>
+/*
+ * create, configure and hook up tree map
+ */
+var treeMap = new TreeMap();
+treeMap.setRenderer(new CushionRectangleRenderer()); // optional (default plain)
+treeMap.setLayout(new SquarifiedLayout(10)); // optional (default depth 2)
+// optional; register a change listener to show node selection below canvas
+treeMap.addSelectionChangeListener({  
+  selectionChanged: function(aTreeMap, node) {
+    var tm = aTreeMap.getTreeModel();
+    if (tm) {
+      var info = document.getElementById("samplecanvas.info");
+      if (info) {
+        info.innerHTML = tm.getLabel(node);
+      }
+      info = document.getElementById("samplecanvas.size");
+      if (info) {
+        info.innerHTML = tm.getWeight(node);
+      }
+    }
+  }
+});
+// optional; use a fancy color provider (default mono color)
+treeMap.setColorProvider({
+  _hash: function(str) {
+    var result = 0;
+    for (var i = str.length; i-->0; ) {
+      result += str.charCodeAt(i);
+    }
+    return result;
+  },  
+  _colors: [ "#C0C0C0", "#808080", "#FF0000", "#800000",
+             "#FFFF00", "#808000", "#00FF00", "#008000",
+             "#00FFFF", "#008080", "#0000FF", "#000080",
+             "#FF00FF", "#800080", "#80a020" ],  
+  getColor: function(node) {
+    var result = "#808080";
+    if (node.label) {
+      var idx = this._hash(node.label);
+      result = this._colors[idx%this._colors.length];
+    }
+    return result;
+  }
+});
+treeMap.hook(document.getElementById("samplecanvas"));
+// paint it (initially no data to display...)
+treeMap.paint();
+
+/*
+ * tree model, basing on a "du" unix command string output.
+ * the model also provides weights and labels for each node
+ */
+function duTreeModel(stringRep) {
+
+  /** private members **/
+  var nodes = [];
+
+  /** privileged methods **/
+  
+  /*
+   * returns the root node
+   */
+  this.getRoot = function() {
+    return nodes[""];
+  };
+
+  /*
+   * returns the children of the given node
+   */ 
+  this.getChildren = function(node) {  
+    if (node.children && node.children.length) {
+      return node.children;
+    } else {
+      return [];
+    }
+  };
+  
+  /*
+   * indicates if the given node has children or not
+   */ 
+  this.hasChildren = function(node) {
+    if (node.children && node.children.length && node.children.length>0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  
+  /*
+   * returns the parent node for the given node
+   */
+  this.getParent = function(node) {
+    return node.parent;
+  };
+
+  /*
+   * returns the weight of the given node
+   */  
+  this.getWeight = function(node) {
+    if (node.weight) {
+      return node.weight;
+    } else {
+      return 0;
+    }
+  };
+  
+  /*
+   * returns the label of the given node
+   */  
+  this.getLabel = function(node) {
+    if (node.label) {
+      return node.label;
+    } else {
+      return "";
+    }
+  };
+  
+  /** private methods */
+  
+  function _makeNode(_str) {
+    var data = _str.split("\t");
+    var label = data[1];
+    var idx = label.lastIndexOf("/");
+    var parent;
+    if (idx > 0) {
+      parent = nodes[label.substring(0, idx)];
+    }
+    
+    var node = nodes[data[1]] = {
+      'weight': data[0],
+      'label': data[1],
+      'parent': parent,
+      'children': []
+    }
+    if (parent) {
+      parent.children.push(node);
+    } else {
+      nodes[""] = node;
+    }
+  }
+  
+  function _synthesizeNodes(_model, _current) {
+    var weight = _current.weight;
+    if (_model.hasChildren(_current)) {
+      var children = _model.getChildren(_current);
+      for (idx in children) {
+        var child = children[idx];
+        weight -= child.weight;
+        _synthesizeNodes(_model, child);
+      }
+    }
+    if (weight > 0) {
+      var label = _model.getLabel(_current)+"/<i>(files)</i>";
+      // uh uh, will this work
+      var synth = nodes[label] = {
+        'weight': weight,
+        'label': label,
+        'parent': _current,
+        'children': []
+      }
+      _current.children.push(synth);
+    }
+    
+  }
+
+  // initialization; iterate lines of du output from the end to the beginning
+  {
+    var lines = stringRep.replace(/(\r)/gm,"").split("\n");
+    var i = lines.length-1;
+    while ( lines[i] == "" ) {
+      i--;
+    }
+    this.root = _makeNode(lines[i]);
+    for (; i-->0; ) {
+      _makeNode(lines[i]);
+    }
+    
+    // synthesize file entries so that the "sum condition" for the tree holds
+    _synthesizeNodes(this, this.getRoot());
+  }  
+  
+}
+
+/*
+ * input handling
+ */
+if (window.FileReader) {
+  function handleFileSelect(evt) {
+    var file = evt.target.files[0];
+    if ("text/plain" == file.type) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        treeMap.setTreeModel(new duTreeModel(e.target.result));
+        treeMap.compute();
+        treeMap.paint();
+      }
+      reader.readAsText(file);
+    } else {
+      window.alert("unsupported file type "+file.type);
+    }
+  }
+  document.getElementById('du_file').addEventListener('change', handleFileSelect, false);
+} else {
+  document.getElementById('du_file').disabled = "disabled";
+}
+function handleTextInput(evt) {
+  treeMap.setTreeModel(new duTreeModel(document.getElementById('du_text').value));
+  treeMap.compute();
+  treeMap.paint();
+}
+document.getElementById('du_text_submit').addEventListener('click', handleTextInput, false);
+</script>
+</body>
+</html>
