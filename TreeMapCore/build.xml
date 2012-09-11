@@ -11,6 +11,9 @@
 			<fileset dir="${build.dir.clz}">
 				<include name="**/*"/>
 			</fileset>
+			<fileset dir="src">
+				<include name="**/*.java"/>
+			</fileset>
 			<fileset dir="../TreeMapBuild">
 				<include name="**/*.html"/>
 			</fileset>
@@ -35,6 +38,13 @@
 	<target name="build-src">
 		<mkdir dir="${build.dir.clz}"/>
 		<javac srcdir="src" destdir="${build.dir.clz}" source="1.6" />
+
+		<copy file="META-INF/MANIFEST.MF" tofile="${build.dir.clz}/META-INF/MANIFEST.MF"/>
+		<replaceregexp match="0\.0\.0" replace="${tm.version}" flags="g">
+			<fileset dir="${build.dir.clz}/META-INF">
+				<include name="MANIFEST.MF"/>
+			</fileset>
+		</replaceregexp>
 	</target>
 
 	<target name="build-test">
