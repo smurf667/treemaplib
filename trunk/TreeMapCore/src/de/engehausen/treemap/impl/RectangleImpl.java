@@ -22,7 +22,7 @@ public class RectangleImpl<N> implements IRectangle<N> {
 	 * @param width the width of the rectangle.
 	 * @param height the height of the rectangle.
 	 */
-	protected RectangleImpl(final N aNode, final int x, final int y, final int width, final int height) {
+	public RectangleImpl(final N aNode, final int x, final int y, final int width, final int height) {
 		node = aNode;
 		this.x = x;
 		this.y = y;
