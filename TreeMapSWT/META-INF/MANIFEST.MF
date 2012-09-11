@@ -1,3 +1,16 @@
 Manifest-Version: 1.0
-Specification-Title: TreeMapSWT
-Specification-Version: 0.0.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TreeMapSWT
+Bundle-SymbolicName: de.engehausen.treemap.swt
+Bundle-Version: 0.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.engehausen.treemap.swt,
+ de.engehausen.treemap.swt.impl
+Import-Package: de.engehausen.treemap,
+ de.engehausen.treemap.impl,
+ org.eclipse.swt,
+ org.eclipse.swt.events,
+ org.eclipse.swt.graphics,
+ org.eclipse.swt.widgets
+Bundle-ClassPath: .
+Bundle-Vendor: Jan Engehausen
