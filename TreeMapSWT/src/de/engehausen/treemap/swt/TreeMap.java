@@ -15,6 +15,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Canvas;
@@ -385,21 +386,35 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			notBuilding = buildControl == null;
 		}
 		if (notBuilding) {
-			if (selected == null || !selected.contains(event.x, event.y)) {
-				selected = findRectangle(event.x, event.y);
-				redraw();
-				if (selected != null && listeners != null) {
-					final String label;
-					if (labelProvider != null) {
-						label = labelProvider.getLabel(rectangles, selected);
-					} else {
-						label = null;
-					}
-					for (int i = listeners.size()-1; i >= 0; i--) {
-						listeners.get(i).selectionChanged(rectangles, selected, label);
-					}
+			selectRectangle(event.x, event.y);
+		}
+	}
+
+	/**
+	 * Try to select a rectangle at the given coordinates (which 
+	 * are relative to the widget).
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @return <code>false</code> if a redraw occured, <code>true</code> otherwise.
+	 */
+	protected boolean selectRectangle(final int x, final int y) {
+		if (selected == null || !selected.contains(x, y)) {
+			selected = findRectangle(x, y);
+			redraw();
+			if (selected != null && listeners != null) {
+				final String label;
+				if (labelProvider != null) {
+					label = labelProvider.getLabel(rectangles, selected);
+				} else {
+					label = null;
 				}
-			}			
+				for (int i = listeners.size()-1; i >= 0; i--) {
+					listeners.get(i).selectionChanged(rectangles, selected, label);
+				}
+			}
+			return false;
+		} else {
+			return true;
 		}
 	}
 
@@ -476,8 +491,13 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 						if (!treeMap.isDisposed()) {
 							treeMap.selected = null;
 							treeMap.rebuildImage(width, height, result);
-							treeMap.redraw();
-							treeMap.setCursor(treeMap.getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+							final Display display = treeMap.getDisplay();
+							treeMap.setCursor(display.getSystemCursor(SWT.CURSOR_ARROW));
+							final Point point = display.getCursorLocation();
+							final Point position = treeMap.toDisplay(0, 0);
+							if (treeMap.selectRectangle(point.x - position.x, point.y - position.y)) {
+								treeMap.redraw();
+							}
 						}
 					}
 				});
