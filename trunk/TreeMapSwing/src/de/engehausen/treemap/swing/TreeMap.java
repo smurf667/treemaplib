@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -310,23 +311,36 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			notBuilding = buildControl == null;
 		}
 		if (notBuilding) {
-			final int x = event.getX();
-			final int y = event.getY();
-			if (selected == null || !selected.contains(x, y)) {
-				selected = findRectangle(x, y);
+			if (selectRectangle(event.getX(), event.getY())) {
 				repaint();
-				if (selected != null && listeners != null) {
-					final String label;
-					if (labelProvider != null) {
-						label = labelProvider.getLabel(rectangles, selected);
-					} else {
-						label = null;
-					}
-					for (int i = listeners.size()-1; i >= 0; i--) {
-						listeners.get(i).selectionChanged(rectangles, selected, label);
-					}
+			}
+		}
+	}
+	
+	/**
+	 * Try to select a rectangle at the given coordinates (which 
+	 * are relative to the widget).
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @return <code>true</code> if the selection changed, <code>false</code> otherwise.
+	 */
+	protected boolean selectRectangle(final int x, final int y) {
+		if (selected == null || !selected.contains(x, y)) {
+			selected = findRectangle(x, y);
+			if (selected != null && listeners != null) {
+				final String label;
+				if (labelProvider != null) {
+					label = labelProvider.getLabel(rectangles, selected);
+				} else {
+					label = null;
 				}
-			}			
+				for (int i = listeners.size()-1; i >= 0; i--) {
+					listeners.get(i).selectionChanged(rectangles, selected, label);
+				}
+			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -489,7 +503,11 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 						treeMap.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 						treeMap.image = image;
 						treeMap.selected = null;
-						treeMap.buildControl = null;						
+						treeMap.buildControl = null;
+						final Point point = treeMap.getMousePosition();
+						if (point != null) {
+							treeMap.selectRectangle(point.x, point.y);							
+						}
 					}
 					treeMap.repaint();
 				}
