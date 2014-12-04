@@ -24,7 +24,7 @@
 		<javac srcdir="src" destdir="${build.dir.clz}" source="1.6">
 			<classpath>
 				<pathelement location="../TreeMapCore/build/tm_core_${tm.version}.jar" /> 
-				<pathelement location="lib/swt.jar" /> 
+				<pathelement location="../TreeMapSWT/lib/swt.jar" /> 
 			</classpath>
 		</javac>
 
