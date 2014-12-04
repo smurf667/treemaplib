@@ -21,11 +21,10 @@ import de.engehausen.treemap.ITreeModel;
  */
 public class DefaultRectangleRenderer<N> implements IRectangleRenderer<N, PaintEvent, Color> {
 
-	@SuppressWarnings("unchecked")
-	private static final IRectangleRenderer DEFAULT = new DefaultRectangleRenderer();
+	private static final IRectangleRenderer<Object, PaintEvent, Color> DEFAULT = new DefaultRectangleRenderer<Object>();
 	@SuppressWarnings("unchecked")
 	public static final <R> IRectangleRenderer<R, PaintEvent, Color> defaultInstance() {
-		return DEFAULT;
+		return (IRectangleRenderer<R, PaintEvent, Color>) DEFAULT;
 	}
 
 	@Override

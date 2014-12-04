@@ -14,6 +14,7 @@ import de.engehausen.treemap.IWeightedTreeModel;
  * Sample weighted tree model implementation. In addition to the
  * weighted tree model interface this implementation allows adding
  * nodes to the tree, which is of course needed to build the model.
+ * @param <N> the type this model holds
  */
 public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 	

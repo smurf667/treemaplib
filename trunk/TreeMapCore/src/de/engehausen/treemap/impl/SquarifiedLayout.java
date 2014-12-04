@@ -16,7 +16,7 @@ import de.engehausen.treemap.IWeightedTreeModel;
 
 /**
  * Squarified tree map layout, used by various implementations such as the SWT and the Swing versions.
- * @param N the type of node the layout operates on.
+ * @param <N> the type of node the layout operates on.
  */
 public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Serializable {
 	

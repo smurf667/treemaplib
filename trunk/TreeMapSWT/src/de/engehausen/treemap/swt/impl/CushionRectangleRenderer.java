@@ -76,6 +76,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 	}
 	
 	protected void highlightParents(final PaintEvent event, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
+		/* NOP */
 	}
 
 	protected void paintCushion(final PaintEvent event, final Color color, final IRectangle<N> rectangle) {

@@ -18,9 +18,8 @@ import de.engehausen.treemap.ITreeModel;
  */
 public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 	
-	@SuppressWarnings("unchecked")
-	private static final RectangleModelImpl EMPTY = new RectangleModelImpl() {
-		void addChild(final IRectangle parent, final IRectangle child) {}
+	private static final RectangleModelImpl<?> EMPTY = new RectangleModelImpl<Object>() {
+		void addChild(final IRectangle<Object> parent, final IRectangle<Object> child) { /* NOP */}
 	};
 	
 	protected final Map<N, List<IRectangle<N>>> children;
@@ -28,7 +27,7 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 	
 	@SuppressWarnings("unchecked")
 	protected static <T> RectangleModelImpl<T> emptyModel() {
-		return EMPTY;
+		return (RectangleModelImpl<T>) EMPTY;
 	}
 
 	/**

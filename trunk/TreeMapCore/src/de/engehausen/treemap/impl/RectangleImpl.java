@@ -34,42 +34,63 @@ public class RectangleImpl<N> implements IRectangle<N> {
 		return w*h;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getHeight() {
 		return h;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getWidth() {
 		return w;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getX() {
 		return x;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getY() {
 		return y;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public N getNode() {
 		return node;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean contains(final int x, final int y) {
-		final int wi = x-this.x;
+	public boolean contains(final int px, final int py) {
+		final int wi = px-x;
 		if (wi >= 0 && wi < w) {
-			final int he = y-this.y;
+			final int he = py-y;
 			return he >= 0 && he < h;
 		} else {
 			return false;			
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj instanceof RectangleImpl<?>) {
@@ -80,6 +101,9 @@ public class RectangleImpl<N> implements IRectangle<N> {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return node.hashCode() ^ (w+h);
@@ -109,12 +133,13 @@ public class RectangleImpl<N> implements IRectangle<N> {
 		}
 		return result;
 	}
-	
+
+	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder(32);
-		sb.append("(").append(node).append(",")
-		  .append(x).append(",").append(y).append(",")
-		  .append(w).append(",").append(h).append(")");
+		sb.append('(').append(node).append(',')
+		  .append(x).append(',').append(y).append(',')
+		  .append(w).append(',').append(h).append(')');
 		return sb.toString();
 	}
 

@@ -299,7 +299,6 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * @param width the new width
 	 * @param height the new height
 	 * @param rects the rectangle model to use for rendering into the buffer
-	 * @return the render result.
 	 */
 	protected void rebuildImage(final int width, final int height, final ITreeModel<IRectangle<N>> rects) {
 		if (width*height > 0) {
