@@ -92,6 +92,9 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 		pack();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void actionPerformed(final ActionEvent actionevent) {
 		final Object source = actionevent.getSource();
@@ -104,33 +107,47 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 				color.setBackground(c);
 			}
 		} else if (source.equals(add)) {
-			final TableModelImpl model = (TableModelImpl) filters.getModel();
 			final String exp = input.getText();
 			if (exp != null && exp.length()>0) {
-				model.addEntry(exp, color.getBackground());
+				final TableModelImpl tableModel = (TableModelImpl) filters.getModel();
+				tableModel.addEntry(exp, color.getBackground());
 			}
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void keyPressed(final KeyEvent keyevent) {
+		/* NOP */
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void keyReleased(final KeyEvent keyevent) {
 		if (keyevent.getKeyCode() == KeyEvent.VK_DELETE) {
 			final int[] idxs = filters.getSelectedRows();
 			if (idxs != null && idxs.length>0) {
-				final TableModelImpl model = (TableModelImpl) filters.getModel();
-				model.removeEntries(idxs);
+				final TableModelImpl tableModel = (TableModelImpl) filters.getModel();
+				tableModel.removeEntries(idxs);
 			}
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void keyTyped(final KeyEvent keyevent) {
+		/* NOP */
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Color getColor(final ITreeModel<IRectangle<FileInfo>> treeModel, final IRectangle<FileInfo> rectangle) {
 		Color result = Color.GRAY;
@@ -308,21 +325,33 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 			fireTableDataChanged();				
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public String getColumnName(final int i) {
 			return i==0?exprCol:colCol;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getColumnCount() {
 			return 2;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getRowCount() {
 			return entries.size();
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public Object getValueAt(final int i, final int j) {
 			if (i < entries.size()) {
