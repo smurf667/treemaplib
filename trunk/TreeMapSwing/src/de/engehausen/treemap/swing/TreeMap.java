@@ -58,7 +58,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 	protected ILabelProvider<N> labelProvider;
 	protected IColorProvider<N, Color> colorProvider;
 	protected List<ISelectionChangeListener<N>> listeners;
-	protected final GraphicsConfiguration gc;
+	protected GraphicsConfiguration gc;
 
 	/**
 	 * Create the tree map (supporting) navigation).
@@ -80,9 +80,6 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 		if (supportNavigation) {
 			addMouseListener(this);			
 		}
-		final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		final GraphicsDevice gs = ge.getDefaultScreenDevice();
-		gc = gs.getDefaultConfiguration();
 	}
 	
 	/**
@@ -433,7 +430,10 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			}
 			final BuildControl ctrl = new BuildControl();
 			final SwingWorker<ITreeModel<IRectangle<N>>, Object> worker = new Worker<N>(this, ctrl);
-			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			// check the mouse only if it isn't headless
+			if (!GraphicsEnvironment.isHeadless()) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			}
 			worker.execute();
 			buildControl = ctrl;
 		}
@@ -448,7 +448,19 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 	 */
 	protected BufferedImage rebuildImage(final int width, final int height, final ITreeModel<IRectangle<N>> rects) {
 		if (width*height > 0) {
-			final BufferedImage result = gc.createCompatibleImage(width, height);
+			final BufferedImage result;
+			if (GraphicsEnvironment.isHeadless()) {
+				result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			} else {
+				if (gc == null) {
+					final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+					final GraphicsDevice gs = ge.getDefaultScreenDevice();
+					gc = gs.getDefaultConfiguration();				
+				}
+				// a compatible image may be faster than a buffered image of fixed type as used for the headless case,
+				// see https://www.java.net/node/693786
+				result = gc.createCompatibleImage(width, height);
+			}
 			final Graphics2D g = result.createGraphics();
 			try {
 				render(g, rects);
@@ -500,13 +512,20 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 						if (root != null) {
 							treeMap.currentRoot = root.getNode();
 						}
-						treeMap.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+						// check the mouse only if it isn't headless
+						if (!GraphicsEnvironment.isHeadless()) {
+							treeMap.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+						}
 						treeMap.image = image;
 						treeMap.selected = null;
 						treeMap.buildControl = null;
-						final Point point = treeMap.getMousePosition();
-						if (point != null) {
-							treeMap.selectRectangle(point.x, point.y);							
+						
+						// check the mouse only if it isn't headless
+						if (!GraphicsEnvironment.isHeadless()) {
+							final Point point = treeMap.getMousePosition();
+							if (point != null) {
+								treeMap.selectRectangle(point.x, point.y);							
+							}
 						}
 					}
 					treeMap.repaint();
