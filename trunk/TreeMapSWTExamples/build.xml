@@ -23,7 +23,7 @@
 				<pathelement location="../TreeMapCore/build/tm_core_${tm.version}.jar"/>
 				<pathelement location="../TreeMapExamples/build/tm_core_examples_${tm.version}.jar"/>
 				<pathelement location="../TreeMapSWT/build/tm_swt_${tm.version}.jar"/>
-				<pathelement location="lib/swt.jar"/>
+				<pathelement location="../TreeMapSWT/lib/swt.jar" /> 
 			</classpath>
 		</javac>
 	</target>
