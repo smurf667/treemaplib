@@ -24,7 +24,7 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, PaintEvent
 	protected final RGB normal, highlight;
 	protected final String fontName;
 	protected final boolean showRoot;
-	
+
 	/**
 	 * Create the renderer using the given font and label colors. The
 	 * root node is not labeled.
@@ -37,7 +37,7 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, PaintEvent
 	}
 
 	/**
-	 * Create the renderer using the given font and label colors. 
+	 * Create the renderer using the given font and label colors.
 	 * @param aFontName the font, must not be <code>null</code>.
 	 * @param aNormalColor the color for painting the label when not selected, must not be <code>null</code>.
 	 * @param aHighlightColor the color for painting the label when selected, must not be <code>null</code>.
@@ -91,9 +91,9 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, PaintEvent
 				try {
 					event.gc.setForeground(c);
 				} finally {
-					c.dispose();					
-				}				
-				
+					c.dispose();
+				}
+
 				final Point p = event.gc.textExtent(text);
 				p.x = p.x*12/10; // make some space
 				final float scale = (float) Math.min(bounds.getWidth()/(double) p.x, bounds.getHeight()/(double) p.y);
@@ -109,7 +109,7 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, PaintEvent
 			} finally {
 				font.dispose();
 			}
-			
+
 		}
 	}
 

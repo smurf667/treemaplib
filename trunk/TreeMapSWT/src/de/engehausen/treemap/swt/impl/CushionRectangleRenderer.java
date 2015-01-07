@@ -21,7 +21,7 @@ import de.engehausen.treemap.ITreeModel;
  * Rectangle renderer that attempts to produce a "cushion effect" for
  * the rectangles. It does not paint any labels. The renderer is not
  * thread safe and cannot be shared between different threads.
- * 
+ *
  * @param <N> the type of node the renderer supports
  */
 public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintEvent, Color> {
@@ -40,7 +40,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		colorMappingColor = new HashMap<Color, Color>(16, 0.9f);
 		len = colorRangeSize;
 	}
-	
+
 	public void dispose() {
 		for (Color c : colorMappingColor.values()) {
 			c.dispose();
@@ -56,7 +56,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		if (!model.hasChildren(rectangle)) {
 			paintCushion(event, colorProvider.getColor(model, rectangle), rectangle);
 		} else if (rectangle.equals(model.getRoot())) {
-			// paint the whole background black			
+			// paint the whole background black
 			event.gc.setBackground(event.display.getSystemColor(SWT.COLOR_BLUE));
 			event.gc.fillRectangle(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
 		}
@@ -72,9 +72,9 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		event.gc.fillRectangle(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
 		c.dispose();
 		event.gc.setAlpha(old);
-		highlightParents(event, model, rectangle, colorProvider, labelProvider);		
+		highlightParents(event, model, rectangle, colorProvider, labelProvider);
 	}
-	
+
 	protected void highlightParents(final PaintEvent event, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		/* NOP */
 	}
@@ -116,7 +116,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		}
 		return new Image(d, data);
 	}
-		
+
 	protected int[] getColorRange(final Color c) {
 		int[] result = colorMappingRGB.get(c);
 		if (result == null) {
@@ -125,7 +125,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		}
 		return result;
 	}
-	
+
 	protected Color darker(final Device d, final Color c) {
 		final int r = 2*c.getRed()/3;
 		final int g = 2*c.getGreen()/3;
@@ -133,7 +133,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		final Color result = new Color(d, r, g, b);
 		return result;
 	}
-	
+
 	protected int[] createColorRange(final Color c) {
 		float r = c.getRed()/255f;
 		float g = c.getGreen()/255f;
@@ -150,9 +150,9 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		}
 		return result;
 	}
-	
+
 	protected int toRGB(final float r, final float g, final float b) {
 		return (int) (r*255f)<<16 | (int) (g*255f)<<8 | (int) (b*255f);
 	}
-	
+
 }
