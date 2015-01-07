@@ -34,7 +34,7 @@ public class SquarifiedLayoutTest extends TestCase {
 		assertEquals(one.getWidth(), two.getWidth());
 		assertEquals(one.getHeight(), two.getHeight());
 		final int area = 2*one.getWidth()*two.getHeight();
-		assertEquals(root.getWidth()*root.getHeight(), area);		
+		assertEquals(root.getWidth()*root.getHeight(), area);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class SquarifiedLayoutTest extends TestCase {
 		assertDepth(new SquarifiedLayout<Node>(Integer.MAX_VALUE).layout(model, model.getRoot(), 10000, 10000), 11);
 		assertDepth(new SquarifiedLayout<Node>(1).layout(model, model.getRoot(), 1024, 768), 1);
 		assertDepth(new SquarifiedLayout<Node>(2).layout(model, model.getRoot(), 1024, 768), 2);
-		assertDepth(new SquarifiedLayout<Node>(6).layout(model, model.getRoot(), 1024, 768), 6);		
+		assertDepth(new SquarifiedLayout<Node>(6).layout(model, model.getRoot(), 1024, 768), 6);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class SquarifiedLayoutTest extends TestCase {
 		// node with highest weight must come first
 		assertEquals("node0", i.next().getNode().getName());
 	}
-	
+
 	/**
 	 * Tests layout with a non-root node.
 	 * @throws Exception in case of error.
@@ -171,7 +171,7 @@ public class SquarifiedLayoutTest extends TestCase {
 		final ITreeModel<IRectangle<Node>> rectangles = engine.layout(model, model.getRoot(), 512, 512);
 		assertEquals((int) (Math.pow(2, 4+1)-1), toList(rectangles).size());
 	}
-	
+
 	/**
 	 * Tests <i>canceling</i> a layout computation.
 	 * @throws Exception in case of error
@@ -182,10 +182,10 @@ public class SquarifiedLayoutTest extends TestCase {
 			cancelTest();
 		}
 	}
-	
+
 	private void cancelTest() throws Exception {
 		final Cancel cancel = new Cancel();
-		final Thread t = new Thread(new Runnable() {			
+		final Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				final IWeightedTreeModel<Node> model = TreeModel.DEEP_UNBALANCED;
@@ -206,7 +206,7 @@ public class SquarifiedLayoutTest extends TestCase {
 		// thread join must be faster than 1s - okay this is a shaky test, may fail on a quantum computer
 		assertTrue(end-begin < 1000L);
 	}
-	
+
 	protected List<IRectangle<Node>> toList(final ITreeModel<IRectangle<Node>> model) {
 		final List<IRectangle<Node>> list = new ArrayList<IRectangle<Node>>(16);
 		final List<IRectangle<Node>> stack = new LinkedList<IRectangle<Node>>();
@@ -222,20 +222,20 @@ public class SquarifiedLayoutTest extends TestCase {
 		}
 		return list;
 	}
-	
+
 	private static class Cancel implements ICancelable {
-		
+
 		private boolean flag = false;
 		private ITreeModel<IRectangle<Node>> result;
-		
+
 		public void cancel() {
 			flag = true;
 		}
-		
+
 		public void setResult(final ITreeModel<IRectangle<Node>> r) {
 			result = r;
 		}
-		
+
 		public ITreeModel<IRectangle<Node>> getResult() {
 			return result;
 		}
@@ -244,7 +244,7 @@ public class SquarifiedLayoutTest extends TestCase {
 		public boolean isCanceled() {
 			return flag;
 		}
-		
+
 	}
 
 }

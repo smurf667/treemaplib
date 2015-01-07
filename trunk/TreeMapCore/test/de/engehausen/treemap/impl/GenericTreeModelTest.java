@@ -41,17 +41,17 @@ public class GenericTreeModelTest extends TestCase {
 		model.add(root, 0L, null);
 		model.add(a, 1L, root, true);
 		model.add(b, 2L, root, true);
-		
+
 		assertTrue(model.hasChildren(root));
 		assertFalse(model.hasChildren(a));
 		assertFalse(model.hasChildren(b));
 		assertSame(root, model.getParent(a));
 		assertSame(root, model.getParent(b));
-		
+
 		assertEquals(3L, model.getWeight(root));
 		assertEquals(1L, model.getWeight(a));
 		assertEquals(2L, model.getWeight(b));
-		
+
 		final Iterator<Node> i = model.getChildren(root);
 		assertTrue(i instanceof IIteratorSize<?>);
 		assertEquals(2, ((IIteratorSize<?>) i).size());

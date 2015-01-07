@@ -3,7 +3,7 @@ package de.engehausen.treemap.impl;
 import junit.framework.TestCase;
 
 public class RectangleImplTest extends TestCase {
-	
+
 	public void testSimple() throws Exception {
 		final RectangleImpl<String> rect = new RectangleImpl<String>(null, 4, 8, 16, 32);
 		assertEquals(4, rect.getX());
@@ -16,15 +16,15 @@ public class RectangleImplTest extends TestCase {
 				{ 0, 50 }, { 12, 50 }, { 100, 50 },
 		};
 		final boolean[] expected = {
-			false, false, false, 
-			false, true, false, 
+			false, false, false,
+			false, true, false,
 			false, false, false
 		};
 		for (int i = expected.length-1; i >= 0; i--) {
 			assertEquals(expected[i], rect.contains(coords[i][0], coords[i][1]));
 		}
 	}
-	
+
 	public void testCompare() throws Exception {
 		final RectangleImpl<String> a = new RectangleImpl<String>("a", 4, 8, 16, 32);
 		final RectangleImpl<String> b = new RectangleImpl<String>("a", 4, 8, 16, 32);
@@ -32,9 +32,9 @@ public class RectangleImplTest extends TestCase {
 		assertEquals(a, b);
 		assertEquals(b, a);
 		assertFalse(a.equals(c));
-		assertFalse(c.equals(a));		
+		assertFalse(c.equals(a));
 	}
-	
+
 	public void testSplitHorizontally() throws Exception {
 		final RectangleImpl<String> a = new RectangleImpl<String>("a", 0, 0, 16, 32);
 		RectangleImpl<String>[] sub = a.split(0.5);
