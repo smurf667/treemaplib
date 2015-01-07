@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
  * Message helper to display UI information in various languages.
  */
 public class Messages {
-	
+
 	private static final String BUNDLE_NAME = "de.engehausen.treemap.examples.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
@@ -28,7 +28,7 @@ public class Messages {
 			return '!' + key + '!';
 		}
 	}
-	
+
 	/**
 	 * Checks if the given key exists in the underlying bundles object.
 	 * @param key the key to check; must not be <code>null</code>
