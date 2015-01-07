@@ -29,11 +29,11 @@ public class RectangleImpl<N> implements IRectangle<N> {
 		w = width;
 		h = height;
 	}
-	
+
 	protected int area() {
 		return w*h;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -84,7 +84,7 @@ public class RectangleImpl<N> implements IRectangle<N> {
 			final int he = py-y;
 			return he >= 0 && he < h;
 		} else {
-			return false;			
+			return false;
 		}
 	}
 

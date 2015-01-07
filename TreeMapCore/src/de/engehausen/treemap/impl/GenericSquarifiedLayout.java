@@ -8,18 +8,22 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.engehausen.treemap.ICancelable;
+import de.engehausen.treemap.IGenericTreeMapLayout;
+import de.engehausen.treemap.IGenericWeightedTreeModel;
 import de.engehausen.treemap.IIteratorSize;
 import de.engehausen.treemap.IRectangle;
-import de.engehausen.treemap.ITreeMapLayout;
 import de.engehausen.treemap.ITreeModel;
 import de.engehausen.treemap.IWeightedTreeModel;
+import de.engehausen.treemap.NumberArithmetic;
 
 /**
  * Squarified tree map layout, used by various implementations such as the SWT and the Swing versions.
+ * This tree map layout supports weighted tree models using any kind of number-based weight.
  * @param <N> the type of node the layout operates on.
- * @see GenericSquarifiedLayout
+ * @param <T> the weight type.
+ * @see SquarifiedLayout
  */
-public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Serializable {
+public class GenericSquarifiedLayout<N, T extends Number> implements IGenericTreeMapLayout<N, T>, ICancelable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,20 +34,20 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 	 *
 	 * @param nestingDepth the maximum nesting depth
 	 */
-	public SquarifiedLayout(final int nestingDepth) {
+	public GenericSquarifiedLayout(final int nestingDepth) {
 		maxDepth = nestingDepth;
 	}
 
 	@Override
-	public ITreeModel<IRectangle<N>> layout(final IWeightedTreeModel<N> model, final N startNode, final int width, final int height) {
+	public ITreeModel<IRectangle<N>> layout(final IGenericWeightedTreeModel<N, T> model, final N startNode, final int width, final int height) {
 		return layout(model, startNode, width, height, this);
 	}
 
 	@Override
-	public ITreeModel<IRectangle<N>> layout(final IWeightedTreeModel<N> model, final N startNode, final int width, final int height, final ICancelable cancelable) {
+	public ITreeModel<IRectangle<N>> layout(final IGenericWeightedTreeModel<N, T> model, final N startNode, final int width, final int height, final ICancelable cancelable) {
 		final RectangleImpl<N> root = new RectangleImpl<N>(startNode, 0, 0, width, height);
 		final RectangleModelImpl<N> result = new RectangleModelImpl<N>(root);
-		squarify(result, root, new ComparatorImpl<N>(model), 0, cancelable);
+		squarify(result, root, new ComparatorImpl<N, T>(model), 0, cancelable);
 		if (cancelable.isCanceled()) {
 			return RectangleModelImpl.emptyModel();
 		} else {
@@ -60,19 +64,20 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 	 * @param depth the current traversal depth
 	 * @param cancelable cancel monitor
 	 */
-	protected void squarify(final RectangleModelImpl<N> result, final RectangleImpl<N> rectangle, final ComparatorImpl<N> comparator, final int depth, final ICancelable cancelable) {
+	protected void squarify(final RectangleModelImpl<N> result, final RectangleImpl<N> rectangle, final ComparatorImpl<N, T> comparator, final int depth, final ICancelable cancelable) {
 		if (depth < maxDepth && !cancelable.isCanceled()) {
 			final N n = rectangle.getNode();
-			final IWeightedTreeModel<N> model = comparator.getModel();
+			final IGenericWeightedTreeModel<N, T> model = comparator.getModel();
+			final NumberArithmetic<T> arithmetic = model.getArithmetic();
 			if (model.hasChildren(n)) {
-				long total = 0;
+				T total = arithmetic.zero();
 				// get children and sort by weight
 				final Iterator<N> i = model.getChildren(n);
 				final List<N> nodes = new ArrayList<N>(i instanceof IIteratorSize<?>?((IIteratorSize<?>) i).size():16);
 				while (i.hasNext()) {
 					final N c = i.next();
 					nodes.add(c);
-					total += model.getWeight(c);
+					total = arithmetic.add(total, model.getWeight(c));
 				}
 				final int max = nodes.size();
 				if (max > 2) {
@@ -106,17 +111,18 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 	 * @param depth the current traversal depth
 	 * @param cancelable cancel monitor
 	 */
-	protected void squarify(final RectangleModelImpl<N> result, final RectangleImpl<N> parent, final RectangleImpl<N> rectangle, final ComparatorImpl<N> comparator, final List<N> nodes, final int start, final int end, final long weight, final int depth, final ICancelable cancelable) {
+	protected void squarify(final RectangleModelImpl<N> result, final RectangleImpl<N> parent, final RectangleImpl<N> rectangle, final ComparatorImpl<N, T> comparator, final List<N> nodes, final int start, final int end, final T weight, final int depth, final ICancelable cancelable) {
 		if (end-start > 2) {
-			final IWeightedTreeModel<N> model = comparator.getModel();
+			final IGenericWeightedTreeModel<N, T> model = comparator.getModel();
+			final NumberArithmetic<T> arithmetic = model.getArithmetic();
 			float aspectRatio = Float.MAX_VALUE, last;
 			int i = start;
-			long sum = 0;
+			T sum = arithmetic.zero();
 			final int[] rect = new int[2];
 			do {
 				final N n = nodes.get(i++);
-				final long nodeWeight = model.getWeight(n);
-				sum += nodeWeight;
+				final T nodeWeight = model.getWeight(n);
+				sum = arithmetic.add(sum, nodeWeight);
 				// TODO this must be possible in a more elegant way
 				rect[0] = rectangle.w;
 				rect[1] = rectangle.h;
@@ -125,12 +131,12 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 				last = aspectRatio;
 				aspectRatio = aspectRatio(rect[0],rect[1]);
 				if (aspectRatio > last) {
-					sum -= model.getWeight(nodes.get(--i));
-					final double frac = sum/(double) weight;
+					sum = arithmetic.sub(sum, model.getWeight(nodes.get(--i)));
+					final double frac = sum.doubleValue()/weight.doubleValue();
 					if (frac > 0 && frac < 1) {
 						final RectangleImpl<N> r[] = rectangle.split(frac);
 						squarify(result, parent, r[0], comparator, nodes, start, i, sum, depth, cancelable);
-						squarify(result, parent, r[1], comparator, nodes, i, end, weight-sum, depth, cancelable);
+						squarify(result, parent, r[1], comparator, nodes, i, end, arithmetic.sub(weight, sum), depth, cancelable);
 						return;
 					} else {
 						// need to slice
@@ -158,12 +164,12 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 	 * @param depth the current traversal depth
 	 * @param cancelable cancel monitor
 	 */
-	protected void slice(final RectangleModelImpl<N> result, final RectangleImpl<N> parent, final RectangleImpl<N> r, final ComparatorImpl<N> comparator, final List<N> nodes, final int start, final int max, final long w, final int depth, final ICancelable cancelable) {
+	protected void slice(final RectangleModelImpl<N> result, final RectangleImpl<N> parent, final RectangleImpl<N> r, final ComparatorImpl<N, T> comparator, final List<N> nodes, final int start, final int max, final T w, final int depth, final ICancelable cancelable) {
 		if (cancelable.isCanceled()) {
 			return;
 		}
-		final IWeightedTreeModel<N> model = comparator.getModel();
-		final double dw = (double) w;
+		final IGenericWeightedTreeModel<N, T> model = comparator.getModel();
+		final double dw = w.doubleValue();
 		final int last = max-1;
 		if (r.w < r.h) {
 			final int sx = r.x;
@@ -172,9 +178,9 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 			// split horizontally
 			for (int i = start; i < max && sy < maxy; i++) {
 				final N c = nodes.get(i);
-				final long wc = model.getWeight(c);
+				final T wc = model.getWeight(c);
 				// compute height according to weight, but fill anyway for last node
-				final int step = (i!=last)?(int) Math.round((r.h*wc)/dw):(r.h-(sy-r.y));
+				final int step = (i!=last)?(int) Math.round((r.h*wc.doubleValue())/dw):(r.h-(sy-r.y));
 				if (step > 0) {
 					final RectangleImpl<N> child = createRectangle(c, sx, sy, r.w, step);
 					if (child != null) {
@@ -204,9 +210,9 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 			// split vertically
 			for (int i = start; i < max && sx < maxx; i++) {
 				final N c = nodes.get(i);
-				final long wc = model.getWeight(c);
+				final T wc = model.getWeight(c);
 				// compute width according to weight, but fill anyway for last node
-				final int step = (i!=last)?(int) Math.round((r.w*wc)/dw):(r.w-(sx-r.x));
+				final int step = (i!=last)?(int) Math.round((r.w*wc.doubleValue())/dw):(r.w-(sx-r.x));
 				if (step > 0) {
 					final RectangleImpl<N> child = createRectangle(c, sx, sy, step, r.h);
 					if (child != null) {
@@ -246,10 +252,10 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 		return new RectangleImpl<N>(n, x, y, w, h);
 	}
 
-	private void fit(final int[] rect, final long weight, final long total) {
+	private void fit(final int[] rect, final T weight, final T total) {
 		final int s = rect[0]<rect[1]?rect[0]:rect[1];
 		final int l = rect[0]<rect[1]?rect[1]:rect[0];
-		rect[0] = (int) (weight*l/(double) total);
+		rect[0] = (int) (weight.doubleValue()*l/total.doubleValue());
 		rect[1] = s;
 		if (rect[0] == 0) {
 			// sanitize to avoid bogus aspect
@@ -265,21 +271,22 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 		}
 	}
 
-	private static class ComparatorImpl<N> implements Comparator<N> {
+	private static class ComparatorImpl<N, T extends Number> implements Comparator<N> {
 
-		private final IWeightedTreeModel<N> model;
+		private final IGenericWeightedTreeModel<N, T> model;
 
-		public ComparatorImpl(final IWeightedTreeModel<N> aModel) {
+		public ComparatorImpl(final IGenericWeightedTreeModel<N, T> aModel) {
 			model = aModel;
 		}
 
-		protected IWeightedTreeModel<N> getModel() {
+		protected IGenericWeightedTreeModel<N, T> getModel() {
 			return model;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public int compare(final N o1, final N o2) {
-			return (int) (model.getWeight(o2)-model.getWeight(o1));
+			return ((Comparable<T>) model.getWeight(o2)).compareTo(model.getWeight(o1));
 		}
 
 	}
@@ -287,6 +294,22 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 	@Override
 	public final boolean isCanceled() {
 		return false;
+	}
+
+	@Override
+	public ITreeModel<IRectangle<N>> layout(final IWeightedTreeModel<N> treeModel, final N startingNode, final int width, final int height) {
+		return layout(treeModel, startingNode, width, height, this);
+	}
+
+	@Override
+	public ITreeModel<IRectangle<N>> layout(final IWeightedTreeModel<N> treeModel, final N startingNode, final int width, final int height, final ICancelable cancelable) {
+		if (treeModel instanceof IGenericWeightedTreeModel) {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			final IGenericWeightedTreeModel<N, T> model = (IGenericWeightedTreeModel) treeModel;
+			return layout(model, startingNode, width, height, cancelable);
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 
 }

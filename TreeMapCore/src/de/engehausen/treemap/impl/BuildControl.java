@@ -8,7 +8,7 @@ import de.engehausen.treemap.ICancelable;
  * the operation.
  */
 public class BuildControl implements ICancelable {
-	
+
 	private volatile boolean flag;
 
 	/**
@@ -30,5 +30,5 @@ public class BuildControl implements ICancelable {
 	public void cancel() {
 		flag = true;
 	}
-	
+
 }

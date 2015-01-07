@@ -17,14 +17,14 @@ import de.engehausen.treemap.ITreeModel;
  * @param <N> the type of node the rectangles use.
  */
 public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
-	
+
 	private static final RectangleModelImpl<?> EMPTY = new RectangleModelImpl<Object>() {
 		void addChild(final IRectangle<Object> parent, final IRectangle<Object> child) { /* NOP */}
 	};
-	
+
 	protected final Map<N, List<IRectangle<N>>> children;
 	protected final Map<N, IRectangle<N>> childToParent;
-	
+
 	@SuppressWarnings("unchecked")
 	protected static <T> RectangleModelImpl<T> emptyModel() {
 		return (RectangleModelImpl<T>) EMPTY;
@@ -59,7 +59,7 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 			final N key = parent.getNode();
 			List<IRectangle<N>> list = children.get(key);
 			if (list == null) {
-				list = new ArrayList<IRectangle<N>>(5);	
+				list = new ArrayList<IRectangle<N>>(5);
 				children.put(key, list);
 			}
 			list.add(child);
@@ -89,7 +89,7 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 	public boolean hasChildren(final IRectangle<N> node) {
 		return children.containsKey(node.getNode());
 	}
-	
+
 	/**
 	 * Returns all nodes of the model as a list.
 	 * @return all nodes of the model as a list, never <code>null</code>.
@@ -109,7 +109,7 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 		}
 		return list;
 	}
-	
+
 	public String toString() {
 		return toList().toString();
 	}
