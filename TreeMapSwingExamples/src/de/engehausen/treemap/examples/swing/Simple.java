@@ -11,11 +11,11 @@ import de.engehausen.treemap.swing.TreeMap;
  * demo, just setting a small tree map model.
  */
 public class Simple extends JFrame {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	protected final TreeMap<String> treeMap;
-	
+
 	/**
 	 * Creates the example using the given tree map and title
 	 * @param aTreeMap the tree map
@@ -28,7 +28,7 @@ public class Simple extends JFrame {
 		treeMap = aTreeMap;
 		getContentPane().add(treeMap);
 	}
-		
+
 	/**
 	 * Creates a simple weighted tree model, after the example
 	 * given in the "Squarified Treemaps" <a href="http://www.win.tue.nl/~vanwijk/stm.pdf">paper</a>

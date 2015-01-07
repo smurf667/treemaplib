@@ -51,12 +51,12 @@ import de.engehausen.treemap.examples.Messages;
  * nodes of the tree map.
  */
 public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Color>, ActionListener, KeyListener {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static String TMP_DIR = "java.io.tmpdir";
 	private static String SETTINGS = File.separatorChar+"FileViewer.dat";
-	
+
 	protected final FileViewer viewer;
 	protected final JTable filters;
 	protected final JButton ok;
@@ -187,7 +187,7 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 		temp2.add(temp);
 		line.add(temp2);
 		result.add(line);
-				
+
 		line.add(Box.createGlue());
 		line = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		line.add(ok);
@@ -197,7 +197,7 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 
 	protected TableModelImpl createTableModel() {
 		final String tmpDir = System.getProperty(TMP_DIR);
-		final List<ModelEntry> entries; 
+		final List<ModelEntry> entries;
 		if (tmpDir != null) {
 			entries = loadEntries(tmpDir+SETTINGS);
 		} else {
@@ -270,50 +270,50 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 		result.add(new ModelEntry(".*gif", new Color(0xBAD0EF)));
 		result.add(new ModelEntry(".*bmp", new Color(0x8CD1E6)));
 		result.add(new ModelEntry(".*jpg", new Color(0xC9EAF3)));
-		
+
 		result.add(new ModelEntry(".*txt", new Color(0xDFE32D)));
 		result.add(new ModelEntry(".*doc", new Color(0xDFDF00)));
 		result.add(new ModelEntry(".*log", new Color(0xEDEF85)));
 		result.add(new ModelEntry(".*pdf", new Color(0xDEEF8A)));
-		
+
 		result.add(new ModelEntry(".*wav", new Color(0xFF86C2)));
 		result.add(new ModelEntry(".*mp3", new Color(0xFE8BF0)));
 		result.add(new ModelEntry(".*ogg", new Color(0xF5CAFF)));
-		
+
 		result.add(new ModelEntry(".*avi", new Color(0xFF8A8A)));
 		result.add(new ModelEntry(".*mkv", new Color(0xFFACEC)));
 		result.add(new ModelEntry(".*mp4", new Color(0xFF97CB)));
 		result.add(new ModelEntry(".*mov", new Color(0xFFBBF7)));
-		
+
 		result.add(new ModelEntry(".*zip", new Color(0x36F200)));
 		result.add(new ModelEntry(".*rar", new Color(0x95FF4F)));
 		result.add(new ModelEntry(".*cab", new Color(0xC9DECB)));
-		
+
 		result.add(new ModelEntry(".*exe", new Color(0xBDF4CB)));
 		return result;
 	}
 
 	private static class TableModelImpl extends AbstractTableModel {
-		
+
 		private static final long serialVersionUID = 1L;
 
 		protected final List<ModelEntry> entries;
 		protected final String exprCol, colCol;
-		
+
 		public TableModelImpl(final String columnTitle1, final String columnTitle2, final List<ModelEntry> e) {
 			entries = e;
 			exprCol = columnTitle1;
 			colCol = columnTitle2;
 		}
-		
+
 		protected void addEntry(final String regularExpression, final Color color) {
 			final ModelEntry candidate = new ModelEntry(regularExpression, color);
 			if (candidate.isValid() && !entries.contains(candidate)) {
 				entries.add(candidate);
-				fireTableDataChanged();				
+				fireTableDataChanged();
 			}
 		}
-		
+
 		protected void removeEntries(final int[] indices) {
 			final Set<ModelEntry> tmp = new HashSet<ModelEntry>(indices.length, 1f);
 			for (int i = indices.length-1; i>=0; i--) {
@@ -322,7 +322,7 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 			for (ModelEntry e : tmp) {
 				entries.remove(e);
 			}
-			fireTableDataChanged();				
+			fireTableDataChanged();
 		}
 
 		/**
@@ -357,12 +357,12 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 			if (i < entries.size()) {
 				return j==0?entries.get(i).expression:entries.get(i).color;
 			} else {
-				return null;				
+				return null;
 			}
 		}
-		
+
 	}
-	
+
 	private static class ModelEntry implements Serializable {
 		private static final long serialVersionUID = 1L;
 		protected final String expression;
@@ -376,7 +376,7 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 		protected static Matcher getMatcher(final String expr) {
 			Matcher m;
 			try {
-				m = Pattern.compile(expr).matcher("");				
+				m = Pattern.compile(expr).matcher("");
 			} catch (PatternSyntaxException e) {
 				m = null;
 			}
@@ -401,7 +401,7 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 		}
 
 	}
-	
+
 	/**
 	 * Paints a simple rectangle in the given color.
 	 */
@@ -413,7 +413,7 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 			result.setBackground((Color) value);
 			return result;
 		}
-		
+
 	}
 
 }

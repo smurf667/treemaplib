@@ -61,7 +61,7 @@ public class SimpleBorder extends Simple {
 						final IRectangle<String> result = super.findRectangle(x, y);
 						return rectangles.hasChildren(result)?null:result;
 					}
-					
+
 				};
 				final SimpleBorder main = new SimpleBorder(treeMap, "SimpleBorder.java");
 				main.init();
