@@ -43,7 +43,7 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 	protected final JLabel selectionTitle;
 	protected final JFileChooser fileChooser;
 	protected final FilterDialog colorDialog;
-	
+
 	public FileViewer() {
 		super(Messages.getString("fv.title"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,11 +62,11 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 		setJMenuBar(menuBar);
 
 		// directory chooser dialog
-		fileChooser = new JFileChooser(); 
+		fileChooser = new JFileChooser();
 	    fileChooser.setDialogTitle(Messages.getString("fv.choose"));
 	    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	    fileChooser.setAcceptAllFileFilterUsed(false);
-	    
+
 	    // dialog to set regular expressions for matching to colors
 	    colorDialog = new FilterDialog(this, Messages.getString("fv.colors"));
 
@@ -84,7 +84,7 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 		treeMap.setMinimumSize(d);
 		treeMap.setPreferredSize(d);
 		selectionTitle = new JLabel(" ");
-		
+
 		final Container container = getContentPane();
 		container.setLayout(new BorderLayout());
 		container.add(treeMap, BorderLayout.CENTER);
@@ -96,7 +96,7 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 	public void actionPerformed(final ActionEvent event) {
 		final Object src = event.getSource();
 		if (src.equals(chooseMenu)) {
-			chooseDirectory();			
+			chooseDirectory();
 		} else if (src.equals(colorsMenu)) {
 			colorDialog.setVisible(true);
 		} else if (src.equals(exitMenu)) {
@@ -124,19 +124,19 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 		if (flag == true) {
 			// if the frame becomes visible and the tree map is not
 			// yet showing content, prompt for a starting directory
-			if (treeMap.getTreeModel() == null) {
+			if (treeMap.getCurrentTreeModel() == null) {
 				chooseDirectory();
 			}
 		}
 	}
-	
+
 	/**
 	 * Shows a dialog for choosing a directory. The chosen directory
 	 * will be the root node of a weighted tree model build after
 	 * selection.
 	 */
 	protected void chooseDirectory() {
-	    if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+	    if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 	    	final File root = fileChooser.getSelectedFile();
 	    	if (root != null && root.exists()) {
 	    		SwingUtilities.invokeLater(new Runnable() {
@@ -156,7 +156,7 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 	/**
 	 * Creates a <code>JMenu</code> object, looking up its title
 	 * in the messages properties file. If the item has an <code>.mne</code>
-	 * suffix defined, a mnemonic will be set. 
+	 * suffix defined, a mnemonic will be set.
 	 * @param key the lookup key in the messages properties
 	 * @return the menu object, never <code>null</code>.
 	 */
