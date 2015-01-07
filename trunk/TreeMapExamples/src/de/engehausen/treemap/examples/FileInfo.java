@@ -14,14 +14,14 @@ public class FileInfo {
 	};
 	private static final String ZERO = "0b";
 	private static NumberFormat FORMAT = new DecimalFormat("#0.000");
-	
+
 	private final String name;
 	private final long size;
 
 	/**
 	 * Creates the file information object with the given name
 	 * and size.
-	 * 
+	 *
 	 * @param aName the file name, must not be <code>null</code>.
 	 * @param aSize the size of the file
 	 */
@@ -57,7 +57,7 @@ public class FileInfo {
 	/**
 	 * Returns the file size as a human-readable string, formatted
 	 * to power of two byte units (byte, kilobyte, etc.).
-	 * 
+	 *
 	 * @return the file size as a human-readable string
 	 */
 	public String getSizeAsString() {
@@ -71,7 +71,7 @@ public class FileInfo {
 			} else {
 				sb.append("too big");
 			}
-			return sb.toString();			
+			return sb.toString();
 		} else {
 			return ZERO;
 		}

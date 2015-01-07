@@ -31,7 +31,7 @@ public class FileModel extends GenericTreeModel<FileInfo> {
 
 	/**
 	 * Recursively traverses directories.
-	 * 
+	 *
 	 * @param parent the parent file information
 	 * @param f the current file or directory
 	 * @param model the current file model being built
@@ -57,5 +57,5 @@ public class FileModel extends GenericTreeModel<FileInfo> {
 	protected FileModel() {
 		super();
 	}
-	
+
 }
