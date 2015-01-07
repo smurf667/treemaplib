@@ -1,5 +1,7 @@
 package de.engehausen.treemap.examples.swt;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -11,10 +13,10 @@ import de.engehausen.treemap.swt.TreeMap;
  * Very simple demo of the treemap widget. This is a bare-minimum
  * demo, just setting a small tree map model.
  */
-public class Simple implements Runnable {
-	
+public class Simple implements Runnable, Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	protected final Display display;
 	protected final Shell shell;
 	protected final TreeMap<String> treeMap;
@@ -43,9 +45,9 @@ public class Simple implements Runnable {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
-		}		
+		}
 	}
-		
+
 	/**
 	 * Creates a simple weighted tree model, after the example
 	 * given in the "Squarified Treemaps" <a href="http://www.win.tue.nl/~vanwijk/stm.pdf">paper</a>
@@ -76,7 +78,7 @@ public class Simple implements Runnable {
         try {
             new Simple(display, "Simple.java").run();
         } finally {
-            display.dispose();        	
+            display.dispose();
         }
 	}
 

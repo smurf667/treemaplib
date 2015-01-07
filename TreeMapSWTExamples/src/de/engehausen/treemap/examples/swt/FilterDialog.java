@@ -49,13 +49,13 @@ import de.engehausen.treemap.examples.Messages;
  * nodes of the tree map.
  * PRETTY UGLY
  */
-public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionListener, KeyListener {
-	
+public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionListener, KeyListener, Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static String TMP_DIR = "java.io.tmpdir";
 	private static String SETTINGS = File.separatorChar+"FileViewer_swt.dat";
-	
+
 	protected final Shell shell;
 	protected final FileViewer viewer;
 	protected final Table filters;
@@ -73,11 +73,11 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 	 */
 	public FilterDialog(final FileViewer parent, final String title) {
 		viewer = parent;
-		
+
 		shell = new Shell(parent.display, SWT.DIALOG_TRIM|SWT.APPLICATION_MODAL);
 		shell.setText(title);
 		shell.setLayout(new FormLayout());
-		
+
 		filters = new Table(shell, SWT.MULTI|SWT.BORDER|SWT.FULL_SELECTION);
 		filters.setLinesVisible(true);
 		filters.setHeaderVisible(true);
@@ -92,19 +92,19 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		tc.setText(Messages.getString("fv.color"));
 		tc.setWidth(70);
 		entries = createTableEntries(filters, viewer.display);
-		
+
 		input = new Text(shell, SWT.BORDER);
 		data = new FormData();
 		data.top = new FormAttachment(filters, 5);
 		input.setLayoutData(data);
-		
+
 		colorLabel = new Label(shell, SWT.NULL);
 		colorLabel.setText("   ");
 		data = new FormData();
 		data.top = new FormAttachment(filters, 5);
 		data.left = new FormAttachment(input, 5);
 		colorLabel.setLayoutData(data);
-		
+
 		colorButton = new Button(shell, SWT.NULL);
 		colorButton.addSelectionListener(this);
 		colorButton.setText("color...");
@@ -114,7 +114,7 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		data.top = new FormAttachment(filters, 5);
 		data.left = new FormAttachment(colorLabel, 5);
 		colorButton.setLayoutData(data);
-		
+
 		add = new Button(shell, SWT.NULL);
 		add.setText(Messages.getString("fv.add"));
 		add.addSelectionListener(this);
@@ -122,7 +122,7 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		data.top = new FormAttachment(filters, 5);
 		data.left = new FormAttachment(colorButton, 5);
 		add.setLayoutData(data);
-		
+
 		ok = new Button(shell, SWT.NULL);
 		ok.setText(Messages.getString("fv.ok"));
 		ok.addSelectionListener(this);
@@ -130,14 +130,14 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		data.top = new FormAttachment(filters, 5);
 		data.left = new FormAttachment(add, 15);
 		ok.setLayoutData(data);
-		
+
 		shell.pack();
 	}
-	
+
 	public void setVisible(final boolean flag) {
 		shell.setVisible(flag);
 	}
-	
+
 	protected List<ModelEntry> createTableEntries(final Table t, final Display d) {
 		final String tmpDir = System.getProperty(TMP_DIR);
 		final List<ModelEntry> result;
@@ -152,7 +152,7 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		}
 		return result;
 	}
-	
+
 	protected TableItem createTableItem(final Table table, final String expression, final Color color) {
 		final TableItem item = new TableItem(table, SWT.NONE);
 		item.setText(0, expression);
@@ -160,7 +160,7 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		item.setForeground(1, color);
 		return item;
 	}
-	
+
 	@Override
 	public void widgetDefaultSelected(final SelectionEvent event) {
 		// ignore
@@ -189,10 +189,10 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 				createTableItem(filters, newEntry.expression, newEntry.getColor(viewer.display));
 			}
 		}
-		
+
 	}
 
-	
+
 	@Override
 	public void keyPressed(final KeyEvent keyevent) {
 		// ignore
@@ -306,29 +306,29 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		result.add(new ModelEntry(".*gif", 0xBAD0EF));
 		result.add(new ModelEntry(".*bmp", 0x8CD1E6));
 		result.add(new ModelEntry(".*jpg", 0xC9EAF3));
-		
+
 		result.add(new ModelEntry(".*txt", 0xDFE32D));
 		result.add(new ModelEntry(".*doc", 0xDFDF00));
 		result.add(new ModelEntry(".*log", 0xEDEF85));
 		result.add(new ModelEntry(".*pdf", 0xDEEF8A));
-		
+
 		result.add(new ModelEntry(".*wav", 0xFF86C2));
 		result.add(new ModelEntry(".*mp3", 0xFE8BF0));
 		result.add(new ModelEntry(".*ogg", 0xF5CAFF));
-		
+
 		result.add(new ModelEntry(".*avi", 0xFF8A8A));
 		result.add(new ModelEntry(".*mkv", 0xFFACEC));
 		result.add(new ModelEntry(".*mp4", 0xFF97CB));
 		result.add(new ModelEntry(".*mov", 0xFFBBF7));
-		
+
 		result.add(new ModelEntry(".*zip", 0x36F200));
 		result.add(new ModelEntry(".*rar", 0x95FF4F));
 		result.add(new ModelEntry(".*cab", 0xC9DECB));
-		
+
 		result.add(new ModelEntry(".*exe", 0xBDF4CB));
 		return result;
 	}
-	
+
 	private static class ModelEntry implements Serializable {
 		private static final long serialVersionUID = 1L;
 		protected final String expression;
@@ -343,7 +343,7 @@ public class FilterDialog implements IColorProvider<FileInfo, Color>, SelectionL
 		protected static Matcher getMatcher(final String expr) {
 			Matcher m;
 			try {
-				m = Pattern.compile(expr).matcher("");				
+				m = Pattern.compile(expr).matcher("");
 			} catch (PatternSyntaxException e) {
 				m = null;
 			}
