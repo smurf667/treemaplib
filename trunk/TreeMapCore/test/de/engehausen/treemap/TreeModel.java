@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class TreeModel implements IWeightedTreeModel<Node> {
-	
+
 	public static final TreeModel WIJK;
 	public static final TreeModel SMALL;
 	public static final TreeModel DEFAULT;
@@ -16,7 +16,7 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 	public static final TreeModel DEEP_UNBALANCED;
 	/** many nodes on the same level */
 	public static final TreeModel MANY;
-	
+
 	static {
 		final Node r = new Node("root", 0);
 		DEFAULT = new TreeModel(r);
@@ -55,19 +55,19 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 		final Node x = new Node("root", 2);
 		TWOLEVEL = new TreeModel(x);
 		x.add(new Node("child", 5));
-		
+
 		DEEP_BINARY = new TreeModel(new Node("root", 0));
 		addNodes(DEEP_BINARY.getRoot(), 0, 6);
 		DEEP_UNBALANCED = new TreeModel(new Node("root", 0));
 		addNodes(DEEP_UNBALANCED.getRoot(), "n", 0, 10, new Random(2010));
-		
+
 		final Node manyRoot = new Node("root", 0);
 		MANY = new TreeModel(manyRoot);
 		for (int j = 0; j < 300; j++) {
 			manyRoot.add(new Node("node"+j, 300-j));
-		}		
+		}
 	}
-	
+
 	private static void addNodes(final Node n, final int depth, final int max) {
 		final Node n1 = new Node("A"+depth, 1);
 		final Node n2 = new Node("B"+depth, 1);
@@ -75,10 +75,10 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 		n.add(n2);
 		if (depth < max) {
 			addNodes(n1, depth+1, max);
-			addNodes(n2, depth+1, max);		  
+			addNodes(n2, depth+1, max);
 		}
 	}
-	
+
 	private static void addNodes(final Node n, final String prefix, final int depth, final int max, final Random rnd) {
 		final StringBuilder sb = new StringBuilder(25);
 		sb.append(prefix).append(".");
@@ -94,9 +94,9 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 			}
 		}
 	}
-	
+
 	private final Node root;
-	
+
 	public TreeModel(final Node r) {
 		root = r;
 	}
@@ -125,11 +125,11 @@ public class TreeModel implements IWeightedTreeModel<Node> {
 	public boolean hasChildren(Node node) {
 		return node.hasChildren();
 	}
-	
+
 	public void dump(final PrintStream ps) {
 		dump(getRoot(), 0, ps);
 	}
-	
+
 	protected void dump(final Node n, final int depth, final PrintStream ps) {
 		for (int i = 0; i < depth; i++) {
 			ps.print(" ");
