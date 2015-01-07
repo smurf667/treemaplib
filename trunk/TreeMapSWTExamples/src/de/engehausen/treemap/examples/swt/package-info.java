@@ -6,7 +6,13 @@
  * <li>{@link de.engehausen.treemap.examples.swt.SimpleBorder}
  * <li>{@link de.engehausen.treemap.examples.swt.SimpleCushion}
  * </ul>
- * In addition a more complex "file viewer" example is provided; you may
+ * Additionally a more complex "file viewer" example is provided; you may
  * be reminded of <a href="http://www.win.tue.nl/sequoiaview/">Sequioa View</a>.
+ * <p>Finally, the "scientific" treemap {@link de.engehausen.treemap.examples.swt.Scientific}
+ * using {@link java.math.BigDecimal} is shown, which demonstrates the use of
+ * {@link de.engehausen.treemap.impl.GenericSquarifiedLayout}
+ * and {@link de.engehausen.treemap.impl.GenericTreeModelEx} which may have to be
+ * used when the (better performing) standard version using <code>long</code> weights
+ * cannot be used.
  */
 package de.engehausen.treemap.examples.swt;

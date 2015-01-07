@@ -1,6 +1,7 @@
 package de.engehausen.treemap.examples.swt;
 
 import java.io.File;
+import java.io.Serializable;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,7 +31,7 @@ import de.engehausen.treemap.swt.impl.CushionRectangleRendererEx;
  * Sample application using a tree map to show file sizes starting
  * at a given directory.
  */
-public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>, ILabelProvider<FileInfo>, SelectionListener {
+public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>, ILabelProvider<FileInfo>, SelectionListener, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +44,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 	protected final TreeMap<FileInfo> treeMap;
 	protected final Label selectionTitle;
 	protected final FilterDialog colorDialog;
-	
+
 	public FileViewer(final Display d) {
 		display = d;
 		shell = new Shell(d);
@@ -59,17 +60,17 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 		glayout.horizontalSpacing = 0;
 		glayout.verticalSpacing = 0;
 		shell.setLayout(glayout);
-		
+
 	    // dialog to set regular expressions for matching to colors
 	    colorDialog = new FilterDialog(this, Messages.getString("fv.colors"));
-		
+
 		treeMap = new TreeMap<FileInfo>(shell);
 		treeMap.setTreeMapLayout(new SquarifiedLayout<FileInfo>(16));
 		treeMap.setRectangleRenderer(new CushionRectangleRendererEx<FileInfo>(160));
 		treeMap.addSelectionChangeListener(this);
 		treeMap.setLabelProvider(this);
 		treeMap.setColorProvider(colorDialog);
-		
+
 		final GridData mainData = new GridData();
 		mainData.grabExcessVerticalSpace = true;
 		mainData.grabExcessHorizontalSpace = true;
@@ -77,17 +78,17 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 		mainData.horizontalAlignment = GridData.FILL;
 		treeMap.setLayoutData(mainData);
 		shell.setBounds(64, 64, 600, 400);
-		
+
 		selectionTitle = new Label(shell, SWT.LEFT);
-		
+
 		// menu bar and items
 		final Menu menuBar = new Menu(shell, SWT.BAR);
 		final MenuItem fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		fileMenuHeader.setText(getMessageString("fv.file"));
-		
+
 		final Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
 		fileMenuHeader.setMenu(fileMenu);
-		    
+
 		chooseMenu = new MenuItem(fileMenu, SWT.PUSH);
 		chooseMenu.setText(getMessageString("fv.choose"));
 		chooseMenu.addSelectionListener(this);
@@ -98,7 +99,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 		exitMenu.setText(getMessageString("fv.exit"));
 		exitMenu.addSelectionListener(this);
 		shell.setMenuBar(menuBar);
-		
+
 	}
 
 	// inserts & for the mne when found
@@ -115,7 +116,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 				return sb.toString();
 			} else {
 				return msg;
-			}			
+			}
 		} else {
 			return Messages.getString(key);
 		}
@@ -126,12 +127,12 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 		display.asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				if (treeMap.getTreeModel() == null) {
+				if (treeMap.getCurrentTreeModel() == null) {
 					// if the window becomes visible and the tree map is not
 					// yet showing content, prompt for a starting directory
 					chooseDirectory();
 				}
-			}			
+			}
 		});
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -149,7 +150,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 	@Override
 	public void widgetSelected(final SelectionEvent event) {
 		if (chooseMenu.equals(event.widget)) {
-			chooseDirectory();			
+			chooseDirectory();
 		} else if (colorsMenu.equals(event.widget)) {
 			colorDialog.setVisible(true);
 		} else if (exitMenu.equals(event.widget)) {
@@ -178,7 +179,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 	public String getLabel(final ITreeModel<IRectangle<FileInfo>> model, final IRectangle<FileInfo> rectangle) {
 		return rectangle.getNode().getName();
 	}
-	
+
 	/**
 	 * Shows a dialog for choosing a directory. The chosen directory
 	 * will be the root node of a weighted tree model build after
@@ -202,7 +203,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 							public void run() {
 					    		treeMap.setTreeModel(result);
 					    		// ...then repaint the tree map view
-					    		treeMap.redraw();							
+					    		treeMap.redraw();
 							}
 						});
 					}
@@ -210,7 +211,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates and runs the UI.
 	 * @param args optional parameters; currently ignored
@@ -220,7 +221,7 @@ public class FileViewer implements Runnable, ISelectionChangeListener<FileInfo>,
         try {
             new FileViewer(display).run();
         } finally {
-            display.dispose();        	
+            display.dispose();
         }
 	}
 

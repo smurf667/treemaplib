@@ -1,5 +1,7 @@
 package de.engehausen.treemap.examples.swt;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -14,14 +16,14 @@ import de.engehausen.treemap.swt.impl.DefaultRectangleRenderer;
 /**
  * A very simple example of a tree map layout using the {@link BorderRenderer}.
  */
-public class SimpleBorder {
+public class SimpleBorder implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	protected final Display display;
 	protected final Shell shell;
 	protected final TreeMap<String> treeMap;
-	
+
 	public SimpleBorder(final Display aDisplay, final String title) {
 		display = aDisplay;
 		shell = new Shell(aDisplay);
@@ -32,7 +34,6 @@ public class SimpleBorder {
 			// method to avoid the selection of a non-leaf node
 			// this is just a question of taste, but allowing non-leaf
 			// selection has awkward side effects
-			private static final long serialVersionUID = 1L;
 			@Override
 			protected IRectangle<String> findRectangle(int x, int y) {
 				final IRectangle<String> result = super.findRectangle(x, y);
@@ -52,7 +53,7 @@ public class SimpleBorder {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
-		}		
+		}
 	}
 
 	protected void init() {
@@ -83,7 +84,7 @@ public class SimpleBorder {
         try {
             new SimpleBorder(display, "SimpleBorder.java").run();
         } finally {
-            display.dispose();        	
+            display.dispose();
         }
 	}
 

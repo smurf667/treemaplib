@@ -56,7 +56,7 @@ public class SimpleCushion extends Simple implements ILabelProvider<String> {
 					final ILabelProvider<String> labelProvider) {
 				super.highlight(event, model, rectangle, colorProvider, labelProvider);
 				delegate.highlight(event, model, rectangle, colorProvider, labelProvider);
-			}			
+			}
 		});
 	}
 
@@ -75,7 +75,7 @@ public class SimpleCushion extends Simple implements ILabelProvider<String> {
         try {
             new SimpleCushion(display, "SimpleCushion.java").run();
         } finally {
-            display.dispose();        	
+            display.dispose();
         }
 	}
 
