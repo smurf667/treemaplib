@@ -12,5 +12,5 @@ public interface ICancelable {
 	 * is canceled, <code>false</code> otherwise.
 	 */
 	boolean isCanceled();
-	
+
 }

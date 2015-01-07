@@ -1,12 +1,14 @@
 package de.engehausen.treemap;
 
 /**
- * Tree map layout interface. The methods allow to create a layout
- * of rectangles from a given weighted tree model.
+ * Tree map layout interface for different kinds of weighted tree models.
+ * The weight in these kinds of models may be any extension of {@link Number}.
+ * The methods allow to create a layout of rectangles from a given weighted tree model.
  *
  * @param <N> the type of node the layout supports.
+ * @param <T> the weight type.
  */
-public interface ITreeMapLayout<N> {
+public interface IGenericTreeMapLayout<N, T extends Number> extends ITreeMapLayout<N> {
 
 	/**
 	 * Creates a layout of rectangles, starting at the current node
@@ -19,7 +21,7 @@ public interface ITreeMapLayout<N> {
 	 * @return a tree model holding the rectangles representing the
 	 * used nodes in hierarchical order, never <code>null</code>.
 	 */
-	ITreeModel<IRectangle<N>> layout(IWeightedTreeModel<N> treeModel, N startingNode, int width, int height);
+	ITreeModel<IRectangle<N>> layout(IGenericWeightedTreeModel<N, T> treeModel, N startingNode, int width, int height);
 
 	/**
 	 * Creates a layout of rectangles, starting at the current node
@@ -36,6 +38,6 @@ public interface ITreeMapLayout<N> {
 	 * @return a tree model holding the rectangles representing the
 	 * used nodes in hierarchical order, never <code>null</code>.
 	 */
-	ITreeModel<IRectangle<N>> layout(IWeightedTreeModel<N> treeModel, N startingNode, int width, int height, ICancelable cancelable);
+	ITreeModel<IRectangle<N>> layout(IGenericWeightedTreeModel<N, T> treeModel, N startingNode, int width, int height, ICancelable cancelable);
 
 }

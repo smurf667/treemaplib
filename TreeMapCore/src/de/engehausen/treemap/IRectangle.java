@@ -5,13 +5,13 @@ package de.engehausen.treemap;
  * @param <N> the type of node the rectangle supports.
  */
 public interface IRectangle<N> {
-	
+
 	/**
 	 * Returns the horizontal component of the starting point of the rectangle.
 	 * @return the horizontal component of the starting point of the rectangle.
 	 */
 	int getX();
-	
+
 	/**
 	 * Returns the vertical component of the starting point of the rectangle.
 	 * @return the vertical component of the starting point of the rectangle.
@@ -33,8 +33,8 @@ public interface IRectangle<N> {
 	/**
 	 * Checks if the given coordinate lies inside of the area
 	 * of the rectangle.
-	 * @param x the horizontal component of the point to check. 
-	 * @param y the vertical component of the point to check. 
+	 * @param x the horizontal component of the point to check.
+	 * @param y the vertical component of the point to check.
 	 * @return <code>true</code> if the pointed is contained in
 	 * the rectangle, <code>false</code> otherwise.
 	 */

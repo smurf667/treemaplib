@@ -4,26 +4,26 @@ import java.util.Iterator;
 
 /**
  * A tree model.
- * 
+ *
  * @param <N> the type of node returned by model.
  */
 public interface ITreeModel<N> {
-	
+
 	/**
 	 * Returns the root node of the model.
 	 * @return the root node; may be <code>null</code> if the
 	 * model is empty.
 	 */
 	N getRoot();
-	
+
 	/**
 	 * Returns the parent node for the given node.
-	 * 
+	 *
 	 * @param node a node for which to return the parent; must not be <code>null</code>
 	 * @return the parent node, or <code>null</code> if <code>node</code> is the root node.
 	 */
 	N getParent(N node);
-	
+
 	/**
 	 * Returns an iterator for the children of the given node.
 	 * @param node the node for which to return children.
@@ -39,5 +39,5 @@ public interface ITreeModel<N> {
 	 * <code>true</code> always is a valid implementation.
 	 */
 	boolean hasChildren(N node);
-	
+
 }

@@ -2,7 +2,7 @@ package de.engehausen.treemap;
 
 /**
  * Provides a label for a rectangle.
- * 
+ *
  * @param <N> the type of node the interface supports
  */
 public interface ILabelProvider<N> {
