@@ -11,15 +11,15 @@ import de.engehausen.treemap.ITreeModel;
  * The default color provider uses a set of colors mapped to nodes
  * by their hash code (this may appear a little random, but makes them
  * distinguishable a bit better). It is thread-safe and stateless.
- * 
+ *
  * @param <N> type of node
  */
 public class DefaultColorProvider<N> implements IColorProvider<N, Color>, Serializable {
-		
+
 	private static final long serialVersionUID = 1L;
-	
+
 	protected static final Color[] COLORS;
-	
+
 	static {
 		COLORS = new Color[] {
 				new Color(0x9669FE),
@@ -32,7 +32,7 @@ public class DefaultColorProvider<N> implements IColorProvider<N, Color>, Serial
 				new Color(0xE6DBFF)
 		};
 	}
-	
+
 	protected final Color[] colors;
 
 	/**
@@ -54,5 +54,5 @@ public class DefaultColorProvider<N> implements IColorProvider<N, Color>, Serial
 	public Color getColor(final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle) {
 		return colors[Math.abs(rectangle.getNode().hashCode()%colors.length)];
 	}
-	
+
 }

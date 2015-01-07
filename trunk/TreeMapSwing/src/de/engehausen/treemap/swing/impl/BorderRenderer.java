@@ -17,13 +17,13 @@ import de.engehausen.treemap.ITreeModel;
  * @param <N>
  */
 public class BorderRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color> {
-	
+
 	protected final IRectangleRenderer<N, Graphics2D, Color> leafRenderer;
-	
+
 	public BorderRenderer(final IRectangleRenderer<N, Graphics2D, Color> aLeafRenderer) {
 		leafRenderer = aLeafRenderer;
 	}
-	
+
 	@Override
 	public void highlight(final Graphics2D graphics, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		if (model.hasChildren(rectangle)) {
@@ -36,7 +36,7 @@ public class BorderRenderer<N> implements IRectangleRenderer<N, Graphics2D, Colo
 	}
 
 	@Override
-	public void render(final Graphics2D graphics, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {	
+	public void render(final Graphics2D graphics, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		if (model.hasChildren(rectangle)) {
 			final Color c = colorProvider.getColor(model, rectangle);
 			graphics.setColor(c);

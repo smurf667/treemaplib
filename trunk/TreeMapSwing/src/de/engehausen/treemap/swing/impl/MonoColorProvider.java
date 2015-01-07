@@ -8,7 +8,7 @@ import de.engehausen.treemap.ITreeModel;
 
 /**
  * Assigns all nodes the same color (light gray).
- * 
+ *
  * @param <N> the type of node operated on
  */
 public class MonoColorProvider<N> implements IColorProvider<N, Color> {
