@@ -14,11 +14,11 @@ import de.engehausen.treemap.ITreeModel;
  * the rectangles. It does not paint any labels. The highlight method
  * highlights the selected node and frames it in red. The topmost parent
  * under the root node is framed in yellow.
- * 
+ *
  * @param <N> the type of node the renderer supports
  */
 public class CushionRectangleRendererEx<N> extends CushionRectangleRenderer<N> {
-	
+
 	/**
 	 * @param colorRangeSize the number of colors to use for the cushion;
 	 * must be > 1
@@ -32,7 +32,7 @@ public class CushionRectangleRendererEx<N> extends CushionRectangleRenderer<N> {
 	 */
 	protected void highlightParents(final PaintEvent event, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		event.gc.setForeground(event.display.getSystemColor(SWT.COLOR_RED));
-		event.gc.drawRectangle(rectangle.getX(), rectangle.getY(), rectangle.getWidth()-1, rectangle.getHeight()-1);		
+		event.gc.drawRectangle(rectangle.getX(), rectangle.getY(), rectangle.getWidth()-1, rectangle.getHeight()-1);
 		final IRectangle<N> root = model.getRoot();
 		IRectangle<N> runner = rectangle, last;
 		do {
@@ -41,7 +41,7 @@ public class CushionRectangleRendererEx<N> extends CushionRectangleRenderer<N> {
 		} while (runner != root && runner != null);
 		if (last != root) {
 			event.gc.setForeground(event.display.getSystemColor(SWT.COLOR_YELLOW));
-			event.gc.drawRectangle(last.getX(), last.getY(), last.getWidth()-1, last.getHeight()-1);			
+			event.gc.drawRectangle(last.getX(), last.getY(), last.getWidth()-1, last.getHeight()-1);
 		}
 	}
 

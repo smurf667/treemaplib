@@ -18,13 +18,13 @@ import de.engehausen.treemap.ITreeModel;
  * @param <N>
  */
 public class BorderRenderer<N> implements IRectangleRenderer<N, PaintEvent, Color> {
-	
+
 	protected final IRectangleRenderer<N, PaintEvent, Color> leafRenderer;
-	
+
 	public BorderRenderer(final IRectangleRenderer<N, PaintEvent, Color> aLeafRenderer) {
 		leafRenderer = aLeafRenderer;
 	}
-	
+
 	@Override
 	public void highlight(final PaintEvent event, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		if (model.hasChildren(rectangle)) {
@@ -38,7 +38,7 @@ public class BorderRenderer<N> implements IRectangleRenderer<N, PaintEvent, Colo
 	}
 
 	@Override
-	public void render(final PaintEvent event, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {	
+	public void render(final PaintEvent event, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		if (model.hasChildren(rectangle)) {
 			final Color c = colorProvider.getColor(model, rectangle);
 			event.gc.setBackground(c);
@@ -47,7 +47,7 @@ public class BorderRenderer<N> implements IRectangleRenderer<N, PaintEvent, Colo
 			leafRenderer.render(event, model, rectangle, colorProvider, labelProvider);
 		}
 	}
-	
+
 	protected Color brighter(final Device d, final Color c) {
 		final int r = Math.min(3*c.getRed()/2, 255);
 		final int g = Math.min(3*c.getGreen()/2, 255);
