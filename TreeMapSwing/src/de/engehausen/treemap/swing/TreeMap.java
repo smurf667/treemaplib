@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import de.engehausen.treemap.IColorProvider;
+import de.engehausen.treemap.IGenericTreeMapLayout;
+import de.engehausen.treemap.IGenericWeightedTreeModel;
 import de.engehausen.treemap.ILabelProvider;
 import de.engehausen.treemap.IRectangle;
 import de.engehausen.treemap.IRectangleRenderer;
@@ -33,6 +35,7 @@ import de.engehausen.treemap.ITreeModel;
 import de.engehausen.treemap.IWeightedTreeModel;
 import de.engehausen.treemap.impl.BuildControl;
 import de.engehausen.treemap.impl.FIFO;
+import de.engehausen.treemap.impl.GenericSquarifiedLayout;
 import de.engehausen.treemap.impl.SquarifiedLayout;
 import de.engehausen.treemap.swing.impl.DefaultColorProvider;
 import de.engehausen.treemap.swing.impl.DefaultRectangleRenderer;
@@ -40,14 +43,14 @@ import de.engehausen.treemap.swing.impl.DefaultRectangleRenderer;
 /**
  * Tree map UI widget. It displays information represented in a {@link IWeightedTreeModel}
  * as a tree map and supports navigation inside of the model.
- * 
+ *
  * @param <N> the type of node the backing weighted tree model uses.
  */
 public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotionListener, MouseListener {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	protected IWeightedTreeModel<N> model;
+
+	protected ITreeModel<N> model;
 	protected ITreeMapLayout<N> layout;
 	protected ITreeModel<IRectangle<N>> rectangles;
 	protected IRectangle<N> selected;
@@ -69,7 +72,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 
 	/**
 	 * Creates the tree map.
-	 * 
+	 *
 	 * @param supportNavigation <code>true</code> if navigation through
 	 * left/right mouse clicks is supported, <code>false</code> otherwise.
 	 */
@@ -78,10 +81,10 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 		addComponentListener(this);
 		addMouseMotionListener(this);
 		if (supportNavigation) {
-			addMouseListener(this);			
+			addMouseListener(this);
 		}
 	}
-	
+
 	/**
 	 * Sets the rectangle renderer the tree map will use. If no renderer
 	 * is set, a default will be used.
@@ -142,7 +145,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 		image = rebuildImage(getWidth(), getHeight(), rectangles);
 		repaint();
 	}
-	
+
 	/**
 	 * Sets the model to use in this tree map.
 	 * @param aModel the model to use; must not be <code>null</code>.
@@ -160,16 +163,45 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 	}
 
 	/**
+	 * Sets the model to use in this tree map.
+	 * @param aModel the model to use; must not be <code>null</code>.
+	 */
+	public <T extends Number> void setTreeModel(final IGenericWeightedTreeModel<N, T> aModel) {
+		if (layout == null) {
+			layout = new GenericSquarifiedLayout<N, T>(2);
+		}
+		model = aModel;
+		currentRoot = aModel.getRoot();
+		selected = null;
+		rectangles = null;
+		image = null;
+		recalculate();
+	}
+
+	/**
+	 * @deprecated use {@link #getCurrentTreeModel()} instead
 	 * Returns the model currently being used by the tree map.
 	 * @return the model currently being used by the tree map, may be <code>null</code>.
 	 */
 	public IWeightedTreeModel<N> getTreeModel() {
+		if (model instanceof IWeightedTreeModel) {
+			return (IWeightedTreeModel<N>) model;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the model currently being used by the tree map.
+	 * @return the model currently being used by the tree map, may be <code>null</code>.
+	 */
+	public ITreeModel<N> getCurrentTreeModel() {
 		return model;
 	}
 
 	/**
 	 * Adds the given listener for selection change events.
-	 * 
+	 *
 	 * @param aListener the listener to add, must not be <code>null</code>
 	 * and must not already have been added.
 	 */
@@ -182,7 +214,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 
 	/**
 	 * Removes the given change event listener.
-	 * 
+	 *
 	 * @param aListener the listener to remove
 	 */
 	public void removeSelectionChangeListener(final ISelectionChangeListener<N> aListener) {
@@ -199,7 +231,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 	public void setTreeMapLayout(final ITreeMapLayout<N> aLayout) {
 		layout = aLayout;
 	}
-	
+
 	@Override
 	public void paintComponent(final Graphics gr) {
 		final Graphics2D g = (Graphics2D) gr;
@@ -223,7 +255,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			drawBusy(g);
 		}
 	}
-	
+
 	/**
 	 * Called when the tree map is busy during rendering.
 	 * @param gr the graphics object used for rendering.
@@ -231,9 +263,9 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 	protected void drawBusy(final Graphics2D gr) {
 		// work in progress...
 		gr.setColor(getBackground());
-		gr.fillRect(0, 0, getWidth(), getHeight());		
+		gr.fillRect(0, 0, getWidth(), getHeight());
 	}
-	
+
 	/**
 	 * Renders the rectangles of the tree map.
 	 * @param g the graphics to draw on
@@ -258,7 +290,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			}
 		}
 	}
-	
+
 	protected void render(final Graphics2D g, final ITreeModel<IRectangle<N>> rects, final IRectangle<N> rect) {
 		renderer.render(g, rects, rect, colorProvider, labelProvider);
 	}
@@ -290,14 +322,14 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 					break;
 				case MouseEvent.BUTTON3:
 					final N parent = model.getParent(currentRoot);
-					if (parent != null) {						
+					if (parent != null) {
 						currentRoot = parent;
 						recalculate();
 					}
 					break;
 				default:
 					break;
-			}			
+			}
 		}
 	}
 
@@ -313,9 +345,9 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			}
 		}
 	}
-	
+
 	/**
-	 * Try to select a rectangle at the given coordinates (which 
+	 * Try to select a rectangle at the given coordinates (which
 	 * are relative to the widget).
 	 * @param x x coordinate
 	 * @param y y coordinate
@@ -438,7 +470,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			buildControl = ctrl;
 		}
 	}
-	
+
 	/**
 	 * Rebuilds the image buffer used for rendering the tree map quickly.
 	 * @param width the new width
@@ -455,7 +487,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 				if (gc == null) {
 					final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 					final GraphicsDevice gs = ge.getDefaultScreenDevice();
-					gc = gs.getDefaultConfiguration();				
+					gc = gs.getDefaultConfiguration();
 				}
 				// a compatible image may be faster than a buffered image of fixed type as used for the headless case,
 				// see https://www.java.net/node/693786
@@ -467,7 +499,7 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			} finally {
 				g.dispose();
 			}
-			return result;			
+			return result;
 		} else {
 			return null;
 		}
@@ -478,12 +510,12 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 	 * @param <N> the type of node the models use
 	 */
 	private static class Worker<N> extends SwingWorker<ITreeModel<IRectangle<N>>, Object> {
-		
+
 		private final BuildControl buildControl;
 		private final TreeMap<N> treeMap;
 		private final int width, height;
-		private BufferedImage image;		
-		
+		private BufferedImage image;
+
 		public Worker(final TreeMap<N> aMap, final BuildControl aControl) {
 			super();
 			treeMap = aMap;
@@ -492,9 +524,17 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 			height = aMap.getHeight();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		protected ITreeModel<IRectangle<N>> doInBackground() throws Exception {
-			final ITreeModel<IRectangle<N>> result = treeMap.layout.layout(treeMap.model, treeMap.currentRoot, width, height, buildControl);
+			final ITreeModel<IRectangle<N>> result;
+			if (treeMap.layout instanceof IGenericTreeMapLayout) {
+				result = ((IGenericTreeMapLayout<N, Number>) treeMap.layout).layout((IGenericWeightedTreeModel<N, Number>) treeMap.model, treeMap.currentRoot, width, height, buildControl);
+			} else if (treeMap.layout instanceof ITreeMapLayout) {
+				result = treeMap.layout.layout((IWeightedTreeModel<N>) treeMap.model, treeMap.currentRoot, width, height, buildControl);
+			} else {
+				throw new IllegalStateException("cannot handle model with layout "+treeMap.layout);
+			}
 			if (!buildControl.isCanceled()) {
 				image = treeMap.rebuildImage(width, height, result);
 			}
@@ -519,12 +559,12 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 						treeMap.image = image;
 						treeMap.selected = null;
 						treeMap.buildControl = null;
-						
+
 						// check the mouse only if it isn't headless
 						if (!GraphicsEnvironment.isHeadless()) {
 							final Point point = treeMap.getMousePosition();
 							if (point != null) {
-								treeMap.selectRectangle(point.x, point.y);							
+								treeMap.selectRectangle(point.x, point.y);
 							}
 						}
 					}
