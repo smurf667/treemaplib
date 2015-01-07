@@ -19,7 +19,7 @@ import de.engehausen.treemap.ITreeModel;
  * Rectangle renderer that attempts to produce a "cushion effect" for
  * the rectangles. It does not paint any labels. The renderer is not
  * thread safe and cannot be shared between different threads.
- * 
+ *
  * @param <N> the type of node the renderer supports
  */
 public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color> {
@@ -48,7 +48,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 		} else if (rectangle.equals(model.getRoot())) {
 			// paint the whole background black
 			graphics.setColor(Color.BLACK);
-			graphics.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());			
+			graphics.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
 		}
 	}
 
@@ -56,7 +56,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 	public void highlight(final Graphics2D graphics, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		final Composite oldComposite = graphics.getComposite();
 		try {
-			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));			
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 			final int[] colors = getColorRange(colorProvider.getColor(model, rectangle));
 			graphics.setColor(new Color(colors[0]));
 			graphics.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
@@ -65,7 +65,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 		}
 		highlightParents(graphics, model, rectangle, colorProvider, labelProvider);
 	}
-	
+
 	protected void highlightParents(final Graphics2D graphics, final ITreeModel<IRectangle<N>> model, final IRectangle<N> rectangle, final IColorProvider<N, Color> colorProvider, final ILabelProvider<N> labelProvider) {
 		/* NOP */
 	}
@@ -96,7 +96,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 		if (fastRenderingSupported.booleanValue()) {
 			final double m = w>h?w:h;
 			final int hw = w>>1; // that's the center
-			final int hh = h>>1; 
+			final int hh = h>>1;
 			final int[] pixels = ((DataBufferInt) result.getRaster().getDataBuffer()).getData();
 			for (int y = 0; y < h; y++) {
 				final double dy = (hh-y)*(hh-y);
@@ -105,13 +105,13 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 					final int idx = (int) (range.length * Math.sqrt((hw-x)*(hw-x)+dy)/m);
 					pixels[pos+x] = range[idx];
 				}
-			}			
+			}
 		} else {
 			renderSlow(result, w, h, range);
 		}
 		return result;
 	}
-	
+
 	protected void renderSlow(final BufferedImage image, final int w, final int h, final int[] range) {
 		final double m = w>h?w:h;
 		final int hw = w>>1;
@@ -122,9 +122,9 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 				final int idx = (int) (range.length * Math.sqrt((hw-x)*(hw-x)+dy)/m);
 				image.setRGB(x, y, range[idx]);
 			}
-		}		
+		}
 	}
-	
+
 	protected int[] getColorRange(final Color c) {
 		int[] result = colorMappingRGB.get(c);
 		if (result == null) {
@@ -133,7 +133,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 		}
 		return result;
 	}
-	
+
 	protected Color getDarker(final Color in) {
 		Color out = colorMappingColor.get(in);
 		if (out == null) {
@@ -142,7 +142,7 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 		}
 		return out;
 	}
-	
+
 	protected int[] createColorRange(final Color c) {
 		float r = c.getRed()/255f;
 		float g = c.getGreen()/255f;
@@ -159,9 +159,9 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, Graphi
 		}
 		return result;
 	}
-	
+
 	protected int toRGB(final float r, final float g, final float b) {
 		return (int) (r*255f)<<16 | (int) (g*255f)<<8 | (int) (b*255f);
 	}
-	
+
 }

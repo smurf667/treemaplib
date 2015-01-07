@@ -24,7 +24,7 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, Graphics2D
 	protected final Color normal, highlight;
 	protected final Font font;
 	protected final boolean showRoot;
-	
+
 	/**
 	 * Create the renderer using the given font and label colors. The
 	 * root node is not labeled.
@@ -37,7 +37,7 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, Graphics2D
 	}
 
 	/**
-	 * Create the renderer using the given font and label colors. 
+	 * Create the renderer using the given font and label colors.
 	 * @param aFont the font, must not be <code>null</code>.
 	 * @param aNormalColor the color for painting the label when not selected, must not be <code>null</code>.
 	 * @param aHighlightColor the color for painting the label when selected, must not be <code>null</code>.
@@ -110,7 +110,7 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, Graphics2D
 	 * @param graphics the graphics to set up.
 	 */
 	protected void setupGraphics(final Graphics2D graphics) {
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);		
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
 }

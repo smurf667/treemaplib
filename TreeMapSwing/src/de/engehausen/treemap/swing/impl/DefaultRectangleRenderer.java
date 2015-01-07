@@ -14,7 +14,7 @@ import de.engehausen.treemap.ITreeModel;
  * rectangle using the color provided by the color provider.
  * The rectangle is framed white when it is highlighted.
  * The renderer does not paint any labels.
- * 
+ *
  * @param <N> the type of node being operated on
  */
 public class DefaultRectangleRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color> {

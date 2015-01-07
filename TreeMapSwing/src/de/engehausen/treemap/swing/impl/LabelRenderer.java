@@ -18,7 +18,7 @@ import de.engehausen.treemap.ITreeModel;
  * @param <N> the type of node the rectangles work on.
  */
 public class LabelRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color> {
-	
+
 	protected final Font font;
 	protected final boolean showRoot;
 
@@ -58,7 +58,7 @@ public class LabelRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color
 			}
 		}
 	}
-	
+
 	/**
 	 * Renders a label for the given rectangle if possible. The label is
 	 * rotated 90 degrees if it fits "better" into the rectangle that way.
@@ -85,7 +85,7 @@ public class LabelRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color
 				final int h = bounds.getHeight() - texth;
 				if (w > 0 && h > 0) {
 					graphics.drawString(text, bounds.getX()+w/2, bounds.getY()+h/2+texth);
-				}				
+				}
 			} else {
 				// must fit rotated
 				if (bounds.getWidth() - texth > 0 && bounds.getHeight() - textw > 0) {
