@@ -6,7 +6,7 @@ import de.engehausen.treemap.IRectangle;
 import junit.framework.TestCase;
 
 public class RectangleModelImplTest extends TestCase {
-	
+
 	public void testEmpty() throws Exception {
 		final RectangleModelImpl<String> model = new RectangleModelImpl<String>();
 		assertNull(model.getRoot());
