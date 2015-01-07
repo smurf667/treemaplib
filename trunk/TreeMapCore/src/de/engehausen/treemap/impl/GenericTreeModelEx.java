@@ -7,38 +7,52 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import de.engehausen.treemap.IGenericWeightedTreeModel;
 import de.engehausen.treemap.IIteratorSize;
-import de.engehausen.treemap.IWeightedTreeModel;
+import de.engehausen.treemap.NumberArithmetic;
 
 /**
- * Sample weighted tree model implementation. In addition to the
+ * Sample weighted tree model implementation for generic weights. In addition to the
  * weighted tree model interface this implementation allows adding
  * nodes to the tree, which is of course needed to build the model.
  * @param <N> the type this model holds
+ * @param <T> the weight type.
  */
-public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
+public class GenericTreeModelEx<N, T extends Number> implements IGenericWeightedTreeModel<N, T> {
 
 	protected final Map<N, List<N>> children;
 	protected final Map<N, N> parents;
-	protected final Map<N, Weight> weights;
+	protected final Map<N, T> weights;
+	protected final NumberArithmetic<T> arithmetic;
 
 	/**
 	 * Creates an empty generic tree.
+	 * @param numberArithmetic the arithmetic to use, must not be <code>null</code>.
 	 */
-	public GenericTreeModel() {
-		this(new HashMap<N, List<N>>(32, 0.9f), new HashMap<N, N>(32, 0.9f), new HashMap<N, Weight>(32, 0.9f));
+	public GenericTreeModelEx(final NumberArithmetic<T> numberArithmetic) {
+		this(numberArithmetic, new HashMap<N, List<N>>(32, 0.9f), new HashMap<N, N>(32, 0.9f), new HashMap<N, T>(32, 0.9f));
 	}
 
 	/**
 	 * Creates the tree from the given information.
+	 * @param numberArithmetic the arithmetic to use, must not be <code>null</code>.
 	 * @param childMap mappings "parent to child list", must not be <code>null</code>.
 	 * @param parentMap mappings "child to parent", must not be <code>null</code>.
 	 * @param weightMap weights per node, must not be <code>null</code>.
 	 */
-	public GenericTreeModel(final Map<N, List<N>> childMap, final Map<N, N> parentMap, final Map<N, Weight> weightMap) {
+	public GenericTreeModelEx(final NumberArithmetic<T> numberArithmetic, Map<N, List<N>> childMap, final Map<N, N> parentMap, final Map<N, T> weightMap) {
+		arithmetic = numberArithmetic;
 		children = childMap;
 		parents = parentMap;
 		weights = weightMap;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public NumberArithmetic<T> getArithmetic() {
+		return arithmetic;
 	}
 
 	/**
@@ -49,7 +63,7 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 	 * @param parent the parent of the node; if the parent is <code>null</code>
 	 * the given node will be the root node of the model.
 	 */
-	public void add(final N node, final long weight, final N parent) {
+	public void add(final N node, final T weight, final N parent) {
 		add(node, weight, parent, true);
 	}
 
@@ -63,7 +77,7 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 	 * @param propagateWeights <code>true</code> to propagate the weight of
 	 * the given node upwards to its parents, <code>false</code> otherwise.
 	 */
-	public void add(final N node, final long weight, final N parent, final boolean propagateWeights) {
+	public void add(final N node, final T weight, final N parent, final boolean propagateWeights) {
 		if (parent != null) {
 			parents.put(node, parent);
 			List<N> list = children.get(parent);
@@ -75,7 +89,7 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 			if (propagateWeights) {
 				N runner = getParent(node);
 				while (runner != null) {
-					weights.get(runner).add(weight);
+					weights.put(runner, arithmetic.add(weights.get(runner), weight));
 					runner = getParent(runner);
 				}
 			}
@@ -83,17 +97,13 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 			// this is the root node
 			parents.put(null, node);
 		}
-		weights.put(node, new Weight(weight));
+		weights.put(node, weight);
 	}
 
 	@Override
-	public long getWeight(final N node) {
-		final Weight result = weights.get(node);
-		if (result != null) {
-			return result.get();
-		} else {
-			return 0;
-		}
+	public T getWeight(final N node) {
+		final T result = weights.get(node);
+		return (result != null)?result:arithmetic.zero();
 	}
 
 	@Override
@@ -124,46 +134,6 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * Weight object used for actual nodes of the model.
-	 */
-	protected static class Weight {
-
-		private long weight;
-
-		/**
-		 * Creates a weight with default weight (zero).
-		 */
-		public Weight() {
-			weight = 0;
-		}
-
-		/**
-		 * Creates a weight with the given initial value.
-		 * @param initialWeight the initial weight
-		 */
-		public Weight(final long initialWeight) {
-			weight = initialWeight;
-		}
-
-		/**
-		 * Adds the given amount to the weight.
-		 * @param value the weight to add
-		 */
-		public void add(final long value) {
-			weight += value;
-		}
-
-		/**
-		 * Returns the weight value.
-		 * @return the weight value.
-		 */
-		public long get() {
-			return weight;
-		}
-
 	}
 
 	private static class NodeIterator<N> implements IIteratorSize<N> {

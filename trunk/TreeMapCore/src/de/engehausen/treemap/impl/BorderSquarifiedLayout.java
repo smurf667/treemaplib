@@ -9,7 +9,7 @@ package de.engehausen.treemap.impl;
 public class BorderSquarifiedLayout<N> extends SquarifiedLayout<N> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected final int shrink;
 
 	/**
@@ -31,7 +31,7 @@ public class BorderSquarifiedLayout<N> extends SquarifiedLayout<N> {
 		if (nw > 0 && nh > 0) {
 			return new RectangleImpl<N>(n, x+shrink, y+shrink, nw, nh);
 		} else {
-			return null;			
+			return null;
 		}
 	}
 
