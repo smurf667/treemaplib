@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 
 import de.engehausen.treemap.IColorProvider;
+import de.engehausen.treemap.IGenericTreeMapLayout;
+import de.engehausen.treemap.IGenericWeightedTreeModel;
 import de.engehausen.treemap.ILabelProvider;
 import de.engehausen.treemap.IRectangle;
 import de.engehausen.treemap.IRectangleRenderer;
@@ -33,6 +35,7 @@ import de.engehausen.treemap.ITreeModel;
 import de.engehausen.treemap.IWeightedTreeModel;
 import de.engehausen.treemap.impl.BuildControl;
 import de.engehausen.treemap.impl.FIFO;
+import de.engehausen.treemap.impl.GenericSquarifiedLayout;
 import de.engehausen.treemap.impl.SquarifiedLayout;
 import de.engehausen.treemap.swt.impl.DefaultColorProvider;
 import de.engehausen.treemap.swt.impl.DefaultRectangleRenderer;
@@ -40,12 +43,12 @@ import de.engehausen.treemap.swt.impl.DefaultRectangleRenderer;
 /**
  * Tree map UI widget. It displays information represented in a {@link IWeightedTreeModel}
  * as a tree map and supports navigation inside of the model.
- * 
+ *
  * @param <N> the type of node the backing weighted tree model uses.
  */
 public class TreeMap<N> extends Canvas implements PaintListener, ControlListener, MouseMoveListener, MouseListener {
 
-	protected IWeightedTreeModel<N> model;
+	protected ITreeModel<N> model;
 	protected ITreeMapLayout<N> layout;
 	protected ITreeModel<IRectangle<N>> rectangles;
 	protected IRectangle<N> selected;
@@ -67,7 +70,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Creates the tree map.
-	 * 
+	 *
 	 * @param composite the parent composite, must not be <code>null</code>.
 	 * @param supportNavigation <code>true</code> if navigation through
 	 * left/right mouse clicks is supported, <code>false</code> otherwise.
@@ -78,7 +81,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 		addControlListener(this);
 		addMouseMoveListener(this);
 		if (supportNavigation) {
-			addMouseListener(this);			
+			addMouseListener(this);
 		}
 	}
 
@@ -90,7 +93,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Adds the given listener for selection change events.
-	 * 
+	 *
 	 * @param aListener the listener to add, must not be <code>null</code>
 	 * and must not already have been added.
 	 */
@@ -103,7 +106,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Removes the given change event listener.
-	 * 
+	 *
 	 * @param aListener the listener to remove
 	 */
 	public void removeSelectionChangeListener(final ISelectionChangeListener<N> aListener) {
@@ -198,20 +201,20 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 							if (!currentRoot.equals(last)) {
 								currentRoot = last;
 								recalculate();
-							}							
+							}
 						}
 					}
 					break;
 				case 3:
 					final N parent = model.getParent(currentRoot);
-					if (parent != null) {						
+					if (parent != null) {
 						currentRoot = parent;
 						recalculate();
 					}
 					break;
 				default:
 					break;
-			}			
+			}
 		}
 	}
 
@@ -219,7 +222,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * Sets the model to use in this tree map.
 	 * @param aModel the model to use; must not be <code>null</code>.
 	 */
-	public void setTreeModel(final IWeightedTreeModel<N> aModel) {
+	public void setTreeModel(final ITreeModel<N> aModel) {
 		if (layout == null) {
 			layout = new SquarifiedLayout<N>(2);
 		}
@@ -231,13 +234,41 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	}
 
 	/**
+	 * Sets the model to use in this tree map.
+	 * @param aModel the model to use; must not be <code>null</code>.
+	 */
+	public <T extends Number> void setTreeModel(final IGenericWeightedTreeModel<N, T> aModel) {
+		if (layout == null) {
+			layout = new GenericSquarifiedLayout<N, T>(2);
+		}
+		model = aModel;
+		currentRoot = aModel.getRoot();
+		selected = null;
+		rectangles = null;
+		recalculate();
+	}
+
+	/**
+	 * @deprecated use {@link #getCurrentTreeModel()} instead
 	 * Returns the model currently being used by the tree map.
 	 * @return the model currently being used by the tree map, may be <code>null</code>.
 	 */
 	public IWeightedTreeModel<N> getTreeModel() {
+		if (model instanceof IWeightedTreeModel) {
+			return (IWeightedTreeModel<N>) model;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the model currently being used by the tree map.
+	 * @return the model currently being used by the tree map, may be <code>null</code>.
+	 */
+	public ITreeModel<N> getCurrentTreeModel() {
 		return model;
 	}
-	
+
 	/**
 	 * Recalculates the rectangle tree model and internal image
 	 * in a separate thread.
@@ -282,7 +313,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			drawBusy(event);
 		}
 	}
-	
+
 	/**
 	 * Called when the tree map is busy during rendering.
 	 * @param event the paint event used for rendering.
@@ -322,7 +353,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			setImage(result);
 		}
 	}
-	
+
 	protected void setImage(final Image img) {
 		if (image != null) {
 			image.dispose();
@@ -356,18 +387,18 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 							queue.push(i.next());
 						}
 					}
-				}				
+				}
 			} finally {
 				ident.dispose();
 			}
 		}
 	}
-	
+
 	protected void render(final PaintEvent event, final ITreeModel<IRectangle<N>> rects, final IRectangle<N> rect) {
 		renderer.render(event, rects, rect, colorProvider, labelProvider);
 	}
 
-	
+
 	@Override
 	public void controlMoved(ControlEvent controlevent) {
 		// ignore
@@ -390,7 +421,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	}
 
 	/**
-	 * Try to select a rectangle at the given coordinates (which 
+	 * Try to select a rectangle at the given coordinates (which
 	 * are relative to the widget).
 	 * @param x x coordinate
 	 * @param y y coordinate
@@ -458,11 +489,11 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * @param <N> the type of node the models use
 	 */
 	private static class Worker<N> implements Runnable {
-		
+
 		private final BuildControl buildControl;
 		private final TreeMap<N> treeMap;
 		private final int width, height;
-		
+
 		public Worker(final TreeMap<N> aMap, final BuildControl aControl) {
 			treeMap = aMap;
 			buildControl = aControl;
@@ -471,20 +502,28 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			height = bounds.height;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void run() {
-			final ITreeModel<IRectangle<N>> result = treeMap.layout.layout(treeMap.model, treeMap.currentRoot, width, height, buildControl);
+			final ITreeModel<IRectangle<N>> result;
+			if (treeMap.layout instanceof IGenericTreeMapLayout) {
+				result = ((IGenericTreeMapLayout<N, Number>) treeMap.layout).layout((IGenericWeightedTreeModel<N, Number>) treeMap.model, treeMap.currentRoot, width, height, buildControl);
+			} else if (treeMap.layout instanceof ITreeMapLayout) {
+				result = treeMap.layout.layout((IWeightedTreeModel<N>) treeMap.model, treeMap.currentRoot, width, height, buildControl);
+			} else {
+				throw new IllegalStateException("cannot handle model with layout "+treeMap.layout);
+			}
 			if (!buildControl.isCanceled()) {
 				synchronized (treeMap) {
-					treeMap.buildControl = null;					
+					treeMap.buildControl = null;
 					treeMap.rectangles = result;
 					final IRectangle<N> rootNode = result.getRoot();
 					if (rootNode != null) {
-						treeMap.currentRoot = rootNode.getNode();					
+						treeMap.currentRoot = rootNode.getNode();
 					}
 				}
 				// repaint in UI thread async...
-				treeMap.getDisplay().asyncExec(new Runnable() {					
+				treeMap.getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						if (!treeMap.isDisposed()) {
@@ -503,5 +542,5 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			}
 		}
 	}
-		
+
 }
