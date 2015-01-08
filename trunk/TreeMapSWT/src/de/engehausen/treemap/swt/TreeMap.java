@@ -7,9 +7,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -46,7 +43,7 @@ import de.engehausen.treemap.swt.impl.DefaultRectangleRenderer;
  *
  * @param <N> the type of node the backing weighted tree model uses.
  */
-public class TreeMap<N> extends Canvas implements PaintListener, ControlListener, MouseMoveListener, MouseListener {
+public class TreeMap<N> extends Canvas implements PaintListener, ControlListener {
 
 	protected ITreeModel<N> model;
 	protected ITreeMapLayout<N> layout;
@@ -79,9 +76,13 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 		super(composite, SWT.NO_BACKGROUND);
 		addPaintListener(this);
 		addControlListener(this);
-		addMouseMoveListener(this);
 		if (supportNavigation) {
-			addMouseListener(this);
+			/*
+			 * added this here just to keep compatibility with the old code, but
+			 * it should be invoked from outside of the TreeMap class, which
+			 * should have no idea of controllers.
+			 */
+			new TreeMapMouseController<N>(this);
 		}
 	}
 
@@ -173,49 +174,6 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 */
 	public IColorProvider<N, Color> getColorProvider() {
 		return colorProvider;
-	}
-
-	@Override
-	public void mouseDoubleClick(final MouseEvent mouseevent) {
-		// ignore
-	}
-
-	@Override
-	public void mouseDown(final MouseEvent mouseevent) {
-		// ignore
-	}
-
-	@Override
-	public void mouseUp(final MouseEvent mouseevent) {
-		if (model != null && currentRoot != null) {
-			switch (mouseevent.button) {
-				case 1:
-					if (selected != null) {
-						N runner = selected.getNode();
-						if (!runner.equals(currentRoot)) {
-							N last;
-							do {
-								last = runner;
-								runner = model.getParent(runner);
-							} while (!currentRoot.equals(runner));
-							if (!currentRoot.equals(last)) {
-								currentRoot = last;
-								recalculate();
-							}
-						}
-					}
-					break;
-				case 3:
-					final N parent = model.getParent(currentRoot);
-					if (parent != null) {
-						currentRoot = parent;
-						recalculate();
-					}
-					break;
-				default:
-					break;
-			}
-		}
 	}
 
 	/**
@@ -407,17 +365,6 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	@Override
 	public void controlResized(ControlEvent controlevent) {
 		recalculate();
-	}
-
-	@Override
-	public void mouseMove(final MouseEvent event) {
-		final boolean notBuilding;
-		synchronized (this) {
-			notBuilding = buildControl == null;
-		}
-		if (notBuilding) {
-			selectRectangle(event.x, event.y);
-		}
 	}
 
 	/**
