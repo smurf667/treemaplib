@@ -8,11 +8,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -46,7 +43,7 @@ import de.engehausen.treemap.swing.impl.DefaultRectangleRenderer;
  *
  * @param <N> the type of node the backing weighted tree model uses.
  */
-public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotionListener, MouseListener {
+public class TreeMap<N> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,10 +75,25 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 	 */
 	public TreeMap(final boolean supportNavigation) {
 		super();
-		addComponentListener(this);
-		addMouseMotionListener(this);
+
+		/*
+		 * this is done here to assure that calling setSize(...) will trigger
+		 * the recomputation of the layout.
+		 */
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(final ComponentEvent componentevent) {
+				recalculate();
+			}
+		});
+
 		if (supportNavigation) {
-			addMouseListener(this);
+			/*
+			 * added this here just to keep compatibility with the old code, but
+			 * it should be invoked from outside of the TreeMap class, which
+			 * should have no idea of controllers.
+			 */
+			new TreeMapMouseController<N>(this);
 		}
 	}
 
@@ -295,57 +307,6 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 		renderer.render(g, rects, rect, colorProvider, labelProvider);
 	}
 
-	@Override
-	public void componentResized(final ComponentEvent componentevent) {
-		recalculate();
-	}
-
-	@Override
-	public void mouseReleased(final MouseEvent mouseevent) {
-		if (model != null && currentRoot != null) {
-			switch (mouseevent.getButton()) {
-				case MouseEvent.BUTTON1:
-					if (selected != null) {
-						N runner = selected.getNode();
-						if (!runner.equals(currentRoot)) {
-							N last;
-							do {
-								last = runner;
-								runner = model.getParent(runner);
-							} while (!currentRoot.equals(runner));
-							if (!currentRoot.equals(last)) {
-								currentRoot = last;
-								recalculate();
-							}
-						}
-					}
-					break;
-				case MouseEvent.BUTTON3:
-					final N parent = model.getParent(currentRoot);
-					if (parent != null) {
-						currentRoot = parent;
-						recalculate();
-					}
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
-	@Override
-	public void mouseMoved(final MouseEvent event) {
-		final boolean notBuilding;
-		synchronized (this) {
-			notBuilding = buildControl == null;
-		}
-		if (notBuilding) {
-			if (selectRectangle(event.getX(), event.getY())) {
-				repaint();
-			}
-		}
-	}
-
 	/**
 	 * Try to select a rectangle at the given coordinates (which
 	 * are relative to the widget).
@@ -371,46 +332,6 @@ public class TreeMap<N> extends JPanel implements ComponentListener, MouseMotion
 		} else {
 			return false;
 		}
-	}
-
-	@Override
-	public void componentHidden(final ComponentEvent componentevent) {
-		// don't care
-	}
-
-	@Override
-	public void componentMoved(final ComponentEvent componentevent) {
-		// don't care
-	}
-
-	@Override
-	public void componentShown(final ComponentEvent componentevent) {
-		// don't care
-	}
-
-	@Override
-	public void mouseDragged(final MouseEvent event) {
-		// don't care
-	}
-
-	@Override
-	public void mouseClicked(final MouseEvent mouseevent) {
-		// don't care
-	}
-
-	@Override
-	public void mouseEntered(final MouseEvent mouseevent) {
-		// don't care
-	}
-
-	@Override
-	public void mouseExited(final MouseEvent mouseevent) {
-		// don't care
-	}
-
-	@Override
-	public void mousePressed(final MouseEvent mouseevent) {
-		// don't care
 	}
 
 	/**
