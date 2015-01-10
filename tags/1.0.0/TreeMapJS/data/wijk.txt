@@ -1,0 +1,10 @@
+{ "label": "root", "weight": 24, "children": [
+  { "label": "a", "weight": 6 },
+  { "label": "b", "weight": 6 },
+  { "label": "c", "weight": 4 },
+  { "label": "d", "weight": 3 },
+  { "label": "e", "weight": 2 },
+  { "label": "f", "weight": 2 },
+  { "label": "g", "weight": 1 }
+]
+}

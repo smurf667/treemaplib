@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:nodes="http://www.engehausen.de/ns/tm" targetNamespace="http://www.engehausen.de/ns/tm">
+  <xs:element name="node">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="nodes:node" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="label" type="xs:string" use="required" />
+      <xs:attribute name="weight" type="xs:NMTOKEN" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
