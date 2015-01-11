@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>de.engehausen</groupId>
-		<artifactId>TreeMapBuild</artifactId>
+		<artifactId>treemap.build</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
 		<relativePath>../TreeMapBuild/pom.xml</relativePath>
 	</parent>
