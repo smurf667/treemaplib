@@ -180,7 +180,7 @@ public class GenericSquarifiedLayout<N, T extends Number> implements IGenericTre
 				final N c = nodes.get(i);
 				final T wc = model.getWeight(c);
 				// compute height according to weight, but fill anyway for last node
-				final int step = (i!=last)?(int) Math.round((r.h*wc.doubleValue())/dw):(r.h-(sy-r.y));
+				final int step = (i!=last)?(int) Math.round((r.h*wc.doubleValue())/dw):r.h-(sy-r.y);
 				if (step > 0) {
 					final RectangleImpl<N> child = createRectangle(c, sx, sy, r.w, step);
 					if (child != null) {
@@ -212,7 +212,7 @@ public class GenericSquarifiedLayout<N, T extends Number> implements IGenericTre
 				final N c = nodes.get(i);
 				final T wc = model.getWeight(c);
 				// compute width according to weight, but fill anyway for last node
-				final int step = (i!=last)?(int) Math.round((r.w*wc.doubleValue())/dw):(r.w-(sx-r.x));
+				final int step = (i!=last)?(int) Math.round((r.w*wc.doubleValue())/dw):r.w-(sx-r.x);
 				if (step > 0) {
 					final RectangleImpl<N> child = createRectangle(c, sx, sy, step, r.h);
 					if (child != null) {
