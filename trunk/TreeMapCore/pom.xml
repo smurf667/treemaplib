@@ -20,8 +20,6 @@
 	</scm>
 	<dependencies/>
 	<build>
-		<sourceDirectory>src</sourceDirectory><!-- TODO leave out our use src/main/java  -->
-		<testSourceDirectory>test</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
