@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.engehausen</groupId>
+		<artifactId>TreeMapBuild</artifactId>
+		<version>1.0.1-SNAPSHOT</version>
+		<relativePath>../TreeMapBuild/pom.xml</relativePath>
+	</parent>
+	<artifactId>treemap.eclipse</artifactId>
+	<packaging>pom</packaging>
+	<name>TreeMapEclipse</name>
+	<url>https://code.google.com/p/treemaplib/</url>
+	<description>Contains the tree map for Eclipse.</description>
+	<scm>
+		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/TreeMapEclipse</developerConnection>
+		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2FTreeMapEclipse</url>
+	</scm>
+	<properties>
+		<local.site>${project.build.directory}/local-site</local.site>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>de.engehausen</groupId>
+			<artifactId>treemap.core</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.engehausen</groupId>
+			<artifactId>treemap.swt</artifactId>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId><version>2.9</version>
+				<executions>
+					<execution>
+						<id>unpack-dependencies</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeGroupIds>de.engehausen</includeGroupIds>
+							<excludeTransitive>true</excludeTransitive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<!-- sorry, very archaic, but it works -->
+							<target>
+								<mkdir dir="${local.site}"/>
+								<copy file="src/main/config/MANIFEST.MF" tofile="${project.build.directory}/manifest.txt"/>
+								<copy file="src/main/config/feature.xml" tofile="${project.build.directory}/feature.xml"/>
+								<copy file="src/main/config/site.xml" tofile="${local.site}/site.xml"/>
+								<replaceregexp match="0\.0\.0" replace="${project.version}" flags="g">
+									<fileset dir="${project.build.directory}">
+										<include name="manifest.txt"/>
+										<include name="feature.xml"/>
+										<include name="local-site/site.xml"/>
+									</fileset>
+								</replaceregexp>
+								<!-- build the plugin .jar -->
+								<jar destfile="${local.site}/plugins/de.engehausen.treemap_${project.version}.jar" manifest="${project.build.directory}/manifest.txt">
+									<fileset dir="${project.build.directory}/dependency" excludes="META-INF"/>
+								</jar>
+								<!-- build the feature .jar -->
+								<jar destfile="${local.site}/features/de.engehausen.treemap_${project.version}.jar" basedir="${project.build.directory}" includes="feature.xml"/>
+								<!-- build the site .zip -->
+								<zip destfile="${project.build.directory}/de.engehausen.treemap-${project.version}-site.zip">
+									<fileset dir="${local.site}">
+										<include name="site.xml"/>
+										<include name="**/*.jar"/>
+									</fileset>
+								</zip>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
