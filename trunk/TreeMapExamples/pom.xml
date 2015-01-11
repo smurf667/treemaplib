@@ -15,8 +15,8 @@
 	<description>Contains the basic infrastructure for the Swing and SWT examples.</description>
 	<scm>
 		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/TreeMapExamples</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2FTreeMapExamples</url>
+		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/treemap.examples</developerConnection>
+		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2Ftreemap.examples</url>
 	</scm>
 	<dependencies>
 		<dependency>

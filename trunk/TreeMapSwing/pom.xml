@@ -15,8 +15,8 @@
 	<description>Contains the tree map for Swing.</description>
 	<scm>
 		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/TreeMapSwing</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2FTreeMapSwing</url>
+		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/treemap.swing</developerConnection>
+		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2Ftreemap.swing</url>
 	</scm>
 	<dependencies>
 		<dependency>
