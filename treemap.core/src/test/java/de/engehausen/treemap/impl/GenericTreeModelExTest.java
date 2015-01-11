@@ -3,40 +3,45 @@ package de.engehausen.treemap.impl;
 import java.math.BigDecimal;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
 import de.engehausen.treemap.IIteratorSize;
 import de.engehausen.treemap.ITreeModel;
 import de.engehausen.treemap.Node;
 import de.engehausen.treemap.NodeEx;
 
-public class GenericTreeModelExTest extends TestCase {
+public class GenericTreeModelExTest {
 
 	/**
 	 * Tests a new empty generic tree model.
 	 * @throws Exception in case of error.
 	 */
-	public void testEmpty() throws Exception {
+	@Test
+	public void testEmpty() {
 		final ITreeModel<Node> model = new GenericTreeModelEx<Node, BigDecimal>(DefaultArithmetics.bigDecimals());
-		assertNull(model.getRoot());
+		Assert.assertNull(model.getRoot());
 	}
 
 	/**
 	 * Tests a root-only generic tree model.
 	 * @throws Exception in case of error.
 	 */
-	public void testRoot() throws Exception {
+	@Test
+	public void testRoot() {
 		final GenericTreeModelEx<NodeEx<BigDecimal>, BigDecimal> model = new GenericTreeModelEx<NodeEx<BigDecimal>, BigDecimal>(DefaultArithmetics.bigDecimals());
 		final BigDecimal number = BigDecimal.valueOf(127);
 		final NodeEx<BigDecimal> root = new NodeEx<BigDecimal>("root", number);
 		model.add(root, number, null);
-		assertSame(root, model.getRoot());
+		Assert.assertSame(root, model.getRoot());
 	}
 
 	/**
 	 * Tests a small generic tree model.
 	 * @throws Exception in case of error.
 	 */
-	public void testSmall() throws Exception {
+	@Test
+	public void testSmall() {
 		final GenericTreeModelEx<NodeEx<BigDecimal>, BigDecimal> model = new GenericTreeModelEx<NodeEx<BigDecimal>, BigDecimal>(DefaultArithmetics.bigDecimals());
 		final NodeEx<BigDecimal> root = new NodeEx<BigDecimal>("root", BigDecimal.ZERO);
 		final NodeEx<BigDecimal> a = new NodeEx<BigDecimal>("a", BigDecimal.ONE);
@@ -46,28 +51,29 @@ public class GenericTreeModelExTest extends TestCase {
 		model.add(a, BigDecimal.ONE, root, true);
 		model.add(b, two, root, true);
 
-		assertTrue(model.hasChildren(root));
-		assertFalse(model.hasChildren(a));
-		assertFalse(model.hasChildren(b));
-		assertSame(root, model.getParent(a));
-		assertSame(root, model.getParent(b));
+		Assert.assertTrue(model.hasChildren(root));
+		Assert.assertFalse(model.hasChildren(a));
+		Assert.assertFalse(model.hasChildren(b));
+		Assert.assertSame(root, model.getParent(a));
+		Assert.assertSame(root, model.getParent(b));
 
-		assertEquals(BigDecimal.valueOf(3L), model.getWeight(root));
-		assertEquals(BigDecimal.ONE, model.getWeight(a));
-		assertEquals(two, model.getWeight(b));
+		Assert.assertEquals(BigDecimal.valueOf(3L), model.getWeight(root));
+		Assert.assertEquals(BigDecimal.ONE, model.getWeight(a));
+		Assert.assertEquals(two, model.getWeight(b));
 
 		final Iterator<NodeEx<BigDecimal>> i = model.getChildren(root);
-		assertTrue(i instanceof IIteratorSize<?>);
-		assertEquals(2, ((IIteratorSize<?>) i).size());
-		assertSame(a, i.next());
-		assertSame(b, i.next());
+		Assert.assertTrue(i instanceof IIteratorSize<?>);
+		Assert.assertEquals(2, ((IIteratorSize<?>) i).size());
+		Assert.assertSame(a, i.next());
+		Assert.assertSame(b, i.next());
 	}
 
 	/**
 	 * Test a chain (root-a-b-c) hierarchy in the generic tree model.
 	 * @throws Exception in case of error.
 	 */
-	public void testChain() throws Exception {
+	@Test
+	public void testChain() {
 		final GenericTreeModelEx<NodeEx<BigDecimal>, BigDecimal> model = new GenericTreeModelEx<NodeEx<BigDecimal>, BigDecimal>(DefaultArithmetics.bigDecimals());
 		final NodeEx<BigDecimal> root = new NodeEx<BigDecimal>("root", BigDecimal.ZERO);
 		final NodeEx<BigDecimal> a = new NodeEx<BigDecimal>("a", BigDecimal.ONE);
@@ -77,10 +83,10 @@ public class GenericTreeModelExTest extends TestCase {
 		model.add(a, BigDecimal.ONE, root, true);
 		model.add(b, BigDecimal.ONE, a, true);
 		model.add(c, BigDecimal.ONE, b, true);
-		assertEquals(BigDecimal.valueOf(3L), model.getWeight(root));
-		assertEquals(BigDecimal.valueOf(3L), model.getWeight(a));
-		assertEquals(BigDecimal.valueOf(2L), model.getWeight(b));
-		assertEquals(BigDecimal.ONE, model.getWeight(c));
+		Assert.assertEquals(BigDecimal.valueOf(3L), model.getWeight(root));
+		Assert.assertEquals(BigDecimal.valueOf(3L), model.getWeight(a));
+		Assert.assertEquals(BigDecimal.valueOf(2L), model.getWeight(b));
+		Assert.assertEquals(BigDecimal.ONE, model.getWeight(c));
 	}
 
 }

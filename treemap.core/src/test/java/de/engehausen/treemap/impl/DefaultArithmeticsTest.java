@@ -3,16 +3,18 @@ package de.engehausen.treemap.impl;
 import java.math.BigDecimal;
 
 import org.junit.Assert;
+import org.junit.Test;
 
-import junit.framework.TestCase;
 import de.engehausen.treemap.NumberArithmetic;
 
-public class DefaultArithmeticsTest extends TestCase {
+public class DefaultArithmeticsTest {
 
+	@Test
 	public void testDouble() {
 		perform(DefaultArithmetics.doubles(), Double.valueOf(1L), Double.valueOf(2L));
 	}
 
+	@Test
 	public void testBigDecimal() {
 		perform(DefaultArithmetics.bigDecimals(), BigDecimal.ONE, BigDecimal.valueOf(2L));
 	}

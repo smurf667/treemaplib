@@ -7,65 +7,67 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
 import de.engehausen.treemap.ICancelable;
+import de.engehausen.treemap.IRectangle;
 import de.engehausen.treemap.ITreeModel;
 import de.engehausen.treemap.IWeightedTreeModel;
 import de.engehausen.treemap.Node;
-import de.engehausen.treemap.IRectangle;
 import de.engehausen.treemap.TreeModel;
 
-public class SquarifiedLayoutTest extends TestCase {
+public class SquarifiedLayoutTest {
 
 	/**
 	 * Tests layout with a small layout.
-	 * @throws Exception in case of error.
 	 */
-	public void testSmallLayout() throws Exception {
+	@Test
+	public void testSmallLayout() {
 		final IWeightedTreeModel<Node> model = TreeModel.SMALL;
 		final SquarifiedLayout<Node> layout = new SquarifiedLayout<Node>(Integer.MAX_VALUE);
 		final ITreeModel<IRectangle<Node>> rmodel = layout.layout(model, model.getRoot(), 400, 300);
-		assertNotNull(rmodel);
+		Assert.assertNotNull(rmodel);
 		final List<IRectangle<Node>> list = toList(rmodel);
-		assertEquals(3, list.size());
+		Assert.assertEquals(3, list.size());
 		final IRectangle<Node> root = list.get(0);
 		final IRectangle<Node> one = list.get(1);
 		final IRectangle<Node> two = list.get(2);
-		assertEquals(one.getWidth(), two.getWidth());
-		assertEquals(one.getHeight(), two.getHeight());
+		Assert.assertEquals(one.getWidth(), two.getWidth());
+		Assert.assertEquals(one.getHeight(), two.getHeight());
 		final int area = 2*one.getWidth()*two.getHeight();
-		assertEquals(root.getWidth()*root.getHeight(), area);
+		Assert.assertEquals(root.getWidth()*root.getHeight(), area);
 	}
 
 	/**
 	 * Tests layout when the area to layout is getting too small.
-	 * @throws Exception in case of error.
 	 */
-	public void testTooSmall() throws Exception {
+	@Test
+	public void testTooSmall() {
 		final IWeightedTreeModel<Node> model = TreeModel.DEEP_BINARY;
 		final SquarifiedLayout<Node> layout = new SquarifiedLayout<Node>(Integer.MAX_VALUE);
 		final ITreeModel<IRectangle<Node>> rmodel1 = layout.layout(model, model.getRoot(), 2, 2);
 		final ITreeModel<IRectangle<Node>> rmodel2 = layout.layout(model, model.getRoot(), 2000, 2000);
-		assertNotNull(rmodel1);
-		assertNotNull(rmodel2);
+		Assert.assertNotNull(rmodel1);
+		Assert.assertNotNull(rmodel2);
 		final List<IRectangle<Node>> list1 = toList(rmodel1);
 		final List<IRectangle<Node>> list2 = toList(rmodel2);
-		assertNotNull(list1);
-		assertNotNull(list2);
+		Assert.assertNotNull(list1);
+		Assert.assertNotNull(list2);
 		// check that rectangle building is aborted, when rectangles become too small
-		assertTrue(list1.size() < list2.size());
+		Assert.assertTrue(list1.size() < list2.size());
 	}
 
 	/**
 	 * Tests layout with the layout given in the <a href="http://www.win.tue.nl/~vanwijk/stm.pdf">Wijk paper</a>.
-	 * @throws Exception in case of error.
 	 */
-	public void testWijkLayout() throws Exception {
+	@Test
+	public void testWijkLayout() {
 		final IWeightedTreeModel<Node> model = TreeModel.WIJK;
 		final SquarifiedLayout<Node> engine = new SquarifiedLayout<Node>(Integer.MAX_VALUE);
 		final ITreeModel<IRectangle<Node>> rmodel = engine.layout(model, model.getRoot(), 600, 400);
 		final List<IRectangle<Node>> list = toList(rmodel);
-		assertEquals(8, list.size());
+		Assert.assertEquals(8, list.size());
 		int last = Integer.MAX_VALUE;
 		final Map<String, String> positions = new HashMap<String, String>();
 		final List<String> expectedNames = new ArrayList<String>(8);
@@ -80,11 +82,11 @@ public class SquarifiedLayoutTest extends TestCase {
 		// verify that areas are not getting bigger with each entry
 		for (int i = 0; i < 8; i++) {
 			final IRectangle<Node> node = list.get(i);
-			assertEquals(expectedNames.get(i), node.getNode().getName());
+			Assert.assertEquals(expectedNames.get(i), node.getNode().getName());
 			// record mapping node name to node position
 			positions.put(node.getNode().getName(), node.getX()+","+node.getY());
 			final int next = node.getWidth()*node.getHeight();
-			assertTrue(last >= next);
+			Assert.assertTrue(last >= next);
 			last = next;
 		}
 		final Map<String, String> expected = new HashMap<String, String>();
@@ -96,15 +98,15 @@ public class SquarifiedLayoutTest extends TestCase {
 		expected.put("f2", "420,233");
 		expected.put("g1", "540,233");
 		for (Map.Entry<String, String> entry : expected.entrySet()) {
-			assertEquals(entry.getValue(), positions.get(entry.getKey()));
+			Assert.assertEquals(entry.getValue(), positions.get(entry.getKey()));
 		}
 	}
 
 	/**
 	 * Tests layout with <b>big</b> irregular layout.
-	 * @throws Exception in case of error.
 	 */
-	public void testBigLayout() throws Exception {
+	@Test
+	public void testBigLayout() {
 		final IWeightedTreeModel<Node> model = TreeModel.DEEP_UNBALANCED;
 		// memory stress and depth cut off test
 		assertDepth(new SquarifiedLayout<Node>(Integer.MAX_VALUE).layout(model, model.getRoot(), 10000, 10000), 11);
@@ -115,39 +117,38 @@ public class SquarifiedLayoutTest extends TestCase {
 
 	/**
 	 * Tests layout of a "flat" hierarchy.
-	 * @throws Exception in case of error.
 	 */
-	public void testFlatLayout() throws Exception {
+	@Test
+	public void testFlatLayout() {
 		final IWeightedTreeModel<Node> model = TreeModel.MANY;
 		final SquarifiedLayout<Node> layout = new SquarifiedLayout<Node>(Integer.MAX_VALUE);
 		final ITreeModel<IRectangle<Node>> result = layout.layout(model, model.getRoot(), 1920, 1080);
 		assertDepth(result, 1);
 		final Iterator<IRectangle<Node>> i = result.getChildren(result.getRoot());
-		assertTrue(i.hasNext());
+		Assert.assertTrue(i.hasNext());
 		// node with highest weight must come first
-		assertEquals("node0", i.next().getNode().getName());
+		Assert.assertEquals("node0", i.next().getNode().getName());
 	}
 
 	/**
 	 * Tests layout with a non-root node.
-	 * @throws Exception in case of error.
 	 */
-	public void testNonRootLayout() throws Exception {
+	@Test
+	public void testNonRootLayout() {
 		final IWeightedTreeModel<Node> model = TreeModel.DEEP_BINARY;
 		final SquarifiedLayout<Node> engine = new SquarifiedLayout<Node>(4);
 		final Node node = model.getChildren(model.getRoot()).next();
 		final ITreeModel<IRectangle<Node>> rectangles = engine.layout(model, node, 512, 512);
-		assertEquals((int) (Math.pow(2, 4+1)-1), toList(rectangles).size());
-		assertEquals(node, rectangles.getRoot().getNode());
+		Assert.assertEquals((int) (Math.pow(2, 4+1)-1), toList(rectangles).size());
+		Assert.assertEquals(node, rectangles.getRoot().getNode());
 	}
 
 	/**
 	 * Check depth by descending the branch of the first child always.
 	 * @param model the model to test
 	 * @param expectedDepth the expected depth
-	 * @throws Exception in case of error
 	 */
-	protected void assertDepth(final ITreeModel<IRectangle<Node>> model, final int expectedDepth) throws Exception {
+	protected void assertDepth(final ITreeModel<IRectangle<Node>> model, final int expectedDepth) {
 		int depth = 0;
 		IRectangle<Node> runner = model.getRoot();
 		do {
@@ -158,32 +159,33 @@ public class SquarifiedLayoutTest extends TestCase {
 				runner = null;
 			}
 		} while (runner != null);
-		assertEquals(expectedDepth, depth);
+		Assert.assertEquals(expectedDepth, depth);
 	}
 
 	/**
 	 * Tests layout with <b>big</b> regular layout.
-	 * @throws Exception in case of error.
 	 */
-	public void testBigBinaryLayout() throws Exception {
+	@Test
+	public void testBigBinaryLayout() {
 		final IWeightedTreeModel<Node> model = TreeModel.DEEP_BINARY;
 		final SquarifiedLayout<Node> engine = new SquarifiedLayout<Node>(4);
 		final ITreeModel<IRectangle<Node>> rectangles = engine.layout(model, model.getRoot(), 512, 512);
-		assertEquals((int) (Math.pow(2, 4+1)-1), toList(rectangles).size());
+		Assert.assertEquals((int) (Math.pow(2, 4+1)-1), toList(rectangles).size());
 	}
 
 	/**
 	 * Tests <i>canceling</i> a layout computation.
-	 * @throws Exception in case of error
+	 * @throws InterruptedException in case of error
 	 */
-	public void testLayoutCancelation() throws Exception {
+	@Test
+	public void testLayoutCancelation() throws InterruptedException {
 		// run a couple of times
 		for (int i = 0; i < 5; i++) {
 			cancelTest();
 		}
 	}
 
-	private void cancelTest() throws Exception {
+	private void cancelTest() throws InterruptedException {
 		final Cancel cancel = new Cancel();
 		final Thread t = new Thread(new Runnable() {
 			@Override
@@ -202,9 +204,9 @@ public class SquarifiedLayoutTest extends TestCase {
 		final long begin = System.currentTimeMillis();
 		t.join();
 		final long end = System.currentTimeMillis();
-		assertNotNull(cancel.getResult());
+		Assert.assertNotNull(cancel.getResult());
 		// thread join must be faster than 1s - okay this is a shaky test, may fail on a quantum computer
-		assertTrue(end-begin < 1000L);
+		Assert.assertTrue(end-begin < 1000L);
 	}
 
 	protected List<IRectangle<Node>> toList(final ITreeModel<IRectangle<Node>> model) {

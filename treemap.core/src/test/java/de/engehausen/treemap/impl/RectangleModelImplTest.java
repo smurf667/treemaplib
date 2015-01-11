@@ -2,38 +2,49 @@ package de.engehausen.treemap.impl;
 
 import java.util.Iterator;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import de.engehausen.treemap.IRectangle;
-import junit.framework.TestCase;
 
-public class RectangleModelImplTest extends TestCase {
+public class RectangleModelImplTest {
 
-	public void testEmpty() throws Exception {
+	@Test
+	public void testEmpty() {
 		final RectangleModelImpl<String> model = new RectangleModelImpl<String>();
-		assertNull(model.getRoot());
+		Assert.assertNull(model.getRoot());
 	}
 
-	public void testRoot() throws Exception {
+	@Test
+	public void testRoot() {
 		final RectangleModelImpl<String> model = new RectangleModelImpl<String>(new RectangleImpl<String>("hello", 0, 0, 0, 0));
 		final IRectangle<String> root = model.getRoot();
-		assertNotNull(root);
-		assertEquals("hello", root.getNode());
-		assertNull(model.getParent(root));
+		Assert.assertNotNull(root);
+		Assert.assertEquals("hello", root.getNode());
+		Assert.assertNull(model.getParent(root));
 	}
 
-	public void testChildren1() throws Exception {
+	@Test
+	public void testChildren1() {
 		final RectangleModelImpl<String> model = new RectangleModelImpl<String>(new RectangleImpl<String>("hello", 0, 0, 0, 0));
 		final IRectangle<String> root = model.getRoot();
 		final RectangleImpl<String> child = new RectangleImpl<String>("child", 0, 0, 0, 0);
 		model.addChild(root, child);
-		assertTrue(model.hasChildren(root));
+		Assert.assertTrue(model.hasChildren(root));
 		final Iterator<IRectangle<String>> it = model.getChildren(root);
-		assertNotNull(it);
-		assertTrue(it.hasNext());
+		Assert.assertNotNull(it);
+		Assert.assertTrue(it.hasNext());
 		final IRectangle<String> c = it.next();
-		assertNotNull(c);
-		assertFalse(it.hasNext());
-		assertFalse(model.hasChildren(c));
-		assertSame(root, model.getParent(c));
+		Assert.assertNotNull(c);
+		Assert.assertFalse(it.hasNext());
+		Assert.assertFalse(model.hasChildren(c));
+		Assert.assertSame(root, model.getParent(c));
+	}
+
+	@Test
+	public void testToString() {
+		final RectangleModelImpl<String> model = new RectangleModelImpl<String>(new RectangleImpl<String>("hello", 0, 0, 0, 0));
+		Assert.assertTrue(model.toString().contains("hello"));
 	}
 
 }
