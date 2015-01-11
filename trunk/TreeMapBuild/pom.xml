@@ -38,12 +38,12 @@
 	</properties>
 	<modules>
 		<module>../treemap.core</module>
-		<module>../TreeMapExamples</module>
-		<module>../TreeMapSwing</module>
-		<module>../TreeMapSwingExamples</module>
-		<module>../TreeMapSWT</module>
-		<module>../TreeMapSWTExamples</module>
-		<module>../TreeMapEclipse</module>
+		<module>../treemap.examples</module>
+		<module>../treemap.swing</module>
+		<module>../treemap.swing.examples</module>
+		<module>../treemap.swt</module>
+		<module>../treemap.swt.examples</module>
+		<module>../treemap.eclipse</module>
 	</modules>
 	<repositories>
 		<repository>
