@@ -6,7 +6,7 @@
 		<groupId>de.engehausen</groupId>
 		<artifactId>treemap.build</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
-		<relativePath>../TreeMapBuild/pom.xml</relativePath>
+		<relativePath>../treemap.build/pom.xml</relativePath>
 	</parent>
 	<artifactId>treemap.swt</artifactId>
 	<packaging>jar</packaging>
