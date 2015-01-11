@@ -174,7 +174,7 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 				final N c = nodes.get(i);
 				final long wc = model.getWeight(c);
 				// compute height according to weight, but fill anyway for last node
-				final int step = (i!=last)?(int) Math.round((r.h*wc)/dw):(r.h-(sy-r.y));
+				final int step = (i!=last)?(int) Math.round((r.h*wc)/dw):r.h-(sy-r.y);
 				if (step > 0) {
 					final RectangleImpl<N> child = createRectangle(c, sx, sy, r.w, step);
 					if (child != null) {
@@ -206,7 +206,7 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 				final N c = nodes.get(i);
 				final long wc = model.getWeight(c);
 				// compute width according to weight, but fill anyway for last node
-				final int step = (i!=last)?(int) Math.round((r.w*wc)/dw):(r.w-(sx-r.x));
+				final int step = (i!=last)?(int) Math.round((r.w*wc)/dw):r.w-(sx-r.x);
 				if (step > 0) {
 					final RectangleImpl<N> child = createRectangle(c, sx, sy, step, r.h);
 					if (child != null) {
