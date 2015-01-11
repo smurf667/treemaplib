@@ -1,15 +1,17 @@
 package de.engehausen.treemap.impl;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class RectangleImplTest extends TestCase {
+public class RectangleImplTest {
 
-	public void testSimple() throws Exception {
+	@Test
+	public void testSimple() {
 		final RectangleImpl<String> rect = new RectangleImpl<String>(null, 4, 8, 16, 32);
-		assertEquals(4, rect.getX());
-		assertEquals(8, rect.getY());
-		assertEquals(16, rect.getWidth());
-		assertEquals(32, rect.getHeight());
+		Assert.assertEquals(4, rect.getX());
+		Assert.assertEquals(8, rect.getY());
+		Assert.assertEquals(16, rect.getWidth());
+		Assert.assertEquals(32, rect.getHeight());
 		final int[][] coords = {
 				{ 0, 0 }, { 12, 0 }, { 100, 0 },
 				{ 0, 10 }, /*the only one inside the rect*/{ 12, 10 }, { 100, 10 },
@@ -21,63 +23,67 @@ public class RectangleImplTest extends TestCase {
 			false, false, false
 		};
 		for (int i = expected.length-1; i >= 0; i--) {
-			assertEquals(expected[i], rect.contains(coords[i][0], coords[i][1]));
+			Assert.assertTrue(expected[i] == rect.contains(coords[i][0], coords[i][1]));
 		}
 	}
 
-	public void testCompare() throws Exception {
+	@Test
+	public void testCompare() {
 		final RectangleImpl<String> a = new RectangleImpl<String>("a", 4, 8, 16, 32);
 		final RectangleImpl<String> b = new RectangleImpl<String>("a", 4, 8, 16, 32);
 		final RectangleImpl<String> c = new RectangleImpl<String>("c", 4, 8, 32, 16);
-		assertEquals(a, b);
-		assertEquals(b, a);
-		assertFalse(a.equals(c));
-		assertFalse(c.equals(a));
+		Assert.assertEquals(a, b);
+		Assert.assertEquals(b, a);
+		Assert.assertFalse(a.equals(c));
+		Assert.assertFalse(c.equals(a));
 	}
 
-	public void testSplitHorizontally() throws Exception {
+	@Test
+	public void testSplitHorizontally() {
 		final RectangleImpl<String> a = new RectangleImpl<String>("a", 0, 0, 16, 32);
 		RectangleImpl<String>[] sub = a.split(0.5);
-		assertNotNull(sub);
-		assertEquals(2, sub.length);
-		assertEquals(0, sub[0].getX());
-		assertEquals(0, sub[0].getY());
-		assertEquals(16, sub[0].getWidth());
-		assertEquals(16, sub[0].getHeight());
-		assertEquals(0, sub[1].getX());
-		assertEquals(16, sub[1].getY());
-		assertEquals(16, sub[1].getWidth());
-		assertEquals(16, sub[1].getHeight());
+		Assert.assertNotNull(sub);
+		Assert.assertEquals(2, sub.length);
+		Assert.assertEquals(0, sub[0].getX());
+		Assert.assertEquals(0, sub[0].getY());
+		Assert.assertEquals(16, sub[0].getWidth());
+		Assert.assertEquals(16, sub[0].getHeight());
+		Assert.assertEquals(0, sub[1].getX());
+		Assert.assertEquals(16, sub[1].getY());
+		Assert.assertEquals(16, sub[1].getWidth());
+		Assert.assertEquals(16, sub[1].getHeight());
 	}
 
-	public void testSplitVertically() throws Exception {
+	@Test
+	public void testSplitVertically() {
 		final RectangleImpl<String> a = new RectangleImpl<String>("hello world", 0, 0, 32, 16);
 		RectangleImpl<String>[] sub = a.split(0.5);
-		assertNotNull(sub);
-		assertEquals(2, sub.length);
-		assertEquals(0, sub[0].getX());
-		assertEquals(0, sub[0].getY());
-		assertEquals(16, sub[0].getWidth());
-		assertEquals(16, sub[0].getHeight());
-		assertEquals(16, sub[1].getX());
-		assertEquals(0, sub[1].getY());
-		assertEquals(16, sub[1].getWidth());
-		assertEquals(16, sub[1].getHeight());
+		Assert.assertNotNull(sub);
+		Assert.assertEquals(2, sub.length);
+		Assert.assertEquals(0, sub[0].getX());
+		Assert.assertEquals(0, sub[0].getY());
+		Assert.assertEquals(16, sub[0].getWidth());
+		Assert.assertEquals(16, sub[0].getHeight());
+		Assert.assertEquals(16, sub[1].getX());
+		Assert.assertEquals(0, sub[1].getY());
+		Assert.assertEquals(16, sub[1].getWidth());
+		Assert.assertEquals(16, sub[1].getHeight());
 	}
 
-	public void testSplitProportionally() throws Exception {
+	@Test
+	public void testSplitProportionally() {
 		final RectangleImpl<String> a = new RectangleImpl<String>("test", 17, 97, 100, 13);
 		RectangleImpl<String>[] sub = a.split(0.1);
-		assertNotNull(sub);
-		assertEquals(2, sub.length);
-		assertEquals(17, sub[0].getX());
-		assertEquals(97, sub[0].getY());
-		assertEquals(10, sub[0].getWidth());
-		assertEquals(13, sub[0].getHeight());
-		assertEquals(17+10, sub[1].getX());
-		assertEquals(97, sub[1].getY());
-		assertEquals(90, sub[1].getWidth());
-		assertEquals(13, sub[1].getHeight());
+		Assert.assertNotNull(sub);
+		Assert.assertEquals(2, sub.length);
+		Assert.assertEquals(17, sub[0].getX());
+		Assert.assertEquals(97, sub[0].getY());
+		Assert.assertEquals(10, sub[0].getWidth());
+		Assert.assertEquals(13, sub[0].getHeight());
+		Assert.assertEquals(17+10, sub[1].getX());
+		Assert.assertEquals(97, sub[1].getY());
+		Assert.assertEquals(90, sub[1].getWidth());
+		Assert.assertEquals(13, sub[1].getHeight());
 	}
 
 }
