@@ -15,8 +15,8 @@
 	<description>Contains the tree map for Eclipse.</description>
 	<scm>
 		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/TreeMapEclipse</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2FTreeMapEclipse</url>
+		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/treemap.eclipse</developerConnection>
+		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2Ftreemap.eclipse</url>
 	</scm>
 	<properties>
 		<local.site>${project.build.directory}/local-site</local.site>
