@@ -15,8 +15,8 @@
 	<description>Contains the core tree map API and implementation.</description>
 	<scm>
 		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/TreeMapCore</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2FTreeMapCore</url>
+		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/treemap.core</developerConnection>
+		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2Ftreemap.core</url>
 	</scm>
 	<dependencies/>
 	<build>
