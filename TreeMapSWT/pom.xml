@@ -36,8 +36,40 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-manifest</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<!-- sorry, very archaic, but it works -->
+							<target>
+								<copy file="src/main/config/MANIFEST.MF" tofile="${project.build.directory}/manifest.txt"/>
+								<replaceregexp match="0\.0\.0" replace="${project.version}" flags="g">
+									<fileset dir="${project.build.directory}">
+										<include name="manifest.txt"/>
+									</fileset>
+								</replaceregexp>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${project.build.directory}/manifest.txt</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
-		<!-- TODO the Manifest! -->
 	</build>
 	
 </project>
