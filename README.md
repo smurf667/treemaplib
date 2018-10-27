@@ -12,8 +12,8 @@ The idea of tree maps seems to go back to Prof. Ben Shneiderman (University of M
 This library primarily exists as the UI foundation for my other project, [treemapmat](https://github.com/smurf667/treemapmat/).
 
 ## Downloads
- * [Download current release](http://home.arcor.de/jan.engehausen/tm/treemaplib_all_1.0.0.zip)
- * [Download Eclipse site](http://home.arcor.de/jan.engehausen/tm/de.engehausen.treemap_1.0.0_site.zip)
+ * [Download current release](http://www.engehausen.de/jan/tm/treemaplib_all_1.0.1-SNAPSHOT.zip)
+ * [Download Eclipse site](http://www.engehausen.de/jan/tm/de.engehausen.treemap-1.0.1-SNAPSHOT-site.zip)
 
 # The library
 The library consists of a "core" which is then used by the different versions, i.e. Swing and SWT at the moment. The JavaScript library is special in that it is not built on the core and currently a bit of a toy, although usable, of course.
