@@ -10,16 +10,14 @@
 	<url>https://code.google.com/p/treemaplib/</url>
 	<description>This project provides a TreeMap widget in separate small modules for Swing, SWT (standalone and Eclipse feature) and JavaScript (at present more of a toy).</description>
 	<scm>
-		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/</url>
+		<url>https://github.com/smurf667/treemaplib</url>
 	</scm>
 	<developers>
 		<developer>
 			<id>smurf667</id>
 			<name>Jan Engehausen</name>
 			<email>smurf667@gmail.com</email>
-			<url>http://code.google.com/u/smurf667@gmail.com/</url>
+			<url>https://github.com/smurf667</url>
 			<properties>
 				<picUrl>http://www.ibm.com/developerworks/i/p-jengehausen.jpg</picUrl>
 			</properties>
