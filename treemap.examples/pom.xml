@@ -5,19 +5,14 @@
 	<parent>
 		<groupId>de.engehausen</groupId>
 		<artifactId>treemap.build</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 		<relativePath>../treemap.build/pom.xml</relativePath>
 	</parent>
 	<artifactId>treemap.examples</artifactId>
 	<packaging>jar</packaging>
 	<name>TreeMapExamples</name>
-	<url>https://code.google.com/p/treemaplib/</url>
+	<url>https://github.com/smurf667/treemaplib/</url>
 	<description>Contains the basic infrastructure for the Swing and SWT examples.</description>
-	<scm>
-		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/treemap.examples</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2Ftreemap.examples</url>
-	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>de.engehausen</groupId>

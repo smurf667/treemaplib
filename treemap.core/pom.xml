@@ -5,19 +5,14 @@
 	<parent>
 		<groupId>de.engehausen</groupId>
 		<artifactId>treemap.build</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 		<relativePath>../treemap.build/pom.xml</relativePath>
 	</parent>
 	<artifactId>treemap.core</artifactId>
 	<packaging>jar</packaging>
 	<name>TreeMapCore</name>
-	<url>https://code.google.com/p/treemaplib/</url>
+	<url>https://github.com/smurf667/treemaplib/</url>
 	<description>Contains the core tree map API and implementation.</description>
-	<scm>
-		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/treemap.core</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2Ftreemap.core</url>
-	</scm>
 	<dependencies/>
 	<build>
 		<plugins>
@@ -57,6 +52,13 @@
 						<manifestFile>${project.build.directory}/manifest.txt</manifestFile>
 					</archive>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

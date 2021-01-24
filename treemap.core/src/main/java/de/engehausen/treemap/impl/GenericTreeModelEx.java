@@ -27,7 +27,7 @@ public class GenericTreeModelEx<N, T extends Number> implements IGenericWeighted
 
 	/**
 	 * Creates an empty generic tree.
-	 * @param numberArithmetic the arithmetic to use, must not be <code>null</code>.
+	 * @param numberArithmetic the arithmetic to use, must not be {@code null}.
 	 */
 	public GenericTreeModelEx(final NumberArithmetic<T> numberArithmetic) {
 		this(numberArithmetic, new HashMap<N, List<N>>(32, 0.9f), new HashMap<N, N>(32, 0.9f), new HashMap<N, T>(32, 0.9f));
@@ -35,10 +35,10 @@ public class GenericTreeModelEx<N, T extends Number> implements IGenericWeighted
 
 	/**
 	 * Creates the tree from the given information.
-	 * @param numberArithmetic the arithmetic to use, must not be <code>null</code>.
-	 * @param childMap mappings "parent to child list", must not be <code>null</code>.
-	 * @param parentMap mappings "child to parent", must not be <code>null</code>.
-	 * @param weightMap weights per node, must not be <code>null</code>.
+	 * @param numberArithmetic the arithmetic to use, must not be {@code null}.
+	 * @param childMap mappings "parent to child list", must not be {@code null}.
+	 * @param parentMap mappings "child to parent", must not be {@code null}.
+	 * @param weightMap weights per node, must not be {@code null}.
 	 */
 	public GenericTreeModelEx(final NumberArithmetic<T> numberArithmetic, Map<N, List<N>> childMap, final Map<N, N> parentMap, final Map<N, T> weightMap) {
 		arithmetic = numberArithmetic;
@@ -58,9 +58,9 @@ public class GenericTreeModelEx<N, T extends Number> implements IGenericWeighted
 	/**
 	 * Adds the given node to the parent and propagates the nodes'
 	 * weight upwards to the root.
-	 * @param node the node to add, must not be <code>null</code>.
+	 * @param node the node to add, must not be {@code null}.
 	 * @param weight the weight of the node
-	 * @param parent the parent of the node; if the parent is <code>null</code>
+	 * @param parent the parent of the node; if the parent is {@code null}
 	 * the given node will be the root node of the model.
 	 */
 	public void add(final N node, final T weight, final N parent) {
@@ -70,9 +70,9 @@ public class GenericTreeModelEx<N, T extends Number> implements IGenericWeighted
 	/**
 	 * Adds the given node to the parent and propagates the nodes'
 	 * weight upwards to the root.
-	 * @param node the node to add, must not be <code>null</code>.
+	 * @param node the node to add, must not be {@code null}.
 	 * @param weight the weight of the node
-	 * @param parent the parent of the node; if the parent is <code>null</code>
+	 * @param parent the parent of the node; if the parent is {@code null}
 	 * the given node will be the root node of the model.
 	 * @param propagateWeights <code>true</code> to propagate the weight of
 	 * the given node upwards to its parents, <code>false</code> otherwise.

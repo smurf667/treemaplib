@@ -28,9 +28,9 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, PaintEvent
 	/**
 	 * Create the renderer using the given font and label colors. The
 	 * root node is not labeled.
-	 * @param aFontName the font name, must not be <code>null</code>.
-	 * @param aNormalColor the color for painting the label when not selected, must not be <code>null</code>.
-	 * @param aHighlightColor the color for painting the label when selected, must not be <code>null</code>.
+	 * @param aFontName the font name, must not be {@code null}.
+	 * @param aNormalColor the color for painting the label when not selected, must not be {@code null}.
+	 * @param aHighlightColor the color for painting the label when selected, must not be {@code null}.
 	 */
 	public ScalingLabelRenderer(final String aFontName, final RGB aNormalColor, final RGB aHighlightColor) {
 		this(aFontName, aNormalColor, aHighlightColor, false);
@@ -38,9 +38,9 @@ public class ScalingLabelRenderer<N> implements IRectangleRenderer<N, PaintEvent
 
 	/**
 	 * Create the renderer using the given font and label colors.
-	 * @param aFontName the font, must not be <code>null</code>.
-	 * @param aNormalColor the color for painting the label when not selected, must not be <code>null</code>.
-	 * @param aHighlightColor the color for painting the label when selected, must not be <code>null</code>.
+	 * @param aFontName the font, must not be {@code null}.
+	 * @param aNormalColor the color for painting the label when not selected, must not be {@code null}.
+	 * @param aHighlightColor the color for painting the label when selected, must not be {@code null}.
 	 * @param showsRoot <code>true</code> if the root node label should be shown, <code>false</code> otherwise.
 	 */
 	public ScalingLabelRenderer(final String aFontName, final RGB aNormalColor, final RGB aHighlightColor, final boolean showsRoot) {

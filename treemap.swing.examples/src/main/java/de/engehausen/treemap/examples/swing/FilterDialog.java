@@ -67,8 +67,8 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 
 	/**
 	 * Creates the dialog for the given file viewer.
-	 * @param parent the file viewer, must not be <code>null</code>.
-	 * @param title the title of the dialog, must not be <code>null</code>
+	 * @param parent the file viewer, must not be {@code null}.
+	 * @param title the title of the dialog, must not be {@code null}
 	 */
 	public FilterDialog(final FileViewer parent, final String title) {
 		super(parent, title, true);
@@ -210,8 +210,8 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 	/**
 	 * Load a list of model entries from the given file. If reading from
 	 * the file is not possible, a default list is returned.
-	 * @param fileName the file to load from; must not be <code>null</code>.
-	 * @return a list of model entries, never <code>null</code>.
+	 * @param fileName the file to load from; must not be {@code null}.
+	 * @return a list of model entries, never {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<ModelEntry> loadEntries(final String fileName) {
@@ -262,7 +262,7 @@ public class FilterDialog extends JDialog implements IColorProvider<FileInfo, Co
 
 	/**
 	 * Returns the default entries for the color provider.
-	 * @return the default entries for the color provider, never <code>null</code>.
+	 * @return the default entries for the color provider, never {@code null}.
 	 */
 	protected List<ModelEntry> defaultEntries() {
 		final List<ModelEntry> result = new ArrayList<ModelEntry>();

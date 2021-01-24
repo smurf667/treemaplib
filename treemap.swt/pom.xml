@@ -5,19 +5,14 @@
 	<parent>
 		<groupId>de.engehausen</groupId>
 		<artifactId>treemap.build</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 		<relativePath>../treemap.build/pom.xml</relativePath>
 	</parent>
 	<artifactId>treemap.swt</artifactId>
 	<packaging>jar</packaging>
 	<name>TreeMapSWT</name>
-	<url>https://code.google.com/p/treemaplib/</url>
+	<url>https://github.com/smurf667/treemaplib/</url>
 	<description>Contains the tree map for SWT.</description>
-	<scm>
-		<connection>scm:svn:http://kongcurrent.googlecode.com/svn/trunk/</connection>
-		<developerConnection>scm:svn:https://treemaplib.googlecode.com/svn/trunk/treemap.swt</developerConnection>
-		<url>https://code.google.com/p/treemaplib/source/browse/#svn%2Ftrunk%2Ftreemap.swt</url>
-	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>de.engehausen</groupId>
@@ -25,8 +20,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.swt</groupId>
-			<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>${swt.artifactId}</artifactId>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

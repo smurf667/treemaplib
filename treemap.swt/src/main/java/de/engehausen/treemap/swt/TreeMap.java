@@ -59,7 +59,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Create the tree map (supporting navigation) for the given composite.
-	 * @param composite the parent composite, must not be <code>null</code>.
+	 * @param composite the parent composite, must not be {@code null}.
 	 */
 	public TreeMap(final Composite composite) {
 		this(composite, true);
@@ -68,7 +68,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	/**
 	 * Creates the tree map.
 	 *
-	 * @param composite the parent composite, must not be <code>null</code>.
+	 * @param composite the parent composite, must not be {@code null}.
 	 * @param supportNavigation <code>true</code> if navigation through
 	 * left/right mouse clicks is supported, <code>false</code> otherwise.
 	 */
@@ -95,7 +95,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	/**
 	 * Adds the given listener for selection change events.
 	 *
-	 * @param aListener the listener to add, must not be <code>null</code>
+	 * @param aListener the listener to add, must not be {@code null}
 	 * and must not already have been added.
 	 */
 	public void addSelectionChangeListener(final ISelectionChangeListener<N> aListener) {
@@ -119,7 +119,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	/**
 	 * Sets the layout for the tree map. If this method is not called,
 	 * a default squarified layout with maximum nesting level two is used
-	 * @param aLayout the layout to use, must not be <code>null</code>
+	 * @param aLayout the layout to use, must not be {@code null}
 	 */
 	public void setTreeMapLayout(final ITreeMapLayout<N> aLayout) {
 		layout = aLayout;
@@ -128,7 +128,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	/**
 	 * Sets the rectangle renderer the tree map will use. If no renderer
 	 * is set, a default will be used.
-	 * @param aRenderer the rectangle renderer, must not be <code>null</code>.
+	 * @param aRenderer the rectangle renderer, must not be {@code null}.
 	 */
 	public void setRectangleRenderer(final IRectangleRenderer<N, PaintEvent, Color> aRenderer) {
 		renderer = aRenderer;
@@ -145,7 +145,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	/**
 	 * Sets the label provider the tree map will use during rendering.
 	 * If no provider is set no labels are displayed.
-	 * @param aProvider the label provider; may be <code>null</code>.
+	 * @param aProvider the label provider; may be {@code null}.
 	 */
 	public void setLabelProvider(final ILabelProvider<N> aProvider) {
 		labelProvider = aProvider;
@@ -162,7 +162,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	/**
 	 * Sets the color provider the tree map will use during rendering.
 	 * If no provider is set a default will be used.
-	 * @param aProvider the color provider; may be <code>null</code>.
+	 * @param aProvider the color provider; may be {@code null}.
 	 */
 	public void setColorProvider(final IColorProvider<N, Color> aProvider) {
 		colorProvider = aProvider;
@@ -178,7 +178,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Sets the model to use in this tree map.
-	 * @param aModel the model to use; must not be <code>null</code>.
+	 * @param aModel the model to use; must not be {@code null}.
 	 */
 	public void setTreeModel(final ITreeModel<N> aModel) {
 		if (layout == null) {
@@ -193,7 +193,8 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Sets the model to use in this tree map.
-	 * @param aModel the model to use; must not be <code>null</code>.
+	 * @param aModel the model to use; must not be {@code null}.
+	 * @param <T> the number type of the weights
 	 */
 	public <T extends Number> void setTreeModel(final IGenericWeightedTreeModel<N, T> aModel) {
 		if (layout == null) {
@@ -209,7 +210,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	/**
 	 * @deprecated use {@link #getCurrentTreeModel()} instead
 	 * Returns the model currently being used by the tree map.
-	 * @return the model currently being used by the tree map, may be <code>null</code>.
+	 * @return the model currently being used by the tree map, may be {@code null}.
 	 */
 	public IWeightedTreeModel<N> getTreeModel() {
 		if (model instanceof IWeightedTreeModel) {
@@ -221,7 +222,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Returns the model currently being used by the tree map.
-	 * @return the model currently being used by the tree map, may be <code>null</code>.
+	 * @return the model currently being used by the tree map, may be {@code null}.
 	 */
 	public ITreeModel<N> getCurrentTreeModel() {
 		return model;
@@ -400,7 +401,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * coordinates.
 	 * @param x the x coordinate
 	 * @param y the y coordinate
-	 * @return a rectangle of the current rectangle tree, or <code>null</code>
+	 * @return a rectangle of the current rectangle tree, or {@code null}
 	 * if no rectangle can be found.
 	 */
 	protected IRectangle<N> findRectangle(final int x, final int y) {

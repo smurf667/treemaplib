@@ -15,7 +15,6 @@ public class GenericTreeModelExTest {
 
 	/**
 	 * Tests a new empty generic tree model.
-	 * @throws Exception in case of error.
 	 */
 	@Test
 	public void testEmpty() {
@@ -25,7 +24,6 @@ public class GenericTreeModelExTest {
 
 	/**
 	 * Tests a root-only generic tree model.
-	 * @throws Exception in case of error.
 	 */
 	@Test
 	public void testRoot() {
@@ -38,7 +36,6 @@ public class GenericTreeModelExTest {
 
 	/**
 	 * Tests a small generic tree model.
-	 * @throws Exception in case of error.
 	 */
 	@Test
 	public void testSmall() {
@@ -70,7 +67,6 @@ public class GenericTreeModelExTest {
 
 	/**
 	 * Test a chain (root-a-b-c) hierarchy in the generic tree model.
-	 * @throws Exception in case of error.
 	 */
 	@Test
 	public void testChain() {

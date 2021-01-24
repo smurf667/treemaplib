@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<defs>
+	<radialGradient id="cushion" spreadMethod="reflect">
+		<stop offset="0%" stop-color="white" stop-opacity="0.5" />
+		<stop offset="100%" stop-color="white" stop-opacity="0" />
+	</radialGradient>
+</defs>
+<g id="rectangles" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="large">
+	<rect x="0" y="0" width="1280" height="720" fill="#00a000"/>
+	<rect x="0" y="0" width="1280" height="720" fill="url('#cushion')"/>
+	<text transform="translate(640,360)">root</text>
+	<rect x="0" y="0" width="640" height="360" fill="#a00000"/>
+	<rect x="0" y="0" width="640" height="360" fill="url('#cushion')"/>
+	<text transform="translate(320,180)">a6</text>
+	<rect x="0" y="360" width="640" height="360" fill="#00a000"/>
+	<rect x="0" y="360" width="640" height="360" fill="url('#cushion')"/>
+	<text transform="translate(320,540)">b6</text>
+	<rect x="640" y="0" width="366" height="420" fill="#00a000"/>
+	<rect x="640" y="0" width="366" height="420" fill="url('#cushion')"/>
+	<text transform="translate(823,210) rotate(270)">c4</text>
+	<rect x="1006" y="0" width="274" height="420" fill="#00a000"/>
+	<rect x="1006" y="0" width="274" height="420" fill="url('#cushion')"/>
+	<text transform="translate(1143,210) rotate(270)">d3</text>
+	<rect x="640" y="420" width="256" height="300" fill="#00a000"/>
+	<rect x="640" y="420" width="256" height="300" fill="url('#cushion')"/>
+	<text transform="translate(768,570) rotate(270)">e2</text>
+	<rect x="896" y="420" width="256" height="300" fill="#00a000"/>
+	<rect x="896" y="420" width="256" height="300" fill="url('#cushion')"/>
+	<text transform="translate(1024,570) rotate(270)">f2</text>
+	<rect x="1152" y="420" width="128" height="300" fill="#00a000"/>
+	<rect x="1152" y="420" width="128" height="300" fill="url('#cushion')"/>
+	<text transform="translate(1216,570) rotate(270)">g1</text>
+</g>
+</svg>

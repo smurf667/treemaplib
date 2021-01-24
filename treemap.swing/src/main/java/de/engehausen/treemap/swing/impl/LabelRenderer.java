@@ -24,7 +24,7 @@ public class LabelRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color
 
 	/**
 	 * Create the renderer using the given font.
-	 * @param aFont the font, must not be <code>null</code>.
+	 * @param aFont the font, must not be {@code null}.
 	 */
 	public LabelRenderer(final Font aFont) {
 		this(aFont, false);
@@ -32,7 +32,7 @@ public class LabelRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color
 
 	/**
 	 * Create the renderer using the given font.
-	 * @param aFont the font, must not be <code>null</code>.
+	 * @param aFont the font, must not be {@code null}.
 	 * @param showsRoot set to <code>true</code> if the root node label
 	 * should be rendered, <code>false</code> otherwise.
 	 */

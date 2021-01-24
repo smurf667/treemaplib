@@ -11,9 +11,9 @@ public interface ISelectionChangeListener<N> {
 	/**
 	 * Indicates a selection change in the tree map.
 	 *
-	 * @param model the model the rectangle comes from; never <code>null</code>.
+	 * @param model the model the rectangle comes from; never {@code null}.
 	 * @param rectangle the rectangle the tree map now shows as selected.
-	 * @param label the label of the rectangle; may be <code>null</code>.
+	 * @param label the label of the rectangle; may be {@code null}.
 	 */
 	void selectionChanged(ITreeModel<IRectangle<N>> model, IRectangle<N> rectangle, String label);
 

@@ -18,8 +18,8 @@ public class Messages {
 	/**
 	 * Returns a string for the given key in the currently active language
 	 * or an appropriate fall back string.
-	 * @param key the key for the value to look up, must not be <code>null</code>.
-	 * @return the language string, or "!<key>!" if none can be found
+	 * @param key the key for the value to look up, must not be {@code null}.
+	 * @return the language string, or {@code !<key>!} if none can be found
 	 */
 	public static String getString(final String key) {
 		try {
@@ -31,7 +31,7 @@ public class Messages {
 
 	/**
 	 * Checks if the given key exists in the underlying bundles object.
-	 * @param key the key to check; must not be <code>null</code>
+	 * @param key the key to check; must not be {@code null}
 	 * @return <code>true</code> if the key exists, <code>false</code> otherwise.
 	 */
 	public static boolean contains(final String key) {

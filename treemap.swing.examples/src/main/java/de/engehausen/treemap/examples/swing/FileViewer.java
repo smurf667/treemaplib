@@ -158,7 +158,7 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 	 * in the messages properties file. If the item has an <code>.mne</code>
 	 * suffix defined, a mnemonic will be set.
 	 * @param key the lookup key in the messages properties
-	 * @return the menu object, never <code>null</code>.
+	 * @return the menu object, never {@code null}.
 	 */
 	protected JMenu createJMenu(final String key) {
 		final JMenu result = new JMenu(Messages.getString(key));
@@ -176,7 +176,7 @@ public class FileViewer extends JFrame implements ActionListener, ISelectionChan
 	 * suffix defined, a mnemonic will be set. The frames' action listener
 	 * is added to the menu.
 	 * @param key the lookup key in the messages properties
-	 * @return the menu item object, never <code>null</code>.
+	 * @return the menu item object, never {@code null}.
 	 */
 	protected JMenuItem createJMenuItem(final String key) {
 		final JMenuItem result = new JMenuItem(Messages.getString(key));

@@ -234,12 +234,12 @@ public class SquarifiedLayout<N> implements ITreeMapLayout<N>, ICancelable, Seri
 
 	/**
 	 * Returns the given rectangle.
-	 * @param n the node of the rectangle, must not be <code>null</code>
+	 * @param n the node of the rectangle, must not be {@code null}
 	 * @param x starting x coordinate
 	 * @param y starting y coordinate
 	 * @param w width
 	 * @param h height
-	 * @return the given rectangle, or <code>null</code> if the rectangle
+	 * @return the given rectangle, or {@code null} if the rectangle
 	 * cannot be built due to constraints.
 	 */
 	protected RectangleImpl<N> createRectangle(final N n, final int x, final int y, final int w, final int h) {

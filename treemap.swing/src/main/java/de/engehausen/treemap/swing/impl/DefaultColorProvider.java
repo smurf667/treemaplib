@@ -44,7 +44,7 @@ public class DefaultColorProvider<N> implements IColorProvider<N, Color>, Serial
 
 	/**
 	 * Creates the color provider with the given colors.
-	 * @param colorArray the colors to use, must not be <code>null</code>.
+	 * @param colorArray the colors to use, must not be {@code null}.
 	 */
 	public DefaultColorProvider(final Color[] colorArray) {
 		colors = colorArray;

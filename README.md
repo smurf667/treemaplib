@@ -12,8 +12,7 @@ The idea of tree maps seems to go back to Prof. Ben Shneiderman (University of M
 This library primarily exists as the UI foundation for my other project, [treemapmat](https://github.com/smurf667/treemapmat/).
 
 ## Downloads
- * [Download current release](http://www.engehausen.de/jan/tm/treemaplib_all_1.0.1-SNAPSHOT.zip)
- * [Download Eclipse site](http://www.engehausen.de/jan/tm/de.engehausen.treemap-1.0.1-SNAPSHOT-site.zip)
+The `.jar` files and the Eclipse site can be found [here](https://github.com/smurf667/treemaplib/releases/).
 
 # The library
 The library consists of a "core" which is then used by the different versions, i.e. Swing and SWT at the moment. The JavaScript library is special in that it is not built on the core and currently a bit of a toy, although usable, of course.
@@ -43,5 +42,10 @@ It shows the disk space usage of a given folder and sub folders using the tree m
 ![Screenshot of file viewer](https://raw.githubusercontent.com/smurf667/treemaplib/master/javadoc/screenshots/swt_fileviewer_small.jpg)
 
 You can also view this in [big](https://raw.githubusercontent.com/smurf667/treemaplib/master/javadoc/screenshots/swt_fileviewer.png).
+
+To build, issue `mvn install` in `treemap.build`. After you've built you can run the file viewer example:
+
+* Swing: `mvn initialize -f run-fileviewer-swing.xml`
+* SWT: `mvn initialize -f run-fileviewer-swt.xml`
 
 Congratulations, you have read this far! There is not much more to add; I recommend you try it out and/or read the JavaDoc. 

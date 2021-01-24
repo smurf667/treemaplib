@@ -45,7 +45,7 @@ public class DefaultColorProvider<N> implements IColorProvider<N, Color> {
 	/**
 	 * Creates the color provider with the given RGB colors.
 	 * @param device the device the provider uses for creating colors
-	 * @param colorArray the colors to use, must not be <code>null</code>.
+	 * @param colorArray the colors to use, must not be {@code null}.
 	 */
 	public DefaultColorProvider(final Device device, final RGB[] colorArray) {
 		colors = createColors(device, colorArray);

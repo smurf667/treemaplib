@@ -12,9 +12,9 @@ public interface IColorProvider<N, C> {
 
 	/**
 	 * Returns a color for the given rectangle.
-	 * @param model the model the rectangle belongs to, never <code>null</code>
-	 * @param rectangle the rectangle for which to return a color, never <code>null</code>
-	 * @return a color, never <code>null</code>
+	 * @param model the model the rectangle belongs to, never {@code null}
+	 * @param rectangle the rectangle for which to return a color, never {@code null}
+	 * @return a color, never {@code null}
 	 */
 	C getColor(ITreeModel<IRectangle<N>> model, IRectangle<N> rectangle);
 

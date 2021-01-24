@@ -14,7 +14,7 @@ import de.engehausen.treemap.ITreeModel;
  * The leafs are rendered by delegation to a renderer supporting
  * rendering leafs.
  *
- * @param <N>
+ * @param <N> the type of node the renderer supports.
  */
 public class BorderRenderer<N> implements IRectangleRenderer<N, Graphics2D, Color> {
 
