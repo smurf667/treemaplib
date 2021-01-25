@@ -9,8 +9,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -20,6 +22,7 @@ import org.junit.Test;
 import de.engehausen.treemap.Node;
 import de.engehausen.treemap.TreeModel;
 import de.engehausen.treemap.svg.impl.CushionRectangleRenderer;
+import de.engehausen.treemap.svg.impl.XMLConstants;
 
 public class TreeMapTest {
 
@@ -31,7 +34,11 @@ public class TreeMapTest {
 		});
 		map.setRectangleRenderer(new CushionRectangleRenderer<>());
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		map.render(out, 1280, 720, () -> false);
+		final XMLStreamWriter writer = XMLOutputFactory
+			.newInstance()
+			.createXMLStreamWriter(out, XMLConstants.ATTR_ENCODING);
+		map.render(writer, 1280, 720, () -> false);
+		System.out.println(new String(out.toByteArray()));
 		final ByteArrayInputStream bais = new ByteArrayInputStream(out.toByteArray());
 		final XMLInputFactory factory = XMLInputFactory.newInstance();
 		final XMLEventReader reader = factory.createXMLEventReader(new InputStreamReader(bais));

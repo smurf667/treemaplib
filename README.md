@@ -15,7 +15,7 @@ This library primarily exists as the UI foundation for my other project, [treema
 The `.jar` files and the Eclipse site can be found [here](https://github.com/smurf667/treemaplib/releases/).
 
 # The library
-The library consists of a "core" which is then used by the different versions, i.e. Swing and SWT at the moment. The JavaScript library is special in that it is not built on the core and currently a bit of a toy, although usable, of course.
+The library consists of a "core" which is then used by the different versions, i.e. Swing, SWT and SVG support at the moment. The JavaScript library is special in that it is not built on the core and currently a bit of a toy, although usable, of course.
 
 For using the tree map standalone, you need to have `treemap.core-*.jar` on your classpath as well as the appropriate UI portion of the library, i.e. `treemap.swing-*.jar` or `treemap.swt-*.jar`. For use in Eclipse you can simply install the feature, require it in your plugin/feature and you will have access to the core and SWT parts of the library. The JavaScript version can simply be included into an HTML document.
 

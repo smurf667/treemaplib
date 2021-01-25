@@ -1,11 +1,11 @@
 package de.engehausen.treemap.svg.impl;
 
-import java.io.OutputStream;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import de.engehausen.treemap.IRectangle;
 import de.engehausen.treemap.ITreeModel;
 import de.engehausen.treemap.svg.IPrologue;
-import de.engehausen.treemap.svg.TreeMap;
 
 /**
  * Rectangle renderer that attempts to produce a "cushion effect" for
@@ -15,28 +15,46 @@ import de.engehausen.treemap.svg.TreeMap;
  */
 public class CushionRectangleRenderer<N> extends DefaultRectangleRenderer<N> implements IPrologue {
 
-	private static final String GRADIENT_DEF = "<defs>\n" + 
-		"	<radialGradient id=\"cushion\" spreadMethod=\"reflect\">\n" + 
-		"		<stop offset=\"0%\" stop-color=\"white\" stop-opacity=\"0.5\" />\n" + 
-		"		<stop offset=\"100%\" stop-color=\"white\" stop-opacity=\"0\" />\n" + 
-		"	</radialGradient>\n" + 
-		"</defs>\n";
-
+	public static String GRADIENT_ID = "cushion";
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void prologue(final OutputStream out) {
-		TreeMap.write(out, GRADIENT_DEF);
+	public void prologue(final XMLStreamWriter writer) throws XMLStreamException {
+		writer.writeStartElement(XMLConstants.ELEMENT_DEFS);
+		writer.writeStartElement(XMLConstants.ELEMENT_RADIAL_GRADIENT);
+		writer.writeAttribute(XMLConstants.ATTR_ID, GRADIENT_ID);
+		writer.writeAttribute(XMLConstants.ATTR_SPREAD_METHOD, XMLConstants.VALUE_REFLECT);
+		stop(writer, "0%", "0");
+		stop(writer, "100%", "0.5");
+		writer.writeEndElement();
+		writer.writeEndElement();
+	}
+
+	protected void stop(final XMLStreamWriter writer, final String offset, final String opacity) throws XMLStreamException {
+		writer.writeStartElement(XMLConstants.ELEMENT_STOP);
+		writer.writeAttribute(XMLConstants.ATTR_OFFSET, offset);
+		writer.writeAttribute(XMLConstants.ATTR_STOP_OPACITY, opacity);
+		writer.writeEndElement();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void rect(final OutputStream out, final ITreeModel<IRectangle<N>> model, final IRectangle<N> node, final String color) {
-		super.rect(out, model, node, color);
-		TreeMap.write(out, String.format("\t<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"url('#cushion')\"/>\n", node.getX(), node.getY(), node.getWidth(), node.getHeight()));
+	protected void rect(final XMLStreamWriter writer, final ITreeModel<IRectangle<N>> model, final IRectangle<N> node, final String color) {
+		try {
+			super.rect(writer, model, node, color);
+			writer.writeStartElement("rect");
+			writer.writeAttribute(XMLConstants.ATTR_X, Integer.toString(node.getX()));
+			writer.writeAttribute(XMLConstants.ATTR_Y, Integer.toString(node.getY()));
+			writer.writeAttribute(XMLConstants.ATTR_WIDTH, Integer.toString(node.getWidth()));
+			writer.writeAttribute(XMLConstants.ATTR_HEIGHT, Integer.toString(node.getHeight()));
+			writer.writeAttribute(XMLConstants.ATTR_FILL, "url('#cushion')");
+			writer.writeEndElement();
+		} catch (XMLStreamException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }

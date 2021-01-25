@@ -1,9 +1,12 @@
 package de.engehausen.treemap.svg;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import de.engehausen.treemap.ICancelable;
 import de.engehausen.treemap.IColorProvider;
@@ -17,6 +20,7 @@ import de.engehausen.treemap.impl.FIFO;
 import de.engehausen.treemap.impl.SquarifiedLayout;
 import de.engehausen.treemap.svg.impl.DefaultColorProvider;
 import de.engehausen.treemap.svg.impl.DefaultRectangleRenderer;
+import de.engehausen.treemap.svg.impl.XMLConstants;
 
 /**
  * Tree map that can render as SVG to an output stream.
@@ -26,26 +30,24 @@ import de.engehausen.treemap.svg.impl.DefaultRectangleRenderer;
 public class TreeMap<N> {
 
 	private static final String NOT_NULL = "%s must not be null";
+	private static final Map<String, String> DEFAULT_ATTRIBUTES;
+	
+	static {
+		final Map<String, String> defaultMap = new HashMap<>();
+		defaultMap.put("id","rectangles");
+		defaultMap.put("dominant-baseline","middle");
+		defaultMap.put("text-anchor","middle");
+		defaultMap.put("fill","white");
+		defaultMap.put("font-size","large");
+		DEFAULT_ATTRIBUTES = Collections.unmodifiableMap(defaultMap);
+	}
 
 	protected ITreeModel<N> model;
 	protected ITreeMapLayout<N> layout;
-	protected IRectangleRenderer<N, OutputStream, String> renderer;
+	protected IRectangleRenderer<N, XMLStreamWriter, String> renderer;
 	protected ILabelProvider<N> labelProvider;
 	protected IColorProvider<N, String> colorProvider;
-
-	/**
-	 * Writes the given string to the output stream using UTF-8.
-	 * I/O exceptions will end in {@code IllegalStateException}.
-	 * @param out the output stream, must not be {@code null}
-	 * @param str the string to write, must not be {@code null}
-	 */
-	public static void write(final OutputStream out, final String str) {
-		try {
-			out.write(str.getBytes(StandardCharsets.UTF_8));
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
+	protected Map<String, String> graphicsAttributes;
 
 	/**
 	 * Creates the tree map with a squarified layout.
@@ -61,10 +63,23 @@ public class TreeMap<N> {
 	 * @param layout the layout to use, must not be {@code null}.
 	 */
 	public TreeMap(final ITreeModel<N> model, final ITreeMapLayout<N> layout) {
+		this(model, layout, DEFAULT_ATTRIBUTES);
+	}
+
+	/**
+	 * Creates the tree map with the given layout and attributes for the graphics
+	 * section of the rectangle.
+	 * @param model the model to use, must not be {@code null}.
+	 * @param layout the layout to use, must not be {@code null}.
+	 * @param graphicsAttributes attributes of the {@code g} element.
+	 */
+	public TreeMap(final ITreeModel<N> model, final ITreeMapLayout<N> layout, final Map<String, String> graphicsAttributes) {
 		notNull(model, "model");
 		this.model = model;
 		notNull(layout, "layout");
 		this.layout = layout;
+		notNull(layout, "graphicsAttributes");
+		this.graphicsAttributes = graphicsAttributes;
 		renderer = DefaultRectangleRenderer.defaultInstance();
 		labelProvider = (nodes, node) -> null;
 		colorProvider = (nodes, node) -> "#00a000";
@@ -93,7 +108,7 @@ public class TreeMap<N> {
 	 * is set, a default will be used.
 	 * @param renderer the rectangle renderer, must not be {@code null}.
 	 */
-	public void setRectangleRenderer(final IRectangleRenderer<N, OutputStream, String> renderer) {
+	public void setRectangleRenderer(final IRectangleRenderer<N, XMLStreamWriter, String> renderer) {
 		notNull(renderer, "renderer");
 		this.renderer = renderer;
 	}
@@ -118,22 +133,47 @@ public class TreeMap<N> {
 		this.colorProvider = colorProvider;
 	}
 
-	public void render(final OutputStream out, final int width, final int height, final ICancelable control) {
-		notNull(out, "out");
+	/**
+	 * Sets the attributes used when emitting the root {@code g} element for the
+	 * rectangles.
+	 * @param graphicsAttributes the attributes, must not be {@code null}
+	 */
+	public void setGraphicsAttributes(final Map<String, String> graphicsAttributes) {
+		this.graphicsAttributes = graphicsAttributes;
+	}
+
+	/**
+	 * Renders the tree map as SVG using the given writer and dimension.
+	 * @param writer the writer to write to, must not be {@code null}
+	 * @param width the image width
+	 * @param height the image height
+	 * @param control a control to cancel, if required, must not be {@code null}
+	 * @throws XMLStreamException in case of error
+	 */
+	public void render(final XMLStreamWriter writer, final int width, final int height, final ICancelable control) throws XMLStreamException {
+		notNull(writer, "writer");
 		final ITreeModel<IRectangle<N>> rectangles = layout.layout((IWeightedTreeModel<N>) model, model.getRoot(), width, height, control);
 		final IRectangle<N> root = rectangles.getRoot();
 		if (root != null) {
 			if (colorProvider == null) {
 				colorProvider = new DefaultColorProvider<>();
 			}
-			renderPrologue(out, width, height);
+			writer.writeStartDocument(XMLConstants.ATTR_ENCODING, null);
+			renderPrologue(writer, width, height);
 			if (renderer instanceof IPrologue) {
-				((IPrologue) renderer).prologue(out);
+				((IPrologue) renderer).prologue(writer);
 			}
-			write(out, "<g id=\"rectangles\" dominant-baseline=\"middle\" text-anchor=\"middle\" fill=\"white\" font-size=\"large\">\n");
+			writer.writeStartElement(XMLConstants.ELEMENT_G);
+			graphicsAttributes.forEach((name, value) -> {
+				try {
+					writer.writeAttribute(name, value);
+				} catch (XMLStreamException e) {
+					throw new IllegalStateException(e);
+				}
+			});
 			final FIFO<IRectangle<N>> queue = new FIFO<IRectangle<N>>();
 			queue.push(rectangles.getRoot());
-			renderer.render(out, rectangles, rectangles.getRoot(), colorProvider, labelProvider);
+			renderer.render(writer, rectangles, rectangles.getRoot(), colorProvider, labelProvider);
 			while (queue.notEmpty()) {
 				final IRectangle<N> node = queue.pull();
 				if (rectangles.hasChildren(node)) {
@@ -141,33 +181,40 @@ public class TreeMap<N> {
 						queue.push(child.next());
 					}
 				} else {
-					renderer.render(out, rectangles, node, colorProvider, labelProvider);
+					renderer.render(writer, rectangles, node, colorProvider, labelProvider);
 				}
 			}
-			write(out, "</g>\n");
+			writer.writeEndElement();
 			if (renderer instanceof IEpilogue) {
-				((IEpilogue) renderer).epilogue(out);
+				((IEpilogue) renderer).epilogue(writer);
 			}
-			renderEpilogue(out);
+			renderEpilogue(writer);
+			writer.writeEndDocument();
 		}
 	}
 
 	/**
 	 * Renders the opening SVG element.
-	 * @param out the output stream, must not be {@code null}.
+	 * @param writer the writer to write to, must not be {@code null}.
 	 * @param width the width of the image
 	 * @param height the height of the image
+	 * @throws XMLStreamException in case of error
 	 */
-	public void renderPrologue(final OutputStream out, final int width, final int height) {
-		write(out, String.format("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\">\n", width, height, width, height));
+	public void renderPrologue(final XMLStreamWriter writer, final int width, final int height) throws XMLStreamException {
+		writer.writeStartElement(XMLConstants.ELEMENT_SVG);
+		writer.writeNamespace(XMLConstants.ATTR_XMLNS, XMLConstants.VALUE_SVGNS);
+		writer.writeAttribute(XMLConstants.ATTR_WIDTH, Integer.toString(width));
+		writer.writeAttribute(XMLConstants.ATTR_HEIGHT, Integer.toString(height));
+		writer.writeAttribute(XMLConstants.ATTR_VIEWBOX, String.format("0 0 %d %d", width, height));
 	}
 
 	/**
 	 * Renders the closing SVG element.
-	 * @param out the output stream, must not be {@code null}.
+	 * @param writer the writer to write to, must not be {@code null}.
+	 * @throws XMLStreamException in case of error
 	 */
-	public void renderEpilogue(final OutputStream out) {
-		write(out, "</svg>");
+	public void renderEpilogue(final XMLStreamWriter writer) throws XMLStreamException {
+		writer.writeEndElement();
 	}
 
 	private static void notNull(final Object arg, final String param) {
