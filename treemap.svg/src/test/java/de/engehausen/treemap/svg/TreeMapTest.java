@@ -38,7 +38,6 @@ public class TreeMapTest {
 			.newInstance()
 			.createXMLStreamWriter(out, XMLConstants.ATTR_ENCODING);
 		map.render(writer, 1280, 720, () -> false);
-		System.out.println(new String(out.toByteArray()));
 		final ByteArrayInputStream bais = new ByteArrayInputStream(out.toByteArray());
 		final XMLInputFactory factory = XMLInputFactory.newInstance();
 		final XMLEventReader reader = factory.createXMLEventReader(new InputStreamReader(bais));
@@ -50,12 +49,12 @@ public class TreeMapTest {
 				count.getAndIncrement();
 			}
 		}
-		expect("svg", 1, counts);
-		expect("defs", 1, counts);
-		expect("radialGradient", 1, counts);
-		expect("g", 1, counts);
-		expect("rect", 16, counts);
-		expect("text", 8, counts);
+		expect(XMLConstants.ELEMENT_SVG, 1, counts);
+		expect(XMLConstants.ELEMENT_DEFS, 1, counts);
+		expect(XMLConstants.ELEMENT_RADIAL_GRADIENT, 1, counts);
+		expect(XMLConstants.ELEMENT_G, 1, counts);
+		expect(XMLConstants.ELEMENT_RECT, 16, counts);
+		expect(XMLConstants.ELEMENT_TEXT, 8, counts);
 	}
 
 	private void expect(final String element, final int count, final Map<String, AtomicInteger> counts) {
