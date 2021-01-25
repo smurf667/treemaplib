@@ -11,7 +11,7 @@ public interface IWeightedTreeModel<N> extends ITreeModel<N> {
 
 	/**
 	 * Returns the weight of the node.
-	 * @param node the node for which to return its weight; must not be <code>null</code>
+	 * @param node the node for which to return its weight; must not be {@code null}
 	 * @return the weight of the node.
 	 */
 	long getWeight(N node);

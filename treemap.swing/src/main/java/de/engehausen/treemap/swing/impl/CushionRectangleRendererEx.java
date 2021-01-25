@@ -20,7 +20,7 @@ public class CushionRectangleRendererEx<N> extends CushionRectangleRenderer<N> {
 
 	/**
 	 * @param colorRangeSize the number of colors to use for the cushion;
-	 * must be > 1
+	 * must be greater than 1
 	 */
 	public CushionRectangleRendererEx(final int colorRangeSize) {
 		super(colorRangeSize);

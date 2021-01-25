@@ -9,9 +9,9 @@ public interface ILabelProvider<N> {
 
 	/**
 	 * Returns a label for the given rectangle.
-	 * @param model the model the rectangle belongs to, never <code>null</code>
-	 * @param rectangle the rectangle for which to return a color, never <code>null</code>
-	 * @return a label, may be <code>null</code> if no label is to be displayed
+	 * @param model the model the rectangle belongs to, never {@code null}
+	 * @param rectangle the rectangle for which to return a color, never {@code null}
+	 * @return a label, may be {@code null} if no label is to be displayed
 	 */
 	String getLabel(ITreeModel<IRectangle<N>> model, IRectangle<N> rectangle);
 

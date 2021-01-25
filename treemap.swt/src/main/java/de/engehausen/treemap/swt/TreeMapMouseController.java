@@ -18,7 +18,7 @@ public class TreeMapMouseController<N> implements MouseMoveListener, MouseListen
 	/**
 	 * Creates a controller object that will register the mouse and mouse move
 	 * listeners to the treemap.
-	 * @param aTreeMap the tree map used by the mouse controller, must not be <code>null</code> 
+	 * @param aTreeMap the tree map used by the mouse controller, must not be {@code null} 
 	 */
 	public TreeMapMouseController(final TreeMap<N> aTreeMap) {
 		treemap = aTreeMap;

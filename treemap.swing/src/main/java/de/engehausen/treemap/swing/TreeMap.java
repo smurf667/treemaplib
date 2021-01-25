@@ -100,7 +100,7 @@ public class TreeMap<N> extends JPanel {
 	/**
 	 * Sets the rectangle renderer the tree map will use. If no renderer
 	 * is set, a default will be used.
-	 * @param aRenderer the rectangle renderer, must not be <code>null</code>.
+	 * @param aRenderer the rectangle renderer, must not be {@code null}.
 	 */
 	public void setRectangleRenderer(final IRectangleRenderer<N, Graphics2D, Color> aRenderer) {
 		renderer = aRenderer;
@@ -117,7 +117,7 @@ public class TreeMap<N> extends JPanel {
 	/**
 	 * Sets the label provider the tree map will use during rendering.
 	 * If no provider is set no labels are displayed.
-	 * @param aProvider the label provider; may be <code>null</code>.
+	 * @param aProvider the label provider; may be {@code null}.
 	 */
 	public void setLabelProvider(final ILabelProvider<N> aProvider) {
 		labelProvider = aProvider;
@@ -134,7 +134,7 @@ public class TreeMap<N> extends JPanel {
 	/**
 	 * Sets the color provider the tree map will use during rendering.
 	 * If no provider is set a default will be used.
-	 * @param aProvider the color provider; may be <code>null</code>.
+	 * @param aProvider the color provider; may be {@code null}.
 	 */
 	public void setColorProvider(final IColorProvider<N, Color> aProvider) {
 		colorProvider = aProvider;
@@ -160,7 +160,7 @@ public class TreeMap<N> extends JPanel {
 
 	/**
 	 * Sets the model to use in this tree map.
-	 * @param aModel the model to use; must not be <code>null</code>.
+	 * @param aModel the model to use; must not be {@code null}.
 	 */
 	public void setTreeModel(final IWeightedTreeModel<N> aModel) {
 		if (layout == null) {
@@ -176,7 +176,8 @@ public class TreeMap<N> extends JPanel {
 
 	/**
 	 * Sets the model to use in this tree map.
-	 * @param aModel the model to use; must not be <code>null</code>.
+	 * @param aModel the model to use; must not be {@code null}.
+	 * @param <T> the number type of the weights
 	 */
 	public <T extends Number> void setTreeModel(final IGenericWeightedTreeModel<N, T> aModel) {
 		if (layout == null) {
@@ -193,7 +194,7 @@ public class TreeMap<N> extends JPanel {
 	/**
 	 * @deprecated use {@link #getCurrentTreeModel()} instead
 	 * Returns the model currently being used by the tree map.
-	 * @return the model currently being used by the tree map, may be <code>null</code>.
+	 * @return the model currently being used by the tree map, may be {@code null}.
 	 */
 	public IWeightedTreeModel<N> getTreeModel() {
 		if (model instanceof IWeightedTreeModel) {
@@ -205,7 +206,7 @@ public class TreeMap<N> extends JPanel {
 
 	/**
 	 * Returns the model currently being used by the tree map.
-	 * @return the model currently being used by the tree map, may be <code>null</code>.
+	 * @return the model currently being used by the tree map, may be {@code null}.
 	 */
 	public ITreeModel<N> getCurrentTreeModel() {
 		return model;
@@ -214,7 +215,7 @@ public class TreeMap<N> extends JPanel {
 	/**
 	 * Adds the given listener for selection change events.
 	 *
-	 * @param aListener the listener to add, must not be <code>null</code>
+	 * @param aListener the listener to add, must not be {@code null}
 	 * and must not already have been added.
 	 */
 	public void addSelectionChangeListener(final ISelectionChangeListener<N> aListener) {
@@ -238,7 +239,7 @@ public class TreeMap<N> extends JPanel {
 	/**
 	 * Sets the layout for the tree map. If this method is not called,
 	 * a default squarified layout with maximum nesting level two is used
-	 * @param aLayout the layout to use, must not be <code>null</code>
+	 * @param aLayout the layout to use, must not be {@code null}
 	 */
 	public void setTreeMapLayout(final ITreeMapLayout<N> aLayout) {
 		layout = aLayout;
@@ -339,7 +340,7 @@ public class TreeMap<N> extends JPanel {
 	 * coordinates.
 	 * @param x the x coordinate
 	 * @param y the y coordinate
-	 * @return a rectangle of the current rectangle tree, or <code>null</code>
+	 * @return a rectangle of the current rectangle tree, or {@code null}
 	 * if no rectangle can be found.
 	 */
 	protected IRectangle<N> findRectangle(final int x, final int y) {

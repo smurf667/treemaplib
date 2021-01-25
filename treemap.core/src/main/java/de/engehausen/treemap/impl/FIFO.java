@@ -11,7 +11,7 @@ public class FIFO<T> {
 
 	/**
 	 * Removes the head object from the queue.
-	 * @return the head object (may be <code>null</code>).
+	 * @return the head object (may be {@code null}).
 	 */
 	public T pull() {
 		if (head != null) {

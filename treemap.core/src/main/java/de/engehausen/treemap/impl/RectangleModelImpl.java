@@ -49,9 +49,9 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 
 	/**
 	 * Adds the given child node to the given parent node in the model.
-	 * @param parent the parent node; if <code>null</code> a call to this
+	 * @param parent the parent node; if {@code null} a call to this
 	 * method will use the child node as the root node.
-	 * @param child the child node, must not be <code>null</code>.
+	 * @param child the child node, must not be {@code null}.
 	 */
 	/*package protected*/ void addChild(final IRectangle<N> parent, final IRectangle<N> child) {
 		if (parent != null) {
@@ -92,7 +92,7 @@ public class RectangleModelImpl<N> implements ITreeModel<IRectangle<N>> {
 
 	/**
 	 * Returns all nodes of the model as a list.
-	 * @return all nodes of the model as a list, never <code>null</code>.
+	 * @return all nodes of the model as a list, never {@code null}.
 	 */
 	public List<IRectangle<N>> toList() {
 		final List<IRectangle<N>> list = new ArrayList<IRectangle<N>>(16);

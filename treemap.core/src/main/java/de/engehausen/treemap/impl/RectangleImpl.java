@@ -16,7 +16,7 @@ public class RectangleImpl<N> implements IRectangle<N> {
 
 	/**
 	 * Creates the rectangle.
-	 * @param aNode the node this rectangle represents, must not be <code>null</code>.
+	 * @param aNode the node this rectangle represents, must not be {@code null}.
 	 * @param x the x starting position of the rectangle.
 	 * @param y the y starting position of the rectangle.
 	 * @param width the width of the rectangle.

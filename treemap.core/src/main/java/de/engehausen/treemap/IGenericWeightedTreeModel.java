@@ -17,13 +17,13 @@ public interface IGenericWeightedTreeModel<N, T extends Number> extends ITreeMod
 	 * The precise weight of the node.
 	 * @param node the node for which to return the weight.
 	 * @return the weight of the node, or a value representing zero if the node is
-	 * not known. Never returns <code>null</code>.
+	 * not known. Never returns {@code null}.
 	 */
 	T getWeight(N node);
 
 	/**
 	 * Returns the number arithmetic instance for the model.
-	 * @return the number arithmetic instance for the model, never <code>null</code>.
+	 * @return the number arithmetic instance for the model, never {@code null}.
 	 */
 	NumberArithmetic<T> getArithmetic();
 

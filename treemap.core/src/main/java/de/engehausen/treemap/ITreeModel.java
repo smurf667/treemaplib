@@ -11,7 +11,7 @@ public interface ITreeModel<N> {
 
 	/**
 	 * Returns the root node of the model.
-	 * @return the root node; may be <code>null</code> if the
+	 * @return the root node; may be {@code null} if the
 	 * model is empty.
 	 */
 	N getRoot();
@@ -19,8 +19,8 @@ public interface ITreeModel<N> {
 	/**
 	 * Returns the parent node for the given node.
 	 *
-	 * @param node a node for which to return the parent; must not be <code>null</code>
-	 * @return the parent node, or <code>null</code> if <code>node</code> is the root node.
+	 * @param node a node for which to return the parent; must not be {@code null}
+	 * @return the parent node, or {@code null} if <code>node</code> is the root node.
 	 */
 	N getParent(N node);
 
@@ -28,7 +28,7 @@ public interface ITreeModel<N> {
 	 * Returns an iterator for the children of the given node.
 	 * @param node the node for which to return children.
 	 * @return an iterator over the children; may be empty, but never
-	 * <code>null</code>.
+	 * {@code null}.
 	 */
 	Iterator<N> getChildren(N node);
 

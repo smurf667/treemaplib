@@ -5,9 +5,9 @@
 	<groupId>de.engehausen</groupId>
 	<artifactId>treemap.build</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.1</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>TreeMapBuild</name>
-	<url>https://code.google.com/p/treemaplib/</url>
+	<url>https://github.com/smurf667/treemaplib/</url>
 	<description>This project provides a TreeMap widget in separate small modules for Swing, SWT (standalone and Eclipse feature) and JavaScript (at present more of a toy).</description>
 	<scm>
 		<url>https://github.com/smurf667/treemaplib</url>
@@ -19,7 +19,7 @@
 			<email>smurf667@gmail.com</email>
 			<url>https://github.com/smurf667</url>
 			<properties>
-				<picUrl>http://www.ibm.com/developerworks/i/p-jengehausen.jpg</picUrl>
+				<picUrl>https://www.ibm.com/developerworks/i/p-jengehausen.jpg</picUrl>
 			</properties>
 		</developer>
 	</developers>
@@ -33,10 +33,13 @@
 	</licenses>	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<swt.version>3.115.100</swt.version>
+		<surefire.version>3.0.0-M5</surefire.version>
 	</properties>
 	<modules>
 		<module>../treemap.core</module>
 		<module>../treemap.examples</module>
+		<module>../treemap.svg</module>
 		<module>../treemap.swing</module>
 		<module>../treemap.swing.examples</module>
 		<module>../treemap.swt</module>
@@ -72,14 +75,9 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.swt</groupId>
-				<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-				<version>4.4</version>
-			</dependency>
-			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.6</version>
+				<version>4.13.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -90,68 +88,154 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>swt-unix</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</swt.artifactId>
+				<env>linux</env>
+			</properties>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>${swt.artifactId}</artifactId>
+						<version>${swt.version}</version>
+						<optional>true</optional>
+						<exclusions>
+							<exclusion>
+								<groupId>org.eclipse.platform</groupId>
+								<artifactId>org.eclipse.swt</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+		<profile>
+			<id>swt-mac</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>org.eclipse.swt.cocoa.macosx.x86_64</swt.artifactId>
+				<env>mac</env>
+			</properties>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>${swt.artifactId}</artifactId>
+						<version>${swt.version}</version>
+						<optional>true</optional>
+						<exclusions>
+							<exclusion>
+								<groupId>org.eclipse.platform</groupId>
+								<artifactId>org.eclipse.swt</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+		<profile>
+			<id>swt-windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>org.eclipse.swt.win32.win32.x86_64</swt.artifactId>
+				<env>windows</env>
+			</properties>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>${swt.artifactId}</artifactId>
+						<version>${swt.version}</version>
+						<optional>true</optional>
+						<exclusions>
+							<exclusion>
+								<groupId>org.eclipse.platform</groupId>
+								<artifactId>org.eclipse.swt</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+	</profiles>
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
+					<version>3.8.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.9</version>
+					<version>3.1.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.8</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.5</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.18.1</version>
+					<version>${surefire.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-report-plugin</artifactId>
-					<version>2.18.1</version>
+					<version>${surefire.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.4</version>
+					<version>3.9.1</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>cobertura-maven-plugin</artifactId>
-					<version>2.6</version>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.6</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.1</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
-					<version>3.3</version>
+					<version>3.14.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jxr-plugin</artifactId>
-					<version>2.3</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>2.7</version>
+					<version>3.1.1</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -160,8 +244,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -184,10 +268,28 @@
 									<fileset dir="${project.build.directory}">
 										<include name="treemap*jar"/>
 										<include name="*site.zip"/>
+										<exclude name="*tests.jar"/>
 									</fileset>
 								</copy>
+								<zip update="true"
+									destfile="../treemap.build/target/treemaplib_all_${project.version}.zip"
+									basedir="${project.build.directory}"
+									includes="treemap*jar"
+									excludes="*tests.jar" />
 							</target>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -204,19 +306,14 @@
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<configuration>
-					<formats>
-						<format>html</format>
-					</formats>
-				</configuration>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
 				<configuration>
-					<targetJdk>1.6</targetJdk>
+					<targetJdk>1.8</targetJdk>
 					<!-- <rulesets>
 						<ruleset>/rulesets/basic.xml</ruleset>
 						<ruleset>/rulesets/unusedcode.xml</ruleset>

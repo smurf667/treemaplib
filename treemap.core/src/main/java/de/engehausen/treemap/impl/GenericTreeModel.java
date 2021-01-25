@@ -31,9 +31,9 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 
 	/**
 	 * Creates the tree from the given information.
-	 * @param childMap mappings "parent to child list", must not be <code>null</code>.
-	 * @param parentMap mappings "child to parent", must not be <code>null</code>.
-	 * @param weightMap weights per node, must not be <code>null</code>.
+	 * @param childMap mappings "parent to child list", must not be {@code null}.
+	 * @param parentMap mappings "child to parent", must not be {@code null}.
+	 * @param weightMap weights per node, must not be {@code null}.
 	 */
 	public GenericTreeModel(final Map<N, List<N>> childMap, final Map<N, N> parentMap, final Map<N, Weight> weightMap) {
 		children = childMap;
@@ -44,9 +44,9 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 	/**
 	 * Adds the given node to the parent and propagates the nodes'
 	 * weight upwards to the root.
-	 * @param node the node to add, must not be <code>null</code>.
+	 * @param node the node to add, must not be {@code null}.
 	 * @param weight the weight of the node
-	 * @param parent the parent of the node; if the parent is <code>null</code>
+	 * @param parent the parent of the node; if the parent is {@code null}
 	 * the given node will be the root node of the model.
 	 */
 	public void add(final N node, final long weight, final N parent) {
@@ -56,9 +56,9 @@ public class GenericTreeModel<N> implements IWeightedTreeModel<N> {
 	/**
 	 * Adds the given node to the parent and propagates the nodes'
 	 * weight upwards to the root.
-	 * @param node the node to add, must not be <code>null</code>.
+	 * @param node the node to add, must not be {@code null}.
 	 * @param weight the weight of the node
-	 * @param parent the parent of the node; if the parent is <code>null</code>
+	 * @param parent the parent of the node; if the parent is {@code null}
 	 * the given node will be the root node of the model.
 	 * @param propagateWeights <code>true</code> to propagate the weight of
 	 * the given node upwards to its parents, <code>false</code> otherwise.

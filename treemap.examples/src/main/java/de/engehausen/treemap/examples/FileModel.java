@@ -14,7 +14,7 @@ public class FileModel extends GenericTreeModel<FileInfo> {
 	/**
 	 * Creates a file model starting at the given "root" directory.
 	 * @param rootDir the starting directory for building the model,
-	 * must not be <code>null</code> and must be a valid directory.
+	 * must not be {@code null} and must be a valid directory.
 	 * @return a file model starting at the given "root" directory.
 	 * @throws IllegalArgumentException if the root directory is not valid.
 	 */

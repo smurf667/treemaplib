@@ -4,8 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.engehausen</groupId>
 	<artifactId>treemap.build.fileviewer.swt</artifactId>
+	<parent>
+		<groupId>de.engehausen</groupId>
+		<artifactId>treemap.build</artifactId>
+		<version>1.1.0-SNAPSHOT</version>
+		<relativePath>pom.xml</relativePath>
+	</parent>
 	<packaging>pom</packaging>
-	<version>1.0.1-SNAPSHOT</version>
 	<name>FileViewerSWT</name>
 	<dependencies>
 		<dependency>
@@ -33,9 +38,9 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.swt</groupId>
-			<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-			<version>4.4</version>
+			<groupId>org.eclipse.platform</groupId>
+			<artifactId>${swt.artifactId}</artifactId>
+			<version>${swt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
@@ -45,7 +50,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.8</version>
+					<version>3.0.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

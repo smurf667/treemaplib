@@ -22,7 +22,7 @@ public class FileInfo {
 	 * Creates the file information object with the given name
 	 * and size.
 	 *
-	 * @param aName the file name, must not be <code>null</code>.
+	 * @param aName the file name, must not be {@code null}.
 	 * @param aSize the size of the file
 	 */
 	public FileInfo(final String aName, final long aSize) {

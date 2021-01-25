@@ -13,11 +13,11 @@ public interface ITreeMapLayout<N> {
 	 * for the given width and height.
 	 * @param treeModel the tree model to lay out
 	 * @param startingNode the starting node in the tree model the
-	 * layout operates on; must not be <code>null</code>.
+	 * layout operates on; must not be {@code null}.
 	 * @param width the width to use for the layout.
 	 * @param height the height to use for the layout.
 	 * @return a tree model holding the rectangles representing the
-	 * used nodes in hierarchical order, never <code>null</code>.
+	 * used nodes in hierarchical order, never {@code null}.
 	 */
 	ITreeModel<IRectangle<N>> layout(IWeightedTreeModel<N> treeModel, N startingNode, int width, int height);
 
@@ -26,15 +26,15 @@ public interface ITreeMapLayout<N> {
 	 * for the given width and height.
 	 * @param treeModel the tree model to lay out
 	 * @param startingNode the starting node in the tree model the
-	 * layout operates on; must not be <code>null</code>.
+	 * layout operates on; must not be {@code null}.
 	 * @param width the width to use for the layout.
 	 * @param height the height to use for the layout.
 	 * @param cancelable an indicator that can cancel the layout operation
 	 * if {@link ICancelable#isCanceled()} returns <code>true</code>. The
-	 * argument must not be <code>null</code>. If the operation is canceled,
+	 * argument must not be {@code null}. If the operation is canceled,
 	 * the result may be incomplete.
 	 * @return a tree model holding the rectangles representing the
-	 * used nodes in hierarchical order, never <code>null</code>.
+	 * used nodes in hierarchical order, never {@code null}.
 	 */
 	ITreeModel<IRectangle<N>> layout(IWeightedTreeModel<N> treeModel, N startingNode, int width, int height, ICancelable cancelable);
 
