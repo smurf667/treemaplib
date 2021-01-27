@@ -2,13 +2,16 @@ package de.engehausen.treemap.svg.impl;
 
 public interface XMLConstants {
 
+	String ATTR_DOMINANT_BASELINE = "dominant-baseline";
 	String ATTR_ENCODING = "UTF-8";
 	String ATTR_FILL = "fill";
+	String ATTR_FONT_SIZE = "font-size";
 	String ATTR_HEIGHT = "height";
 	String ATTR_ID = "id";
 	String ATTR_OFFSET = "offset";
 	String ATTR_SPREAD_METHOD = "spreadMethod";
 	String ATTR_STOP_OPACITY = "stop-opacity";
+	String ATTR_TEXT_ANCHOR = "text-anchor";
 	String ATTR_TRANSFORM = "transform";
 	String ATTR_VIEWBOX = "viewBox";
 	String ATTR_WIDTH = "width";
@@ -22,7 +25,10 @@ public interface XMLConstants {
 	String ELEMENT_STOP = "stop";
 	String ELEMENT_SVG = "svg";
 	String ELEMENT_TEXT = "text";
+	String VALUE_LARGE = "large";
+	String VALUE_MIDDLE = "middle";
 	String VALUE_REFLECT = "reflect";
 	String VALUE_SVGNS = "http://www.w3.org/2000/svg";
+	String VALUE_WHITE = "white";
 
 }
