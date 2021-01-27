@@ -30,15 +30,16 @@ import de.engehausen.treemap.svg.impl.XMLConstants;
 public class TreeMap<N> {
 
 	private static final String NOT_NULL = "%s must not be null";
+	private static final String RECTANGLES_ID = "rectangles";
 	private static final Map<String, String> DEFAULT_ATTRIBUTES;
 	
 	static {
 		final Map<String, String> defaultMap = new HashMap<>();
-		defaultMap.put("id","rectangles");
-		defaultMap.put("dominant-baseline","middle");
-		defaultMap.put("text-anchor","middle");
-		defaultMap.put("fill","white");
-		defaultMap.put("font-size","large");
+		defaultMap.put(XMLConstants.ATTR_ID, RECTANGLES_ID);
+		defaultMap.put(XMLConstants.ATTR_DOMINANT_BASELINE, XMLConstants.VALUE_MIDDLE);
+		defaultMap.put(XMLConstants.ATTR_FONT_SIZE, XMLConstants.VALUE_MIDDLE);
+		defaultMap.put(XMLConstants.ATTR_FILL, XMLConstants.VALUE_WHITE);
+		defaultMap.put(XMLConstants.ATTR_FONT_SIZE, XMLConstants.VALUE_LARGE);
 		DEFAULT_ATTRIBUTES = Collections.unmodifiableMap(defaultMap);
 	}
 
