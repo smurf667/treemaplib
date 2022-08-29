@@ -58,6 +58,13 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	protected Image image;
 
 	/**
+	 * Indicates whether the mouse cursor should be changed to {@link SWT#CURSOR_WAIT} during recalculation.
+	 *
+	 * @author Mario Marinato
+	 */
+	private boolean changeCursorOnRecalculate = true;
+
+	/**
 	 * Create the tree map (supporting navigation) for the given composite.
 	 * @param composite the parent composite, must not be {@code null}.
 	 */
@@ -229,6 +236,17 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	}
 
 	/**
+	 * Defines whether the mouse cursor should be changed to {@link SWT#CURSOR_WAIT} during recalculation.
+	 *
+	 * @param changeCursorOnRecalculate State to be set.
+	 *
+	 * @author Mario Marinato
+	 */
+	public void setChangeCursorOnRecalculate( boolean changeCursorOnRecalculate ) {
+		this.changeCursorOnRecalculate = changeCursorOnRecalculate;
+	}
+
+	/**
 	 * Recalculates the rectangle tree model and internal image
 	 * in a separate thread.
 	 */
@@ -238,7 +256,11 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 				buildControl.cancel();
 				buildControl = null;
 			}
-			setCursor(getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+
+			if ( changeCursorOnRecalculate ) {
+				setCursor(getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+			}
+
 			final BuildControl ctrl = new BuildControl();
 			final Worker<N> w = new Worker<N>(this, ctrl);
 			buildControl = ctrl;
@@ -373,7 +395,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * are relative to the widget).
 	 * @param x x coordinate
 	 * @param y y coordinate
-	 * @return <code>false</code> if a redraw occured, <code>true</code> otherwise.
+	 * @return <code>false</code> if a redraw occurred, <code>true</code> otherwise.
 	 */
 	protected boolean selectRectangle(final int x, final int y) {
 		if (selected == null || !selected.contains(x, y)) {
@@ -404,7 +426,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * @return a rectangle of the current rectangle tree, or {@code null}
 	 * if no rectangle can be found.
 	 */
-	protected IRectangle<N> findRectangle(final int x, final int y) {
+	public IRectangle<N> findRectangle(final int x, final int y) {
 		IRectangle<N> result;
 		if (rectangles != null) {
 			result = rectangles.getRoot();
