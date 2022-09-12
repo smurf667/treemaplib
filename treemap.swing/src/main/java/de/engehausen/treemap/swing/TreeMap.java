@@ -61,10 +61,59 @@ public class TreeMap<N> extends JPanel {
 	protected GraphicsConfiguration gc;
 
 	/**
-	 * Create the tree map (supporting) navigation).
+	 * Indicates whether the mouse cursor should be changed to {@link Cursor#WAIT_CURSOR} during recalculation.
+	 */
+	protected boolean changeCursorOnRecalculate;
+
+	/**
+	 * Create the tree map (supporting navigation).
 	 */
 	public TreeMap() {
-		this(true);
+		this(true, true);
+	}
+
+	/**
+	 * Creates the tree map.
+	 *
+	 * @param supportNavigation <code>true</code> if navigation through
+	 * left/right mouse clicks is supported, <code>false</code> otherwise.
+	 */
+	public TreeMap(final boolean supportNavigation) {
+		this(supportNavigation, true);
+	}
+
+	/**
+	 * Creates the tree map.
+	 *
+	 * @param supportNavigation <code>true</code> if navigation through
+	 * left/right mouse clicks is supported, <code>false</code> otherwise.
+	 * @param changeCursorOnRecalculate indicates whether the mouse cursor 
+	 * should be changed to {@link Cursor#WAIT_CURSOR} during recalculation.
+	 */
+	public TreeMap(final boolean supportNavigation, final boolean changeCursorOnRecalculate) {
+		super();
+
+		/*
+		 * this is done here to assure that calling setSize(...) will trigger
+		 * the recomputation of the layout.
+		 */
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(final ComponentEvent componentevent) {
+				recalculate();
+			}
+		});
+
+		if (supportNavigation) {
+			/*
+			 * added this here just to keep compatibility with the old code, but
+			 * it should be invoked from outside of the TreeMap class, which
+			 * should have no idea of controllers.
+			 */
+			new TreeMapMouseController<N>(this);
+		}
+		
+		this.changeCursorOnRecalculate = changeCursorOnRecalculate;
 	}
 
 	/**
@@ -385,7 +434,7 @@ public class TreeMap<N> extends JPanel {
 			final BuildControl ctrl = new BuildControl();
 			final SwingWorker<ITreeModel<IRectangle<N>>, Object> worker = new Worker<N>(this, ctrl);
 			// check the mouse only if it isn't headless
-			if (!GraphicsEnvironment.isHeadless()) {
+			if (!GraphicsEnvironment.isHeadless() && changeCursorOnRecalculate) {
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			}
 			worker.execute();

@@ -59,17 +59,15 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 
 	/**
 	 * Indicates whether the mouse cursor should be changed to {@link SWT#CURSOR_WAIT} during recalculation.
-	 *
-	 * @author Mario Marinato
 	 */
-	private boolean changeCursorOnRecalculate = true;
+	protected boolean changeCursorOnRecalculate;
 
 	/**
 	 * Create the tree map (supporting navigation) for the given composite.
 	 * @param composite the parent composite, must not be {@code null}.
 	 */
 	public TreeMap(final Composite composite) {
-		this(composite, true);
+		this(composite, true, true);
 	}
 
 	/**
@@ -80,6 +78,19 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * left/right mouse clicks is supported, <code>false</code> otherwise.
 	 */
 	public TreeMap(final Composite composite, final boolean supportNavigation) {
+		this(composite, supportNavigation, true);
+	}
+
+	/**
+	 * Creates the tree map.
+	 *
+	 * @param composite the parent composite, must not be {@code null}.
+	 * @param supportNavigation <code>true</code> if navigation through
+	 * left/right mouse clicks is supported, <code>false</code> otherwise.
+	 * @param changeCursorOnRecalculate indicates whether the mouse cursor 
+	 * should be changed to {@link SWT#CURSOR_WAIT} during recalculation.
+	 */
+	public TreeMap(final Composite composite, final boolean supportNavigation, final boolean changeCursorOnRecalculate) {
 		super(composite, SWT.NO_BACKGROUND);
 		addPaintListener(this);
 		addControlListener(this);
@@ -91,6 +102,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			 */
 			new TreeMapMouseController<N>(this);
 		}
+		this.changeCursorOnRecalculate = changeCursorOnRecalculate;
 	}
 
 	@Override
@@ -236,17 +248,6 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	}
 
 	/**
-	 * Defines whether the mouse cursor should be changed to {@link SWT#CURSOR_WAIT} during recalculation.
-	 *
-	 * @param changeCursorOnRecalculate State to be set.
-	 *
-	 * @author Mario Marinato
-	 */
-	public void setChangeCursorOnRecalculate( boolean changeCursorOnRecalculate ) {
-		this.changeCursorOnRecalculate = changeCursorOnRecalculate;
-	}
-
-	/**
 	 * Recalculates the rectangle tree model and internal image
 	 * in a separate thread.
 	 */
@@ -257,7 +258,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 				buildControl = null;
 			}
 
-			if ( changeCursorOnRecalculate ) {
+			if (changeCursorOnRecalculate) {
 				setCursor(getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
 			}
 
@@ -426,7 +427,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * @return a rectangle of the current rectangle tree, or {@code null}
 	 * if no rectangle can be found.
 	 */
-	public IRectangle<N> findRectangle(final int x, final int y) {
+	protected IRectangle<N> findRectangle(final int x, final int y) {
 		IRectangle<N> result;
 		if (rectangles != null) {
 			result = rectangles.getRoot();
