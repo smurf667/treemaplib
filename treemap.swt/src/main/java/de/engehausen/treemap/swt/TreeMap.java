@@ -58,11 +58,16 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	protected Image image;
 
 	/**
+	 * Indicates whether the mouse cursor should be changed to {@link SWT#CURSOR_WAIT} during recalculation.
+	 */
+	protected boolean changeCursorOnRecalculate;
+
+	/**
 	 * Create the tree map (supporting navigation) for the given composite.
 	 * @param composite the parent composite, must not be {@code null}.
 	 */
 	public TreeMap(final Composite composite) {
-		this(composite, true);
+		this(composite, true, true);
 	}
 
 	/**
@@ -73,6 +78,19 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * left/right mouse clicks is supported, <code>false</code> otherwise.
 	 */
 	public TreeMap(final Composite composite, final boolean supportNavigation) {
+		this(composite, supportNavigation, true);
+	}
+
+	/**
+	 * Creates the tree map.
+	 *
+	 * @param composite the parent composite, must not be {@code null}.
+	 * @param supportNavigation <code>true</code> if navigation through
+	 * left/right mouse clicks is supported, <code>false</code> otherwise.
+	 * @param changeCursorOnRecalculate indicates whether the mouse cursor 
+	 * should be changed to {@link SWT#CURSOR_WAIT} during recalculation.
+	 */
+	public TreeMap(final Composite composite, final boolean supportNavigation, final boolean changeCursorOnRecalculate) {
 		super(composite, SWT.NO_BACKGROUND);
 		addPaintListener(this);
 		addControlListener(this);
@@ -84,6 +102,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 			 */
 			new TreeMapMouseController<N>(this);
 		}
+		this.changeCursorOnRecalculate = changeCursorOnRecalculate;
 	}
 
 	@Override
@@ -238,7 +257,11 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 				buildControl.cancel();
 				buildControl = null;
 			}
-			setCursor(getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+
+			if (changeCursorOnRecalculate) {
+				setCursor(getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
+			}
+
 			final BuildControl ctrl = new BuildControl();
 			final Worker<N> w = new Worker<N>(this, ctrl);
 			buildControl = ctrl;
@@ -373,7 +396,7 @@ public class TreeMap<N> extends Canvas implements PaintListener, ControlListener
 	 * are relative to the widget).
 	 * @param x x coordinate
 	 * @param y y coordinate
-	 * @return <code>false</code> if a redraw occured, <code>true</code> otherwise.
+	 * @return <code>false</code> if a redraw occurred, <code>true</code> otherwise.
 	 */
 	protected boolean selectRectangle(final int x, final int y) {
 		if (selected == null || !selected.contains(x, y)) {
