@@ -117,36 +117,6 @@ public class TreeMap<N> extends JPanel {
 	}
 
 	/**
-	 * Creates the tree map.
-	 *
-	 * @param supportNavigation <code>true</code> if navigation through
-	 * left/right mouse clicks is supported, <code>false</code> otherwise.
-	 */
-	public TreeMap(final boolean supportNavigation) {
-		super();
-
-		/*
-		 * this is done here to assure that calling setSize(...) will trigger
-		 * the recomputation of the layout.
-		 */
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(final ComponentEvent componentevent) {
-				recalculate();
-			}
-		});
-
-		if (supportNavigation) {
-			/*
-			 * added this here just to keep compatibility with the old code, but
-			 * it should be invoked from outside of the TreeMap class, which
-			 * should have no idea of controllers.
-			 */
-			new TreeMapMouseController<N>(this);
-		}
-	}
-
-	/**
 	 * Sets the rectangle renderer the tree map will use. If no renderer
 	 * is set, a default will be used.
 	 * @param aRenderer the rectangle renderer, must not be {@code null}.
