@@ -32,7 +32,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId><version>2.9</version>
+				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>unpack-dependencies</id>
@@ -52,7 +52,7 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>build-site</id>
+						<id>build-eclipse-site</id>
 						<phase>package</phase>
 						<goals>
 							<goal>run</goal>
@@ -64,7 +64,7 @@
 								<copy file="src/main/config/MANIFEST.MF" tofile="${project.build.directory}/manifest.txt"/>
 								<copy file="src/main/config/feature.xml" tofile="${project.build.directory}/feature.xml"/>
 								<copy file="src/main/config/site.xml" tofile="${local.site}/site.xml"/>
-								<replaceregexp match="0\.0\.0" replace="${project.version}" flags="g">
+								<replaceregexp match="0\.0\.0" replace="${final.version}" flags="g">
 									<fileset dir="${project.build.directory}">
 										<include name="manifest.txt"/>
 										<include name="feature.xml"/>
@@ -72,24 +72,82 @@
 									</fileset>
 								</replaceregexp>
 								<!-- build the plugin .jar -->
-								<jar destfile="${local.site}/plugins/de.engehausen.treemap_${project.version}.jar" manifest="${project.build.directory}/manifest.txt">
+								<jar destfile="${local.site}/plugins/de.engehausen.treemap_${final.version}.jar" manifest="${project.build.directory}/manifest.txt">
 									<fileset dir="${project.build.directory}/dependency" excludes="META-INF"/>
 								</jar>
 								<!-- build the feature .jar -->
-								<jar destfile="${local.site}/features/de.engehausen.treemap_${project.version}.jar" basedir="${project.build.directory}" includes="feature.xml"/>
-								<!-- build the site .zip -->
-								<zip destfile="${project.build.directory}/de.engehausen.treemap-${project.version}-site.zip">
-									<fileset dir="${local.site}">
-										<include name="site.xml"/>
-										<include name="**/*.jar"/>
-									</fileset>
-								</zip>
+								<jar destfile="${local.site}/features/de.engehausen.treemap_${final.version}.jar" basedir="${project.build.directory}" includes="feature.xml"/>
 							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-eclipse-site</id>
+						<phase>install</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<copy file="${project.build.directory}/${project.build.finalName}.zip" tofile="../treemap.build/target/treemap.eclipse-${final.version}-site.zip"/>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>${project.basedir}/src/assembly/zip.xml</descriptor>
+							</descriptors>
+							<finalName>${project.build.finalName}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>regex-property</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>regex-property</goal>
+						</goals>
+						<configuration>
+							<name>final.version</name>
+							<value>${project.version}</value>
+							<regex>-SNAPSHOT</regex>
+							<replacement/>
+							<failIfNoMatch>false</failIfNoMatch>
+						</configuration>
+					</execution>
+					<execution>
+						<id>attach-zip</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/${project.build.finalName}.zip</file>
+									<type>zip</type>
+								</artifact>
+							</artifacts>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
-	
 </project>

@@ -6,13 +6,15 @@ This project provides a TreeMap widget in separate small modules for Swing, SWT 
 # Overview
 Tree maps are used to visualize hierarchical structures. They become rather useful when the hierarchical structures are large. The data is represented with nested rectangles, whose proportions match the "size" or "weight" of a particular rectangle.
 The idea of tree maps seems to go back to Prof. Ben Shneiderman (University of Maryland). As a strategy for deciding the layout the squarified layout invented by Prof. van Wijk et. al. (Technical University of Eindhoven) has proven to be effective:
- * [Information on tree maps](http://www.cs.umd.edu/hcil/treemap-history/index.shtml)
- * [Paper on squarified tree maps](http://www.win.tue.nl/~vanwijk/stm.pdf)
+ * [Information on tree maps](https://www.cs.umd.edu/hcil/treemap-history/index.shtml)
+ * [Paper on squarified tree maps](https://www.win.tue.nl/~vanwijk/stm.pdf)
 
 This library primarily exists as the UI foundation for my other project, [treemapmat](https://github.com/smurf667/treemapmat/).
 
 ## Downloads
 The `.jar` files and the Eclipse site can be found [here](https://github.com/smurf667/treemaplib/releases/).
+
+I've tried to also upload the artifacts to the [Maven repository](https://mvnrepository.com/artifact/de.engehausen/).
 
 # The library
 The library consists of a "core" which is then used by the different versions, i.e. Swing, SWT and SVG support at the moment. The JavaScript library is special in that it is not built on the core and currently a bit of a toy, although usable, of course.
@@ -35,7 +37,7 @@ The tree map widget requires some information to do its job:
 
 The examples make use of this information to show how to use the tree map widget.
 
-There is one more complex example. It is resembling a tool supplied by the Technical University of Eindhoven called [Sequoia View](http://www.win.tue.nl/sequoiaview/):
+There is one more complex example. It is resembling a tool supplied by the Technical University of Eindhoven called [Sequoia View](https://sequoiaview.win.tue.nl/):
 
 It shows the disk space usage of a given folder and sub folders using the tree map widget. Here is a screenshot:
 
@@ -43,9 +45,12 @@ It shows the disk space usage of a given folder and sub folders using the tree m
 
 You can also view this in [big](https://raw.githubusercontent.com/smurf667/treemaplib/master/javadoc/screenshots/swt_fileviewer.png).
 
-To build, issue `mvn install` in `treemap.build`. After you've built you can run the file viewer example:
+# Building the libraries
+To build, run `mvn install` in `treemap.build` (I apologize for the unconventional directory layout - this is old software).
+After you've built you can run the file viewer example:
 
 * Swing: `mvn initialize -f run-fileviewer-swing.xml`
 * SWT: `mvn initialize -f run-fileviewer-swt.xml`
 
+# The end
 Congratulations, you have read this far! There is not much more to add; I recommend you try it out and/or read the JavaDoc. 

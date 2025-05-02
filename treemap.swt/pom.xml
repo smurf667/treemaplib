@@ -20,7 +20,7 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.platform</groupId>
+			<groupId>org.eclipse.swt</groupId>
 			<artifactId>${swt.artifactId}</artifactId>
 			<scope>compile</scope>
 		</dependency>

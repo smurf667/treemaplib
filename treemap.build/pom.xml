@@ -11,6 +11,8 @@
 	<description>This project provides a TreeMap widget in separate small modules for Swing, SWT (standalone and Eclipse feature) and JavaScript (at present more of a toy).</description>
 	<scm>
 		<url>https://github.com/smurf667/treemaplib</url>
+		<connection>scm:git:https://github.com/smurf667/treemaplib.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:smurf667/treemaplib.git</developerConnection>
 	</scm>
 	<developers>
 		<developer>
@@ -19,7 +21,7 @@
 			<email>smurf667@gmail.com</email>
 			<url>https://github.com/smurf667</url>
 			<properties>
-				<picUrl>https://www.ibm.com/developerworks/i/p-jengehausen.jpg</picUrl>
+				<picUrl>https://avatars.githubusercontent.com/u/11485180?v=4</picUrl>
 			</properties>
 		</developer>
 	</developers>
@@ -33,8 +35,11 @@
 	</licenses>	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<swt.version>3.115.100</swt.version>
-		<surefire.version>3.0.0-M5</surefire.version>
+		<swt.version>4.3</swt.version>
+		<surefire.version>3.5.3</surefire.version>
+		<java.version>17</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 	<modules>
 		<module>../treemap.core</module>
@@ -46,12 +51,6 @@
 		<module>../treemap.swt.examples</module>
 		<module>../treemap.eclipse</module>
 	</modules>
-	<repositories>
-		<repository>
-			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
-		</repository>
-	</repositories>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -77,7 +76,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.13.1</version>
+				<version>4.13.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -103,16 +102,10 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>org.eclipse.platform</groupId>
+						<groupId>org.eclipse.swt</groupId>
 						<artifactId>${swt.artifactId}</artifactId>
 						<version>${swt.version}</version>
 						<optional>true</optional>
-						<exclusions>
-							<exclusion>
-								<groupId>org.eclipse.platform</groupId>
-								<artifactId>org.eclipse.swt</artifactId>
-							</exclusion>
-						</exclusions>
 					</dependency>
 				</dependencies>
 			</dependencyManagement>
@@ -131,16 +124,10 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>org.eclipse.platform</groupId>
+						<groupId>org.eclipse.swt</groupId>
 						<artifactId>${swt.artifactId}</artifactId>
 						<version>${swt.version}</version>
 						<optional>true</optional>
-						<exclusions>
-							<exclusion>
-								<groupId>org.eclipse.platform</groupId>
-								<artifactId>org.eclipse.swt</artifactId>
-							</exclusion>
-						</exclusions>
 					</dependency>
 				</dependencies>
 			</dependencyManagement>
@@ -159,19 +146,78 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>org.eclipse.platform</groupId>
+						<groupId>org.eclipse.swt</groupId>
 						<artifactId>${swt.artifactId}</artifactId>
 						<version>${swt.version}</version>
 						<optional>true</optional>
-						<exclusions>
-							<exclusion>
-								<groupId>org.eclipse.platform</groupId>
-								<artifactId>org.eclipse.swt</artifactId>
-							</exclusion>
-						</exclusions>
 					</dependency>
 				</dependencies>
 			</dependencyManagement>
+		</profile>
+		<profile>
+			<id>deploy-maven-central</id>
+			<!-- prerequisites: see https://medium.com/@othmane.outama/step-by-step-publishing-java-libraries-to-maven-central-abf2ffeb04c0
+				1) have GPG key and passphrase
+				2) gpg.keyname property configured in settings.xml
+				3) user and encrypted password for central server in settings.xml
+
+				mvn deploy -Pdeploy-maven-central -DMAVEN_GPG_PASSPHRASE=...
+			-->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<configuration>
+							<keyname>${gpg.keyname}</keyname>
+							<passphraseEnvName>MAVEN_GPG_PASSPHRASE</passphraseEnvName>
+						</configuration>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<configuration>
+							<publishingServerId>central</publishingServerId>
+							<autoPublish>true</autoPublish>
+							<waitUntil>uploaded</waitUntil>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 	<build>
@@ -180,22 +226,32 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.1</version>
+					<version>3.14.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.1.2</version>
+					<version>3.8.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.4.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.4.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.4.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -215,17 +271,32 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.6</version>
+					<version>0.8.13</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.11.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.3.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>3.2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>0.7.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
-					<version>3.14.0</version>
+					<version>3.26.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -237,16 +308,28 @@
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>3.1.1</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>3.1.4</version>
+					<configuration>
+						<installAtEnd>true</installAtEnd>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.1.4</version>
+					<configuration>
+						<deployAtEnd>true</deployAtEnd>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -313,14 +396,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
 				<configuration>
-					<targetJdk>1.8</targetJdk>
-					<!-- <rulesets>
-						<ruleset>/rulesets/basic.xml</ruleset>
-						<ruleset>/rulesets/unusedcode.xml</ruleset>
-						<ruleset>/rulesets/imports.xml</ruleset>
-						<ruleset>/rulesets/strings.xml</ruleset>
-						<ruleset>/rulesets/design.xml</ruleset>
-					</rulesets>-->
+					<targetJdk>${java.version}</targetJdk>
 				</configuration>
 			</plugin>
 			<plugin>
