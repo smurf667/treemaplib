@@ -14,7 +14,7 @@ This library primarily exists as the UI foundation for my other project, [treema
 ## Downloads
 The `.jar` files and the Eclipse site can be found [here](https://github.com/smurf667/treemaplib/releases/).
 
-I've tried to also upload the artifacts to the [Maven repository](https://mvnrepository.com/artifact/de.engehausen/).
+I've tried to also upload the artifacts to the [Maven repository](https://repo.maven.apache.org/maven2/de/engehausen/).
 
 # The library
 The library consists of a "core" which is then used by the different versions, i.e. Swing, SWT and SVG support at the moment. The JavaScript library is special in that it is not built on the core and currently a bit of a toy, although usable, of course.
