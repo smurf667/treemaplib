@@ -41,8 +41,11 @@ public class CushionRectangleRenderer<N> implements IRectangleRenderer<N, PaintE
 		len = colorRangeSize;
 	}
 
+	/**
+	 * Dispose all used resources.
+	 */
 	public void dispose() {
-		for (Color c : colorMappingColor.values()) {
+		for (final Color c : colorMappingColor.values()) {
 			c.dispose();
 		}
 		colorMappingColor.clear();

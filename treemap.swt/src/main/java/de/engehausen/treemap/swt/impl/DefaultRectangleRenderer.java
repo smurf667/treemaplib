@@ -22,6 +22,12 @@ import de.engehausen.treemap.ITreeModel;
 public class DefaultRectangleRenderer<N> implements IRectangleRenderer<N, PaintEvent, Color> {
 
 	private static final IRectangleRenderer<Object, PaintEvent, Color> DEFAULT = new DefaultRectangleRenderer<Object>();
+
+	/**
+	 * Returns the default instance of the renderer.
+	 * @return the default instance of the renderer, never {@code null}.
+	 * @param <R> the type of node being operated on
+	 */
 	@SuppressWarnings("unchecked")
 	public static final <R> IRectangleRenderer<R, PaintEvent, Color> defaultInstance() {
 		return (IRectangleRenderer<R, PaintEvent, Color>) DEFAULT;

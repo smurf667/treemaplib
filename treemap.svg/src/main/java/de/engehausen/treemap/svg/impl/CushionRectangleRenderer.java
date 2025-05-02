@@ -15,10 +15,9 @@ import de.engehausen.treemap.svg.IPrologue;
  */
 public class CushionRectangleRenderer<N> extends DefaultRectangleRenderer<N> implements IPrologue {
 
+	/** identifier {@code cushion} */
 	public static String GRADIENT_ID = "cushion";
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public void prologue(final XMLStreamWriter writer) throws XMLStreamException {
 		writer.writeStartElement(XMLConstants.ELEMENT_DEFS);
@@ -38,9 +37,6 @@ public class CushionRectangleRenderer<N> extends DefaultRectangleRenderer<N> imp
 		writer.writeEndElement();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void rect(final XMLStreamWriter writer, final ITreeModel<IRectangle<N>> model, final IRectangle<N> node, final String color) {
 		try {
@@ -56,5 +52,4 @@ public class CushionRectangleRenderer<N> extends DefaultRectangleRenderer<N> imp
 			throw new IllegalStateException(e);
 		}
 	}
-
 }

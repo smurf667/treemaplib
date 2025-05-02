@@ -215,6 +215,7 @@ public class TreeMap<N> extends JPanel {
 	 * Returns the model currently being used by the tree map.
 	 * @return the model currently being used by the tree map, may be {@code null}.
 	 */
+	@Deprecated
 	public IWeightedTreeModel<N> getTreeModel() {
 		if (model instanceof IWeightedTreeModel) {
 			return (IWeightedTreeModel<N>) model;

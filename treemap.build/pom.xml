@@ -5,7 +5,7 @@
 	<groupId>de.engehausen</groupId>
 	<artifactId>treemap.build</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1.2</version>
+	<version>1.1.3-SNAPSHOT</version>
 	<name>TreeMapBuild</name>
 	<url>https://github.com/smurf667/treemaplib/</url>
 	<description>This project provides a TreeMap widget in separate small modules for Swing, SWT (standalone and Eclipse feature) and JavaScript (at present more of a toy).</description>
@@ -32,14 +32,13 @@
 			<distribution>repo</distribution>
 			<comments>The Eclipse Public License (EPL) is an open source software license used by the Eclipse Foundation for its software. It replaces the Common Public License (CPL) and removes certain terms relating to litigations related to patents.</comments>
 		</license>
-	</licenses>	
+	</licenses>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<swt.version>4.3</swt.version>
 		<surefire.version>3.5.3</surefire.version>
 		<java.version>17</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
 	</properties>
 	<modules>
 		<module>../treemap.core</module>
@@ -160,8 +159,9 @@
 				1) have GPG key and passphrase
 				2) gpg.keyname property configured in settings.xml
 				3) user and encrypted password for central server in settings.xml
+				4) set MAVEN_GPG_PASSPHRASE=...
 
-				mvn deploy -Pdeploy-maven-central -DMAVEN_GPG_PASSPHRASE=...
+				mvn deploy -Pdeploy-maven-central
 			-->
 			<build>
 				<plugins>
@@ -358,7 +358,7 @@
 									destfile="../treemap.build/target/treemaplib_all_${project.version}.zip"
 									basedir="${project.build.directory}"
 									includes="treemap*jar"
-									excludes="*tests.jar" />
+									excludes="*tests.jar,*sources.jar,*javadoc.jar" />
 							</target>
 						</configuration>
 					</execution>

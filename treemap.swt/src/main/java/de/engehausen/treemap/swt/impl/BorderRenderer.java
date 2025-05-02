@@ -21,6 +21,10 @@ public class BorderRenderer<N> implements IRectangleRenderer<N, PaintEvent, Colo
 
 	protected final IRectangleRenderer<N, PaintEvent, Color> leafRenderer;
 
+	/**
+	 * Creates the renderer using the specified leaf renderer.
+	 * @param aLeafRenderer the leaf renderer to use.
+	 */
 	public BorderRenderer(final IRectangleRenderer<N, PaintEvent, Color> aLeafRenderer) {
 		leafRenderer = aLeafRenderer;
 	}
